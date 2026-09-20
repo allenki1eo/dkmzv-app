@@ -1,4 +1,4 @@
-# Brand assets — where Canvy drops files
+# Brand assets — official KKKT emblem
 
 **Source of truth:** [`brand/`](../brand/) and [`brand/README.md`](../brand/README.md).
 
@@ -8,12 +8,13 @@ Extract a new pack over `brand/`, then copy into the Flutter/Android tree using 
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| Deep purple | `#2E0854` | Adaptive launcher **background**, splash field, app bars |
+| White | `#FFFFFF` | Adaptive launcher **background** (official emblem plate) |
+| Deep purple | `#2E0854` | Splash field + in-app Advent/Lent cloth — **not** the adaptive plate |
 | Gold | `#D4AF37` | Cross / accents |
 | Cream | `#FDF5E6` | Surfaces / wordmark |
 | Sage | `#A2AD91` | Subtitle / secondary accents |
 
-Do **not** rely on `brand/ic_launcher_background_swatch.png` for the adaptive plate — use the solid colour `#2E0854`.
+Do **not** rely on `brand/ic_launcher_background_swatch.png` for the adaptive plate — use the solid colour `#FFFFFF`.
 
 ## Exact drop map
 
@@ -33,16 +34,16 @@ Registered in `pubspec.yaml` under `flutter:` → `assets:`.
 
 `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml` (+ `_round`):
 
-- background `@color/ic_launcher_background` = **`#2E0854`**
+- background `@color/ic_launcher_background` = **`#FFFFFF`**
 - foreground `@mipmap/ic_launcher_foreground`
 
 `android/app/src/main/res/values/colors.xml`
 
 ## Splash (equivalent of flutter_native_splash)
 
-- Android: `drawable/launch_background.xml` (+ `drawable-v21`) = purple field `#2E0854` + `@drawable/dkmzv_splash`
+- Android: `drawable/launch_background.xml` (+ `drawable-v21`) = purple field `#2E0854` + `@drawable/dkmzv_splash` (white card + official emblem)
 - Flutter boot: `DkmzvBrand.splashAsset` → `assets/brand/dkmzv-splash.png` (`lib/app.dart`, `lib/theme/brand.dart`)
 
 ## Archive
 
-`brand/archive-official-emblem/` holds the earlier official KKKT DKMZV silver/red emblem (Allen lock). Current launcher/splash are this Canvy v1 gold-cross pack.
+`brand/archive-official-emblem/` keeps a copy of the official source PNG and an AI alternate. Live launcher/splash are the official mark from `brand/` (not the geometric gold-cross pack).

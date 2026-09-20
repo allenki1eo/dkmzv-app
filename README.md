@@ -31,7 +31,7 @@ flutter pub get
 flutter run
 ```
 
-On a device or emulator. First install uses the Canvy v1 launcher (gold cross + DKMZV on purple `#2E0854`).
+On a device or emulator. First install uses the official KKKT DKMZV emblem on a **white** adaptive plate (`#FFFFFF`). Purple `#2E0854` is the splash field only.
 
 Web (for a quick desktop look — Android remains the product):
 
@@ -68,15 +68,16 @@ Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`
 - Diocese named as Dayosisi Mashariki ya Ziwa Viktoria (DKMZV / ELVD)
 - 36 hymns: public-domain Lutheran/gospel texts plus short original liturgical Swahili for demo. **Not** a dump of a copyrighted KKKT hymnal. Office can replace titles/numbers later.
 
-## Brand / Canvy
+## Brand
 
-**Source of truth:** [`brand/`](brand/) (keep Canvy’s README there). Drop map: [`docs/BRAND_ASSETS.md`](docs/BRAND_ASSETS.md).
+**Source of truth:** [`brand/`](brand/) (official KKKT emblem). Drop map: [`docs/BRAND_ASSETS.md`](docs/BRAND_ASSETS.md).
 
 ### Palette
 
 | Token | Hex | Church year |
 | --- | --- | --- |
-| Deep purple | `#2E0854` | Advent + Lent vestment; also launcher plate |
+| Deep purple | `#2E0854` | Advent + Lent vestment; **splash field only** (not the adaptive plate) |
+| White | `#FFFFFF` | Adaptive launcher background (official emblem plate) |
 | Forest green | `#1E4D36` | Time after Pentecost / Epiphany |
 | Sage | `#A2AD91` | Secondary green |
 | White / gold cloth | `#F4E6C1` + `#D4AF37` | Christmas, Easter, Trinity, All Saints |
@@ -94,7 +95,7 @@ After extracting a pack over `brand/`:
 | `brand/mipmap-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}/ic_launcher.png` | `android/app/src/main/res/mipmap-*/ic_launcher.png` |
 | same `ic_launcher_round.png` | matching `mipmap-*/ic_launcher_round.png` |
 | `brand/ic_launcher_foreground.png` | `android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png` |
-| Adaptive background | solid `#2E0854` in `android/app/src/main/res/values/colors.xml` (`ic_launcher_background`) — not the tiny swatch PNG |
+| Adaptive background | solid `#FFFFFF` in `android/app/src/main/res/values/colors.xml` (`ic_launcher_background`) — official emblem plate; not the tiny swatch PNG |
 | `mipmap-anydpi-v26/ic_launcher.xml` (+ round) | background `@color/ic_launcher_background`, foreground `@mipmap/ic_launcher_foreground` |
 | `brand/dkmzv-splash.png` | `assets/brand/dkmzv-splash.png` and `android/.../drawable-nodpi/dkmzv_splash.png` |
 | `brand/dkmzv-icon-master-1024.png` | `assets/brand/dkmzv-icon-master-1024.png` |
@@ -102,7 +103,9 @@ After extracting a pack over `brand/`:
 
 Those three Flutter files are listed under `flutter:` `assets:` in `pubspec.yaml`. Splash uses `assets/brand/dkmzv-splash.png` (in-app + Android `launch_background.xml`).
 
-The earlier official KKKT emblem is archived at `brand/archive-official-emblem/`.
+Official emblem source + an AI alternate sit in `brand/archive-official-emblem/` as a backup. The live launcher is the same mark from `brand/`.
+
+CI on this branch builds a **debug APK** and uploads artifact `dkmzv-app-debug` (`app-debug.apk`). See [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml).
 
 ## Optional later: Firebase
 

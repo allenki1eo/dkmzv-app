@@ -29,6 +29,10 @@ class S {
   String get latestIbada =>
       isSw ? 'Ibada ya wiki hii' : 'This week’s service';
   String get openIbada => isSw ? 'Fungua ibada' : 'Open order of service';
+  String get seeAllEvents => isSw ? 'Matukio yote' : 'All events';
+  String get roleCardLead => isSw
+      ? 'Pastor na ofisi tu — si orodha ya waumini.'
+      : 'Pastor and office only — not a member directory.';
   String get fcmStub => isSw
       ? 'Arifa za push bado ni muundo (FCM). Funguo zinapowekwa, tangazo litaweza kufika simuni.'
       : 'Push notices are stubbed (FCM). When keys are added, announcements can reach the phone.';

@@ -26,25 +26,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('DKMZV'), findsWidgets);
-    expect(find.text('SAA ZA JUMAPILI'), findsOneWidget);
+    expect(find.text('Saa za Jumapili'), findsOneWidget);
     expect(find.textContaining('Ibada kuu'), findsWidgets);
 
     await tester.tap(find.widgetWithText(TextButton, 'EN'));
     await tester.pumpAndSettle();
-    expect(find.text('SUNDAY TIMES'), findsOneWidget);
+    expect(find.text('Sunday times'), findsOneWidget);
 
-    await tester.scrollUntilVisible(
-      find.textContaining('Grace that is enough'),
-      300,
-      scrollable: find.byType(Scrollable).first,
-    );
+    await tester.drag(find.byType(ListView).first, const Offset(0, -2400));
+    await tester.pumpAndSettle();
     expect(find.textContaining('Grace that is enough'), findsWidgets);
-
-    await tester.scrollUntilVisible(
-      find.textContaining('Welcome to Sunday worship'),
-      300,
-      scrollable: find.byType(Scrollable).first,
-    );
     expect(find.textContaining('Welcome to Sunday worship'), findsOneWidget);
   });
 
@@ -52,7 +43,10 @@ void main() {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Nyimbo'));
+    await tester.tap(find.descendant(
+      of: find.byType(NavigationBar),
+      matching: find.text('Nyimbo'),
+    ));
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'ngome');
