@@ -54,12 +54,12 @@
 
 ## Design (Canvy)
 
-- App name mark: **DKMZV** / gold cross on deep purple (Canvy v1 pack in `brand/`).
+- App name mark: official **KKKT DKMZV emblem** (cross + heart + Bible + globe) in `brand/`.
 - Palette: purple `#2E0854`, gold `#D4AF37`, cream `#FDF5E6`, sage `#A2AD91` — **locked to the liturgical year** (purple Advent/Lent, green ordinary time, white/gold Christmas & Easter, red Pentecost / Palm / Reformation). See `docs/LITURGICAL_YEAR.md`.
-- Adaptive launcher **background is solid `#2E0854`** (not the tiny swatch PNG).
-- Splash: `brand/dkmzv-splash.png` (purple field + gold cross + wordmark).
+- Adaptive launcher **background is solid `#FFFFFF`** (official emblem plate). Purple `#2E0854` is the **splash field only**.
+- Splash: `brand/dkmzv-splash.png` (purple field + white card + official emblem).
 - Deliver: launcher icon, splash, adaptive icon for Android `mipmap`. Exact drop paths: `docs/BRAND_ASSETS.md` and `brand/README.md`.
-- Earlier official KKKT emblem is archived at `brand/archive-official-emblem/`.
+- Source backup: `brand/archive-official-emblem/`.
 
 ---
 

@@ -1,3 +1,3 @@
-Earlier official KKKT DKMZV emblem (cross + heart + Bible + globe), kept so it is not lost.
+Backup of the official KKKT DKMZV emblem source and an AI alternate.
 
-Current launcher/splash/source-of-truth is the Canvy v1 pack in `brand/` (gold cross + DKMZV on purple `#2E0854`).
+Live launcher, splash, and `brand/` source of truth use this same official mark on a **white** adaptive plate (`#FFFFFF`). Purple `#2E0854` is splash only.
