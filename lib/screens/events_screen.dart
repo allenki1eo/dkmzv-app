@@ -21,10 +21,17 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
+    final accent = DkmzvBrand.accent(store.palette);
     final items = [...store.data.events]
       ..sort((a, b) => a.start.compareTo(b.start));
     final filtered =
         _cat == 'all' ? items : items.where((e) => e.category == _cat).toList();
+    const rails = [
+      DkmzvBrand.purple,
+      DkmzvBrand.gold,
+      DkmzvBrand.sage,
+      DkmzvBrand.red,
+    ];
 
     return Scaffold(
       appBar: BrandAppBar(title: s.tabEvents),
@@ -34,7 +41,7 @@ class _EventsScreenState extends State<EventsScreen> {
             height: 52,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               children: [
                 for (final c in _cats)
                   Padding(
@@ -52,52 +59,19 @@ class _EventsScreenState extends State<EventsScreen> {
             child: filtered.isEmpty
                 ? Center(child: Text(s.noEvents))
                 : ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
                     itemCount: filtered.length,
                     itemBuilder: (_, i) {
                       final e = filtered[i];
-                      return Card(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor:
-                                DkmzvBrand.green.withValues(alpha: 0.15),
-                            child: const Icon(Icons.event,
-                                color: DkmzvBrand.green, size: 20),
-                          ),
-                          title: Text(e.title(store.sw)),
-                          subtitle: Text(
-                            '${formatDateTime(e.start, store.localeCode)}\n${e.place(store.sw)}',
-                          ),
-                          isThreeLine: true,
-                          trailing: Chip(
-                            label: Text(s.cat(e.category),
-                                style: const TextStyle(fontSize: 11)),
-                          ),
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              showDragHandle: true,
-                              builder: (_) => Padding(
-                                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(e.title(store.sw),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge),
-                                    const SizedBox(height: 8),
-                                    Text(formatDateTime(
-                                        e.start, store.localeCode)),
-                                    Text(e.place(store.sw)),
-                                    const SizedBox(height: 8),
-                                    Text(e.detail(store.sw)),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: DateRailTile(
+                          startIso: e.start,
+                          title: e.title(store.sw),
+                          subtitle:
+                              '${formatDateTime(e.start, store.localeCode)} · ${e.place(store.sw)}',
+                          accent: i == 0 ? accent : rails[i % rails.length],
+                          onTap: () => showEventSheet(context, e),
                         ),
                       );
                     },

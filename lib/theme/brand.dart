@@ -11,40 +11,46 @@ class DkmzvBrand {
   static const sage = Color(0xFFA2AD91);
   static const green = Color(0xFF1E4D36);
   static const red = Color(0xFF8B1E2D);
-  static const card = Color(0xFFFFFCF7);
+  static const canvas = Color(0xFFF6F3FA);
+  static const card = Color(0xFFFFFFFF);
   static const ink = Color(0xFF1B1424);
-  static const muted = Color(0xFF5C5366);
+  static const muted = Color(0xFF6B6274);
 
   static const logoAsset = 'assets/brand/dkmzv-icon-master-1024.png';
   static const splashAsset = 'assets/brand/dkmzv-splash.png';
   static const playstoreAsset = 'assets/brand/dkmzv-playstore-512.png';
 
+  /// Accent that stays readable on a white chrome bar (white vestment is cream).
+  static Color accent(SeasonPalette palette) =>
+      palette.lightBar ? purple : palette.cloth;
+
   static ThemeData theme([SeasonPalette palette = SeasonPalette.green]) {
-    final cloth = palette.cloth;
     final onCloth = palette.onCloth;
+    final accent = DkmzvBrand.accent(palette);
     final scheme = ColorScheme.fromSeed(
-      seedColor: cloth,
-      primary: cloth,
+      seedColor: accent,
+      primary: accent,
       secondary: sage,
       tertiary: gold,
-      surface: cream,
+      surface: canvas,
       brightness: Brightness.light,
     );
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      scaffoldBackgroundColor: cream,
-      appBarTheme: AppBarTheme(
-        backgroundColor: cloth,
-        foregroundColor: onCloth,
+      scaffoldBackgroundColor: canvas,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        foregroundColor: ink,
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: false,
-        iconTheme: IconThemeData(color: onCloth),
+        iconTheme: IconThemeData(color: ink),
         titleTextStyle: TextStyle(
-          color: onCloth,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.4,
+          color: ink,
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.2,
         ),
       ),
       cardTheme: CardThemeData(
@@ -52,61 +58,66 @@ class DkmzvBrand {
         elevation: 0,
         margin: const EdgeInsets.only(bottom: 12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: gold.withValues(alpha: 0.28)),
+          borderRadius: BorderRadius.circular(24),
+          side: const BorderSide(color: Color(0x14000000)),
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: sage.withValues(alpha: 0.22),
-        selectedColor: cloth.withValues(alpha: 0.18),
+        backgroundColor: Colors.white,
+        selectedColor: accent.withValues(alpha: 0.12),
         labelStyle: const TextStyle(color: ink, fontWeight: FontWeight.w500),
-        side: BorderSide.none,
+        side: const BorderSide(color: Color(0x14000000)),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: cloth.withValues(alpha: 0.18)),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0x1A000000)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: cloth, width: 1.6),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: accent, width: 1.6),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: cloth,
+          backgroundColor: accent,
           foregroundColor: onCloth,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: cloth,
+        backgroundColor: accent,
         foregroundColor: onCloth,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
-        indicatorColor: cloth.withValues(alpha: 0.14),
+        indicatorColor: accent.withValues(alpha: 0.12),
         elevation: 0,
+        height: 68,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected ? cloth : muted,
+            color: selected ? accent : muted,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return IconThemeData(color: selected ? cloth : muted);
+          return IconThemeData(color: selected ? accent : muted, size: 22);
         }),
       ),
-      dividerColor: gold.withValues(alpha: 0.25),
+      dividerColor: const Color(0x14000000),
+      textTheme: ThemeData(useMaterial3: true).textTheme.apply(
+            bodyColor: ink,
+            displayColor: ink,
+          ),
     );
   }
 }

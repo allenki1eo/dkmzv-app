@@ -21,7 +21,11 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     final s = sOf(context);
     final pages = [
-      HomeScreen(onOpenIbada: () => setState(() => _index = 1)),
+      HomeScreen(
+        onOpenIbada: () => setState(() => _index = 1),
+        onOpenHymns: () => setState(() => _index = 2),
+        onOpenEvents: () => setState(() => _index = 3),
+      ),
       const IbadaScreen(),
       const HymnsScreen(),
       const EventsScreen(),
