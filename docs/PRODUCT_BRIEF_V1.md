@@ -70,4 +70,6 @@
 - **Admin:** in-app, PIN `dkmzv` (demo). No member directory.
 - **Congregation texture:** Usharika wa Angaza, Chamaguha, Shinyanga. Placeholder role phones only.
 
+v2 (not in this build): [`PRODUCT_BRIEF_V2.md`](PRODUCT_BRIEF_V2.md). Design references: [`DESIGN_INSPO.md`](DESIGN_INSPO.md).
+
 *Allen asked Idealy to send this to Cursor agents to create v1. Cod't builds; Canvy brand.*

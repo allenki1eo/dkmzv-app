@@ -6,7 +6,10 @@ Android-first · Kiswahili + English · Works on slow data · Offline hymns and 
 
 This is **not** church ERP, not a member directory, and not a WhatsApp replacement.
 
-Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md).
+Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md).  
+v2 (Sunday mode + office publish): [`docs/PRODUCT_BRIEF_V2.md`](docs/PRODUCT_BRIEF_V2.md).  
+Why the UI looks like this: [`docs/DESIGN_INSPO.md`](docs/DESIGN_INSPO.md).  
+Sideload APK: [`docs/ANDROID_APK.md`](docs/ANDROID_APK.md).
 
 ## What v1 does
 
@@ -32,6 +35,15 @@ flutter run
 ```
 
 On a device or emulator. First install uses the Canvy v1 launcher (gold cross + DKMZV on purple `#2E0854`).
+
+Release APK (debug-signed, parish sideload — not Play):
+
+```bash
+./scripts/build_android_apk.sh
+# → build/app/outputs/flutter-apk/app-release.apk
+```
+
+See [`docs/ANDROID_APK.md`](docs/ANDROID_APK.md) for install steps. Do not commit the APK.
 
 Web (for a quick desktop look — Android remains the product):
 
