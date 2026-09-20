@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import 'hymn_search.dart';
 import 'models.dart';
+import '../theme/liturgical.dart';
 
 const seedAsset = 'assets/seed/church.json';
 const _dataKey = 'church_data_v1';
@@ -14,10 +15,18 @@ const _localeKey = 'locale_code';
 const _favKey = 'favorite_hymn_ids';
 const _recentKey = 'recent_hymn_ids';
 const _lastIbadaKey = 'last_opened_ibada_id';
+const _vestmentKey = 'vestment_preview';
 
 class ChurchStore extends ChangeNotifier {
-  ChurchStore._(this._prefs, this.data, this.localeCode, this.favoriteIds,
-      this.recentHymnIds, this.lastOpenedIbadaId);
+  ChurchStore._(
+    this._prefs,
+    this.data,
+    this.localeCode,
+    this.favoriteIds,
+    this.recentHymnIds,
+    this.lastOpenedIbadaId,
+    this.vestmentPreview,
+  );
 
   final SharedPreferences? _prefs;
   ChurchData data;
@@ -25,6 +34,8 @@ class ChurchStore extends ChangeNotifier {
   List<String> favoriteIds;
   List<String> recentHymnIds;
   String? lastOpenedIbadaId;
+  /// When set (`purple`/`green`/`white`/`red`), UI cloth follows that vestment.
+  String? vestmentPreview;
 
   static const _uuid = Uuid();
 
@@ -47,6 +58,7 @@ class ChurchStore extends ChangeNotifier {
       prefs.getStringList(_favKey) ?? const [],
       prefs.getStringList(_recentKey) ?? const [],
       prefs.getString(_lastIbadaKey),
+      prefs.getString(_vestmentKey),
     );
   }
 
@@ -57,7 +69,23 @@ class ChurchStore extends ChangeNotifier {
 
   /// In-memory store for tests (no SharedPreferences).
   factory ChurchStore.memory(ChurchData data, {String locale = 'sw'}) {
-    return ChurchStore._(null, data, locale, [], [], null);
+    return ChurchStore._(null, data, locale, [], [], null, null);
+  }
+
+  LiturgicalMoment get moment {
+    final preview = vestmentPreview;
+    if (preview != null) {
+      final v = Vestment.values.asNameMap()[preview];
+      if (v != null) return LiturgicalCalendar.preview(v);
+    }
+    return LiturgicalCalendar.at(DateTime.now());
+  }
+
+  SeasonPalette get palette => moment.palette;
+
+  Future<void> setVestmentPreview(String? name) async {
+    vestmentPreview = name;
+    await persist();
   }
 
   Future<void> persist() async {
@@ -69,6 +97,11 @@ class ChurchStore extends ChangeNotifier {
       await prefs.setStringList(_recentKey, recentHymnIds);
       if (lastOpenedIbadaId != null) {
         await prefs.setString(_lastIbadaKey, lastOpenedIbadaId!);
+      }
+      if (vestmentPreview == null) {
+        await prefs.remove(_vestmentKey);
+      } else {
+        await prefs.setString(_vestmentKey, vestmentPreview!);
       }
     }
     notifyListeners();

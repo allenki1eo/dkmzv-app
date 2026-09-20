@@ -95,7 +95,7 @@ class IbadaDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
           Text(formatDate(service.date, store.localeCode),
-              style: const TextStyle(color: DkmzvBrand.green)),
+              style: TextStyle(color: store.palette.cloth, fontWeight: FontWeight.w600)),
           Text(service.theme(store.sw),
               style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 4),
@@ -116,8 +116,8 @@ class IbadaDetailScreen extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               title: Text(r.label(store.sw)),
               subtitle: Text(r.ref,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, color: DkmzvBrand.purple)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: store.palette.cloth)),
             ),
           SectionLabel(s.outline),
           for (var i = 0; i < service.outline(store.sw).length; i++)
@@ -126,9 +126,9 @@ class IbadaDetailScreen extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               leading: CircleAvatar(
                 radius: 12,
-                backgroundColor: DkmzvBrand.purple,
+                backgroundColor: store.palette.cloth,
                 child: Text('${i + 1}',
-                    style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    style: TextStyle(color: store.palette.onCloth, fontSize: 12)),
               ),
               title: Text(service.outline(store.sw)[i]),
             ),

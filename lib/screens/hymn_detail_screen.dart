@@ -14,6 +14,7 @@ class HymnDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
+    final p = store.palette;
     final fav = store.isFavorite(hymn.id);
     return Scaffold(
       appBar: AppBar(
@@ -27,27 +28,56 @@ class HymnDetailScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
+        padding: const EdgeInsets.fromLTRB(28, 28, 28, 48),
         children: [
-          Text(hymn.title(store.sw),
-              style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 4),
-          Text(hymn.title(!store.sw),
-              style: const TextStyle(color: DkmzvBrand.muted)),
-          const SizedBox(height: 12),
-          Text(s.offlineCached,
-              style: const TextStyle(color: DkmzvBrand.green, fontSize: 13)),
-          const SizedBox(height: 16),
-          SelectableText(
-            hymn.lyrics(store.sw),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  height: 1.5,
-                  fontWeight: FontWeight.w500,
+          Text(
+            hymn.number,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: p.metal,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 3,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            hymn.title(store.sw),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: p.cloth,
+                  height: 1.25,
                 ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 6),
+          Text(
+            hymn.title(!store.sw),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: p.cloth.withValues(alpha: 0.55),
+                fontStyle: FontStyle.italic),
+          ),
+          const SizedBox(height: 14),
+          const Center(child: GoldRule()),
+          const SizedBox(height: 14),
+          Text(s.offlineCached,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: p.cloth, fontSize: 13)),
+          const SizedBox(height: 20),
+          SelectableText(
+            hymn.lyrics(store.sw),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  height: 1.7,
+                  fontWeight: FontWeight.w500,
+                  color: DkmzvBrand.ink,
+                ),
+          ),
+          const SizedBox(height: 28),
           Text('${s.hymnSource}: ${hymn.source}',
-              style: const TextStyle(color: DkmzvBrand.muted, fontSize: 12)),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: p.cloth.withValues(alpha: 0.5), fontSize: 12)),
         ],
       ),
     );

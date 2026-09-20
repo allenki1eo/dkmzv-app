@@ -85,10 +85,10 @@ class _HymnTile extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: DkmzvBrand.purple.withValues(alpha: 0.1),
+          backgroundColor: store.palette.cloth.withValues(alpha: 0.1),
           child: Text(hymn.number,
-              style: const TextStyle(
-                  color: DkmzvBrand.purple,
+              style: TextStyle(
+                  color: store.palette.cloth,
                   fontSize: 11,
                   fontWeight: FontWeight.w800)),
         ),

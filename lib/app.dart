@@ -40,7 +40,7 @@ class _DkmzvAppState extends State<DkmzvApp> {
           return MaterialApp(
             title: s.appName,
             debugShowCheckedModeBanner: false,
-            theme: DkmzvBrand.theme(),
+            theme: DkmzvBrand.theme(store.palette),
             locale: locale,
             supportedLocales: const [Locale('sw'), Locale('en')],
             localizationsDelegates: const [

@@ -192,7 +192,88 @@ class S {
   String get colorPurple => isSw ? 'Zambarau' : 'Purple';
   String get colorGold => isSw ? 'Dhahabu' : 'Gold';
   String get colorWhite => isSw ? 'Nyeupe' : 'White';
+  String get colorWhiteGold => isSw ? 'Nyeupe / dhahabu' : 'White / gold';
   String get colorRed => isSw ? 'Nyekundu' : 'Red';
+
+  String get churchYear => isSw ? 'Mwaka wa kanisa' : 'Church year';
+  String get todayInYear =>
+      isSw ? 'Leo katika mwaka wa kanisa' : 'Today in the church year';
+  String get vestmentToday => isSw ? 'Nguo ya leo' : 'Today’s vestment';
+  String get followCalendar =>
+      isSw ? 'Fuata kalenda' : 'Follow the calendar';
+  String get previewCloth =>
+      isSw ? 'Ona rangi (si kalenda)' : 'Preview a colour (not the date)';
+  String get lockedToSeason => isSw
+      ? 'Rangi za DKMZV zimefungwa kwenye msimu wa liturujia.'
+      : 'DKMZV colours lock to the liturgical season.';
+
+  String get seasonAdvent => isSw ? 'Majilio' : 'Advent';
+  String get seasonChristmas => isSw ? 'Krismasi' : 'Christmas';
+  String get seasonEpiphany => isSw ? 'Epifania' : 'Epiphany';
+  String get seasonLent => isSw ? 'Kwaresima' : 'Lent';
+  String get seasonPalm => isSw ? 'Jumapili ya Matawi' : 'Palm Sunday';
+  String get seasonHolyWeek => isSw ? 'Wiki Takatifu' : 'Holy Week';
+  String get seasonGoodFriday => isSw ? 'Ijumaa Kuu' : 'Good Friday';
+  String get seasonEaster => isSw ? 'Pasaka' : 'Easter';
+  String get seasonPentecost => isSw ? 'Pentekoste' : 'Pentecost';
+  String get seasonTrinity => isSw ? 'Utatu Mtakatifu' : 'Holy Trinity';
+  String get seasonReformation => isSw ? 'Marekebisho' : 'Reformation';
+  String get seasonAllSaints => isSw ? 'Watakatifu wote' : 'All Saints';
+  String get seasonOrdinary =>
+      isSw ? 'Wakati baada ya Pentekoste' : 'Time after Pentecost';
+
+  String get meaningAdvent => isSw
+      ? 'Tungojea Nuruyetu. Zambarau: toba, tumaini, na ufalme unaokuja.'
+      : 'We wait for the Light. Purple: repentance, hope, and the coming King.';
+  String get meaningChristmas => isSw
+      ? 'Neno limekuwa mwili. Nyeupe na dhahabu: furaha, usafi, na utukufu.'
+      : 'The Word became flesh. White and gold: joy, purity, and glory.';
+  String get meaningEpiphany => isSw
+      ? 'Kristus afunuliwa kwa mataifa. Kijani: ukuaji katika nuru.'
+      : 'Christ is revealed to the nations. Green: growth in the light.';
+  String get meaningLent => isSw
+      ? 'Siku arobaini za toba kuelekea msalaba. Zambarau: maandalizi.'
+      : 'Forty days of repentance toward the cross. Purple: preparation.';
+  String get meaningPalm => isSw
+      ? 'Mfalme aingia Yerusalemu. Nyekundu: damu na ushindi wa msalaba.'
+      : 'The King enters Jerusalem. Red: the blood and victory of the cross.';
+  String get meaningHolyWeek => isSw
+      ? 'Njia ya mateso. Zambarau hadi Ijumaa Kuu.'
+      : 'The way of the Passion. Purple until Good Friday.';
+  String get meaningGoodFriday => isSw
+      ? 'Msalaba. Nyekundu (au nyeusi): damu ya Mwokozi.'
+      : 'The cross. Red (or black): the Saviour’s blood.';
+  String get meaningEaster => isSw
+      ? 'Kristus amefufuka. Nyeupe na dhahabu kwa siku hamsini.'
+      : 'Christ is risen. White and gold for fifty days.';
+  String get meaningPentecost => isSw
+      ? 'Roho Mtakatifu ashuka. Nyekundu: moto na zawadi za Roho.'
+      : 'The Holy Spirit descends. Red: fire and the Spirit’s gifts.';
+  String get meaningTrinity => isSw
+      ? 'Baba, Mwana na Roho. Nyeupe: sifa ya Mungu mmoja katika Utatu.'
+      : 'Father, Son and Spirit. White: praise of the One God in Trinity.';
+  String get meaningReformation => isSw
+      ? 'Neno pekee, neema pekee. Nyekundu: Roho na ushuhuda.'
+      : 'Word alone, grace alone. Red: the Spirit and witness.';
+  String get meaningAllSaints => isSw
+      ? 'Kanisa shindani na kanisa limelala. Nyeupe: uzima wa milele.'
+      : 'The church militant and the church at rest. White: eternal life.';
+  String get meaningOrdinary => isSw
+      ? 'Ukuaji wa kila siku katika Neno. Kijani: uhai na matumaini.'
+      : 'Daily growth in the Word. Green: life and hope.';
+
+  String get whyPurple => isSw
+      ? 'Zambarau — Majilio na Kwaresima: toba, maandalizi, ufalme.'
+      : 'Purple — Advent and Lent: repentance, preparation, kingship.';
+  String get whyGreen => isSw
+      ? 'Kijani — wakati wa kawaida baada ya Epifania na Pentekoste: ukuaji.'
+      : 'Green — ordinary time after Epiphany and Pentecost: growth.';
+  String get whyWhite => isSw
+      ? 'Nyeupe / dhahabu — Krismasi, Pasaka, Utatu, watakatifu: furaha na utukufu.'
+      : 'White / gold — Christmas, Easter, Trinity, saints: joy and glory.';
+  String get whyRed => isSw
+      ? 'Nyekundu — Pentekoste, Matawi, Ijumaa Kuu, Marekebisho, kipaimara: Roho na damu.'
+      : 'Red — Pentecost, Palm Sunday, Good Friday, Reformation, confirmation: Spirit and blood.';
 
   String get done => isSw ? 'Sawa' : 'OK';
   String get close => isSw ? 'Funga' : 'Close';

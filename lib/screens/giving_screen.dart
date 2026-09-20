@@ -40,7 +40,7 @@ class _GivingScreenState extends State<GivingScreen> {
           Text(s.givingLead),
           const SizedBox(height: 12),
           Card(
-            color: DkmzvBrand.purple,
+            color: store.palette.cloth,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

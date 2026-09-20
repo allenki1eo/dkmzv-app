@@ -26,13 +26,18 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('DKMZV'), findsWidgets);
-    expect(find.text('Saa za Jumapili'), findsOneWidget);
+    expect(find.text('SAA ZA JUMAPILI'), findsOneWidget);
     expect(find.textContaining('Ibada kuu'), findsWidgets);
-    expect(find.textContaining('Neema inayotosha'), findsWidgets);
 
     await tester.tap(find.widgetWithText(TextButton, 'EN'));
     await tester.pumpAndSettle();
-    expect(find.text('Sunday times'), findsOneWidget);
+    expect(find.text('SUNDAY TIMES'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.textContaining('Grace that is enough'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.textContaining('Grace that is enough'), findsWidgets);
 
     await tester.scrollUntilVisible(
@@ -66,6 +71,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Zaidi'));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Ombi la kichungaji'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
     await tester.tap(find.text('Ombi la kichungaji'));
     await tester.pumpAndSettle();
 

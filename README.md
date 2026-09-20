@@ -74,12 +74,16 @@ Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`
 
 ### Palette
 
-| Token | Hex |
-| --- | --- |
-| Deep purple (plate / splash / adaptive bg) | `#2E0854` |
-| Gold | `#D4AF37` |
-| Cream | `#FDF5E6` |
-| Sage | `#A2AD91` |
+| Token | Hex | Church year |
+| --- | --- | --- |
+| Deep purple | `#2E0854` | Advent + Lent vestment; also launcher plate |
+| Forest green | `#1E4D36` | Time after Pentecost / Epiphany |
+| Sage | `#A2AD91` | Secondary green |
+| White / gold cloth | `#F4E6C1` + `#D4AF37` | Christmas, Easter, Trinity, All Saints |
+| Red | `#8B1E2D` | Pentecost, Palm Sunday, Good Friday, Reformation |
+| Cream | `#FDF5E6` | Parchment surfaces |
+
+Gold is the **metal** (cross, rules) in every season. See [`docs/LITURGICAL_YEAR.md`](docs/LITURGICAL_YEAR.md).
 
 ### Exact copy paths
 
