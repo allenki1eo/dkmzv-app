@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Adaptive launcher plate — Canvy swatch, solid (do not use the tiny PNG). -->
+    <color name="ic_launcher_background">#2E0854</color>
+    <color name="dkmzv_splash_field">#2E0854</color>
+    <color name="dkmzv_gold">#D4AF37</color>
+    <color name="dkmzv_cream">#FDF5E6</color>
+    <color name="dkmzv_sage">#A2AD91</color>
+</resources>

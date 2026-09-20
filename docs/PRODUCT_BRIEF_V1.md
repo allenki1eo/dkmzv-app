@@ -54,10 +54,20 @@
 
 ## Design (Canvy)
 
-- App name mark: **DKMZV** / cross + Shinyanga-friendly Lutheran tone (dignified, not flashy)  
-- Colors: deep liturgical feel (e.g. purple/green/gold accents) — Canvy proposes palette  
-- Deliver: launcher icon, splash, adaptive icon for Android `mipmap`
+- App name mark: **DKMZV** / gold cross on deep purple (Canvy v1 pack in `brand/`).
+- Palette: purple `#2E0854`, gold `#D4AF37`, cream `#FDF5E6`, sage `#A2AD91` — **locked to the liturgical year** (purple Advent/Lent, green ordinary time, white/gold Christmas & Easter, red Pentecost / Palm / Reformation). See `docs/LITURGICAL_YEAR.md`.
+- Adaptive launcher **background is solid `#2E0854`** (not the tiny swatch PNG).
+- Splash: `brand/dkmzv-splash.png` (purple field + gold cross + wordmark).
+- Deliver: launcher icon, splash, adaptive icon for Android `mipmap`. Exact drop paths: `docs/BRAND_ASSETS.md` and `brand/README.md`.
+- Earlier official KKKT emblem is archived at `brand/archive-official-emblem/`.
 
 ---
+
+## Implementation notes (v1 shipped)
+
+- **Mobile:** Flutter (SW+EN + offline hymns).
+- **Data:** seed-first JSON (`assets/seed/church.json`) persisted locally. Members stay anonymous. Firebase/Auth optional later; FCM stub on Home.
+- **Admin:** in-app, PIN `dkmzv` (demo). No member directory.
+- **Congregation texture:** Usharika wa Angaza, Chamaguha, Shinyanga. Placeholder role phones only.
 
 *Allen asked Idealy to send this to Cursor agents to create v1. Cod't builds; Canvy brand.*
