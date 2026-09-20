@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Adaptive launcher plate: official emblem on white (NOT liturgical purple). -->
+    <color name="ic_launcher_background">#FFFFFF</color>
+    <!-- Splash field only. Purple must not be used as the adaptive-icon background. -->
+    <color name="dkmzv_splash_field">#2E0854</color>
+</resources>

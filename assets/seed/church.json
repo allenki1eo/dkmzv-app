@@ -1,0 +1,846 @@
+{
+  "version": 1,
+  "settings": {
+    "adminPin": "dkmzv",
+    "fcmConfigured": false,
+    "defaultLocale": "sw"
+  },
+  "church": {
+    "nameSw": "KKKT DKMZV — Usharika wa Angaza",
+    "nameEn": "ELCT DKMZV — Angaza Congregation",
+    "shortName": "DKMZV",
+    "denominationSw": "Kanisa la Kiinjili la Kilutheri Tanzania",
+    "denominationEn": "Evangelical Lutheran Church in Tanzania",
+    "dioceseSw": "Dayosisi Mashariki ya Ziwa Viktoria (DKMZV/ELVD)",
+    "dioceseEn": "East of Lake Victoria Diocese (DKMZV/ELVD)",
+    "addressSw": "Ushirika, Chamaguha, Shinyanga Mjini, Tanzania",
+    "addressEn": "Ushirika, Chamaguha, Shinyanga Urban, Tanzania",
+    "mapUrl": "https://www.google.com/maps?q=-3.67011,33.44624",
+    "latitude": -3.67011,
+    "longitude": 33.44624,
+    "officeHoursSw": "Jumatatu–Ijumaa 09:00–15:00 · Jumamosi 09:00–12:00\nJumapili: ofisi imefungwa (ibada pekee)",
+    "officeHoursEn": "Monday–Friday 09:00–15:00 · Saturday 09:00–12:00\nSunday: office closed (worship only)",
+    "whatsappNoteSw": "Kundi la WhatsApp la usharika linasimamiwa na ofisi. Omba kiungo kwa mchungaji au karani — si orodha ya simu za waumini.",
+    "whatsappNoteEn": "The congregation WhatsApp group is managed by the office. Ask the pastor or clerk for the invite — this is not a member phone directory.",
+    "aboutSw": "Usharika mwenza wa KKKT katika Shinyanga. Programu hii ni mwenza wa waumini: tangazo, ibada, nyimbo, matukio na sadaka. Haiwezi kuchukua nafasi ya WhatsApp wala kuwa ERP ya usharika.",
+    "aboutEn": "A Lutheran congregation in Shinyanga. This app is a member companion for notices, worship, hymns, events and giving. It does not replace WhatsApp and is not church ERP."
+  },
+  "sundayTimes": [
+    {
+      "id": "sun-0730",
+      "time": "07:30",
+      "titleSw": "Ibada ya asubuhi",
+      "titleEn": "Early service",
+      "noteSw": "Karibu, hasa wazee na wanaoanza safari.",
+      "noteEn": "A quieter start — elders and early travellers welcome."
+    },
+    {
+      "id": "sun-1000",
+      "time": "10:00",
+      "titleSw": "Ibada kuu",
+      "titleEn": "Main service",
+      "noteSw": "Neno, meza ya Bwana (wiki zinazopangwa), kwaya.",
+      "noteEn": "Word, Holy Communion (scheduled Sundays), choir."
+    },
+    {
+      "id": "sun-1600",
+      "time": "16:00",
+      "titleSw": "Vijana / shule ya Jumapili",
+      "titleEn": "Youth / Sunday school",
+      "noteSw": "Wiki nyingine; tazama Matukio.",
+      "noteEn": "Most weeks; see Events."
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-1",
+      "pinned": true,
+      "date": "2026-09-20",
+      "titleSw": "Karibu ibada ya Jumapili — 20 Septemba",
+      "titleEn": "Welcome to Sunday worship — 20 September",
+      "bodySw": "Ibada ya asubuhi 07:30 na ibada kuu 10:00. Mada: Neema inayotosha. Meza ya Bwana itashirikiwa katika ibada kuu. Njoo na mgeni.",
+      "bodyEn": "Early service 07:30 and main service 10:00. Theme: Grace that is enough. Holy Communion at the main service. Bring a guest."
+    },
+    {
+      "id": "ann-2",
+      "pinned": true,
+      "date": "2026-09-18",
+      "titleSw": "Mafunzo ya kipaimara — Jumamosi",
+      "titleEn": "Confirmation class — Saturday",
+      "bodySw": "Wanafunzi wa kipaimara wanakutana Jumamosi 26 Septemba, saa 09:00–12:00 katika ukumbi. Lete Biblia na daftari. Wazazi wakaribishwa dakika 15 za mwisho.",
+      "bodyEn": "Confirmands meet Saturday 26 September, 09:00–12:00 in the hall. Bring a Bible and notebook. Parents are welcome for the last 15 minutes."
+    },
+    {
+      "id": "ann-3",
+      "pinned": false,
+      "date": "2026-09-17",
+      "titleSw": "Mazoezi ya kwaya — Alhamisi",
+      "titleEn": "Choir rehearsal — Thursday",
+      "bodySw": "Kwaya kuu inafanya mazoezi Alhamisi 24 Septemba saa 16:30. Tunajiandaa kwa ibada ya shukrani za mavuno. Wanachama wapya wakaribishwa.",
+      "bodyEn": "The main choir rehearses Thursday 24 September at 16:30. We are preparing for harvest thanksgiving. New members welcome."
+    },
+    {
+      "id": "ann-4",
+      "pinned": false,
+      "date": "2026-09-16",
+      "titleSw": "Umoja wa Wanawake — sadaka ya upendo",
+      "titleEn": "Women’s fellowship — love offering",
+      "bodySw": "UW wanakutana Jumamosi 26 Septemba saa 14:00. Mada: huduma kwa wagonjwa wa usharika. Sadaka ndogo ya hiari itasaidia ziara.",
+      "bodyEn": "UW meets Saturday 26 September at 14:00. Theme: visiting the sick of the congregation. A small voluntary gift will support visits."
+    },
+    {
+      "id": "ann-5",
+      "pinned": false,
+      "date": "2026-09-15",
+      "titleSw": "Mafunzo ya Biblia — Jumatano",
+      "titleEn": "Bible study — Wednesday",
+      "bodySw": "Kikundi cha Neno kinakutana Jumatano 23 Septemba saa 17:00. Tunaanza Waraka kwa Wafilipi. Hakuna ada.",
+      "bodyEn": "The Word group meets Wednesday 23 September at 17:00. We begin Philippians. No fee."
+    },
+    {
+      "id": "ann-6",
+      "pinned": false,
+      "date": "2026-09-12",
+      "titleSw": "Shukrani za mavuno — 11 Oktoba",
+      "titleEn": "Harvest thanksgiving — 11 October",
+      "bodySw": "Ibada maalum ya shukrani za mavuno Jumapili 11 Oktoba saa 10:00. Lete shukrani (si lazima mazao). Ofisi inapokea orodha ya huduma wiki moja kabla.",
+      "bodyEn": "Special harvest thanksgiving on Sunday 11 October at 10:00. Bring a thanksgiving gift (produce optional). The office takes the service roster one week prior."
+    },
+    {
+      "id": "ann-7",
+      "pinned": false,
+      "date": "2026-09-10",
+      "titleSw": "WhatsApp si badala ya ofisi",
+      "titleEn": "WhatsApp does not replace the office",
+      "bodySw": "Tangazo la haraka linaweza kwenda kundi la WhatsApp. Ombi la kichungaji, cheti au sadaka rasmi — pitia ofisi au fomu ya programu.",
+      "bodyEn": "Urgent notices may go to the WhatsApp group. Pastoral requests, certificates or official giving still go through the office or this app’s form."
+    }
+  ],
+  "services": [
+    {
+      "id": "ibada-2026-09-20",
+      "date": "2026-09-20",
+      "liturgicalColor": "green",
+      "themeSw": "Neema inayotosha",
+      "themeEn": "Grace that is enough",
+      "sermonTitleSw": "Nguvu yake inakamilika katika udhaifu",
+      "sermonTitleEn": "Power made perfect in weakness",
+      "preacherSw": "Mchungaji wa usharika",
+      "preacherEn": "Congregation pastor",
+      "readings": [
+        {"labelSw": "Agano la Kale", "labelEn": "Old Testament", "ref": "Isaya 55:6–11"},
+        {"labelSw": "Zaburi", "labelEn": "Psalm", "ref": "Zaburi 103:1–13"},
+        {"labelSw": "Waraka", "labelEn": "Epistle", "ref": "2 Wakorintho 12:7–10"},
+        {"labelSw": "Injili", "labelEn": "Gospel", "ref": "Marko 9:30–37"}
+      ],
+      "outlineSw": [
+        "Karibisho na maungamo",
+        "Sifa — Nyimbo 001 na 008",
+        "Neno: masomo na mahubiri",
+        "Imani ya Mitume",
+        "Maombi ya kanisa",
+        "Meza ya Bwana",
+        "Baraka na kutumwa"
+      ],
+      "outlineEn": [
+        "Greeting and confession",
+        "Praise — Hymns 001 and 008",
+        "Word: readings and sermon",
+        "Apostles’ Creed",
+        "Prayers of the church",
+        "Holy Communion",
+        "Blessing and sending"
+      ],
+      "hymnIds": ["hymn-001", "hymn-008", "hymn-015", "hymn-030"],
+      "bulletinUrl": "",
+      "bulletinNoteSw": "Karatasi ya ibada itatolewa kanisani. Nakala ya mwisho inapatikana hapa hata bila mtandao baada ya kufungua mara moja.",
+      "bulletinNoteEn": "A paper bulletin is handed out in church. The latest order stays on this phone after you open it, even offline."
+    },
+    {
+      "id": "ibada-2026-09-27",
+      "date": "2026-09-27",
+      "liturgicalColor": "green",
+      "themeSw": "Nani ni mkubwa?",
+      "themeEn": "Who is the greatest?",
+      "sermonTitleSw": "Mtoto katikati yetu",
+      "sermonTitleEn": "A child in our midst",
+      "preacherSw": "Mchungaji msaidizi ( comm )",
+      "preacherEn": "Assistant pastor (guest)",
+      "readings": [
+        {"labelSw": "Agano la Kale", "labelEn": "Old Testament", "ref": "Yeremia 11:18–20"},
+        {"labelSw": "Zaburi", "labelEn": "Psalm", "ref": "Zaburi 54"},
+        {"labelSw": "Waraka", "labelEn": "Epistle", "ref": "Yakobo 3:13–4:3"},
+        {"labelSw": "Injili", "labelEn": "Gospel", "ref": "Marko 9:38–50"}
+      ],
+      "outlineSw": [
+        "Sifa na maombi ya kuingia",
+        "Ubatizo (kama kutakuwa na nia)",
+        "Neno na mahubiri",
+        "Sadaka na matangazo",
+        "Baraka"
+      ],
+      "outlineEn": [
+        "Opening praise and prayer",
+        "Baptism (if there is a candidate)",
+        "Word and sermon",
+        "Offering and notices",
+        "Blessing"
+      ],
+      "hymnIds": ["hymn-002", "hymn-023", "hymn-028", "hymn-036"],
+      "bulletinUrl": "https://elct-elvd.org/",
+      "bulletinNoteSw": "Kiungo cha dayosisi (si PDF rasmi ya usharika). Ofisi inaweza kubadilisha PDF wiki ijayo.",
+      "bulletinNoteEn": "Diocese link (not the congregation PDF). The office can attach next week’s bulletin PDF."
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-1",
+      "category": "worship",
+      "start": "2026-09-20T07:30:00",
+      "end": "2026-09-20T09:00:00",
+      "titleSw": "Ibada ya asubuhi",
+      "titleEn": "Early worship",
+      "placeSw": "Kanisa, Chamaguha",
+      "placeEn": "Church, Chamaguha",
+      "detailSw": "Ibada fupi ya Jumapili.",
+      "detailEn": "Shorter Sunday liturgy."
+    },
+    {
+      "id": "evt-2",
+      "category": "worship",
+      "start": "2026-09-20T10:00:00",
+      "end": "2026-09-20T12:15:00",
+      "titleSw": "Ibada kuu na Meza ya Bwana",
+      "titleEn": "Main service with Holy Communion",
+      "placeSw": "Kanisa, Chamaguha",
+      "placeEn": "Church, Chamaguha",
+      "detailSw": "Karibu familia nzima. Watoto wana nafasi mbele.",
+      "detailEn": "Whole families welcome. Children sit near the front."
+    },
+    {
+      "id": "evt-3",
+      "category": "youth",
+      "start": "2026-09-20T16:00:00",
+      "end": "2026-09-20T17:30:00",
+      "titleSw": "Kikundi cha vijana",
+      "titleEn": "Youth gathering",
+      "placeSw": "Ukumbi",
+      "placeEn": "Hall",
+      "detailSw": "Sifa, Neno na mpango wa huduma ya mwezi.",
+      "detailEn": "Praise, Scripture and the month’s service plan."
+    },
+    {
+      "id": "evt-4",
+      "category": "meeting",
+      "start": "2026-09-23T17:00:00",
+      "end": "2026-09-23T18:30:00",
+      "titleSw": "Mafunzo ya Biblia — Wafilipi",
+      "titleEn": "Bible study — Philippians",
+      "placeSw": "Chumba cha darasa",
+      "placeEn": "Classroom",
+      "detailSw": "Wazi kwa wote. Lete Biblia.",
+      "detailEn": "Open to all. Bring a Bible."
+    },
+    {
+      "id": "evt-5",
+      "category": "choir",
+      "start": "2026-09-24T16:30:00",
+      "end": "2026-09-24T18:30:00",
+      "titleSw": "Mazoezi ya kwaya kuu",
+      "titleEn": "Main choir rehearsal",
+      "placeSw": "Kanisa",
+      "placeEn": "Church",
+      "detailSw": "Nyimbo za mavuno na ibada ya Jumapili.",
+      "detailEn": "Harvest anthems and Sunday liturgy."
+    },
+    {
+      "id": "evt-6",
+      "category": "confirmation",
+      "start": "2026-09-26T09:00:00",
+      "end": "2026-09-26T12:00:00",
+      "titleSw": "Darasa la kipaimara",
+      "titleEn": "Confirmation class",
+      "placeSw": "Ukumbi",
+      "placeEn": "Hall",
+      "detailSw": "Katekisimu: Imani na Sakramenti.",
+      "detailEn": "Catechism: Creed and Sacraments."
+    },
+    {
+      "id": "evt-7",
+      "category": "uw",
+      "start": "2026-09-26T14:00:00",
+      "end": "2026-09-26T16:30:00",
+      "titleSw": "Umoja wa Wanawake",
+      "titleEn": "Women’s fellowship (UW)",
+      "placeSw": "Ukumbi",
+      "placeEn": "Hall",
+      "detailSw": "Maombi na mpango wa ziara za wagonjwa.",
+      "detailEn": "Prayer and a plan for sick visits."
+    },
+    {
+      "id": "evt-8",
+      "category": "worship",
+      "start": "2026-09-27T10:00:00",
+      "end": "2026-09-27T12:00:00",
+      "titleSw": "Ibada kuu",
+      "titleEn": "Main service",
+      "placeSw": "Kanisa, Chamaguha",
+      "placeEn": "Church, Chamaguha",
+      "detailSw": "Mada: Nani ni mkubwa?",
+      "detailEn": "Theme: Who is the greatest?"
+    },
+    {
+      "id": "evt-9",
+      "category": "meeting",
+      "start": "2026-10-04T16:00:00",
+      "end": "2026-10-04T18:00:00",
+      "titleSw": "Halmashauri ya usharika",
+      "titleEn": "Congregation council",
+      "placeSw": "Ofisi",
+      "placeEn": "Office",
+      "detailSw": "Ajenda: mavuno, bajeti ndogo ya Q4, na ukarabati wa paa. Si mkutano wa umma.",
+      "detailEn": "Agenda: harvest, small Q4 budget, roof repair. Not a public meeting."
+    },
+    {
+      "id": "evt-10",
+      "category": "worship",
+      "start": "2026-10-11T10:00:00",
+      "end": "2026-10-11T13:00:00",
+      "titleSw": "Ibada ya shukrani za mavuno",
+      "titleEn": "Harvest thanksgiving service",
+      "placeSw": "Kanisa na uwanja",
+      "placeEn": "Church and yard",
+      "detailSw": "Vaa rangi za furaha. Chakula kidogo baada ya ibada (UW).",
+      "detailEn": "Wear festive colours. Light food after worship (UW)."
+    },
+    {
+      "id": "evt-11",
+      "category": "youth",
+      "start": "2026-10-03T16:00:00",
+      "end": "2026-10-03T18:00:00",
+      "titleSw": "Usafi wa uwanja — vijana",
+      "titleEn": "Yard clean-up — youth",
+      "placeSw": "Uwanja wa kanisa",
+      "placeEn": "Church yard",
+      "detailSw": "Lete reke na ndoo. Maji yatatolewa.",
+      "detailEn": "Bring a rake and bucket. Water will be provided."
+    },
+    {
+      "id": "evt-12",
+      "category": "choir",
+      "start": "2026-10-08T16:30:00",
+      "end": "2026-10-08T18:30:00",
+      "titleSw": "Kwaya — mazoezi ya mavuno",
+      "titleEn": "Choir — harvest rehearsal",
+      "placeSw": "Kanisa",
+      "placeEn": "Church",
+      "detailSw": "Mahudhurio yanahitajika kwa wanaoimba 11 Oktoba.",
+      "detailEn": "Required for those singing on 11 October."
+    }
+  ],
+  "giving": {
+    "paybill": "400200",
+    "account": "012345",
+    "accountName": "KKKT DKMZV Angaza (mfano)",
+    "till": "000000",
+    "lipaNoteSw": "HIZI NI NAMBARI ZA MFANO kwa demo. Ofisi itabadilisha paybill/Lipa halisi kwenye Msimamizi.",
+    "lipaNoteEn": "THESE ARE SAMPLE NUMBERS for the demo. The office will replace them with the real paybill/Lipa in Admin.",
+    "stepsSw": [
+      "Fungua M-Pesa kwenye simu yako",
+      "Chagua Lipa na M-Pesa → Paybill",
+      "Ingiza namba ya kampuni (Paybill)",
+      "Ingiza namba ya akaunti (kumbukumbu: jina lako au nia)",
+      "Weka kiasi → PIN → thibitisha",
+      "Hifadhi ujumbe. Unaweza kuandika Nimetoa hapa (si risiti rasmi)"
+    ],
+    "stepsEn": [
+      "Open M-Pesa on your phone",
+      "Choose Lipa na M-Pesa → Paybill",
+      "Enter the business number (Paybill)",
+      "Enter the account number (reference: your name or purpose)",
+      "Enter the amount → PIN → confirm",
+      "Keep the SMS. You may tick I have given here (not an official receipt)"
+    ],
+    "tips": [2000, 5000, 10000, 20000],
+    "purposes": [
+      {"id": "tithe", "sw": "Zaka / sadaka ya Jumapili", "en": "Tithe / Sunday offering"},
+      {"id": "thanks", "sw": "Shukrani", "en": "Thanksgiving"},
+      {"id": "building", "sw": "Ujenzi / paa", "en": "Building / roof"},
+      {"id": "care", "sw": "Huduma ya wagonjwa", "en": "Care for the sick"}
+    ]
+  },
+  "givingNotes": [],
+  "sermons": [
+    {
+      "id": "ser-1",
+      "date": "2026-09-13",
+      "titleSw": "Neno lililopandwa vizuri",
+      "titleEn": "The Word well planted",
+      "preacherSw": "Mchungaji wa usharika",
+      "preacherEn": "Congregation pastor",
+      "mediaType": "youtube",
+      "mediaUrl": "https://www.youtube.com/results?search_query=KKKT+mahubiri+Kilutheri",
+      "noteSw": "Kiungo ni utafutaji wa YouTube (demo). Weka video halisi ya usharika kwenye Msimamizi.",
+      "noteEn": "Link is a YouTube search (demo). Paste the congregation’s real video in Admin."
+    },
+    {
+      "id": "ser-2",
+      "date": "2026-09-06",
+      "titleSw": "Imani inayotembea",
+      "titleEn": "Faith that walks",
+      "preacherSw": "Mchungaji mgeni wa jimbo",
+      "preacherEn": "Visiting diocesan pastor",
+      "mediaType": "facebook",
+      "mediaUrl": "https://www.facebook.com/search/posts/?q=KKKT%20DKMZV",
+      "noteSw": "Utafutaji wa Facebook — si ukurasa wa mwanachama.",
+      "noteEn": "Facebook search — not a member profile."
+    },
+    {
+      "id": "ser-3",
+      "date": "2026-08-30",
+      "titleSw": "Mchungaji mwema",
+      "titleEn": "The good shepherd",
+      "preacherSw": "Mchungaji wa usharika",
+      "preacherEn": "Congregation pastor",
+      "mediaType": "audio",
+      "mediaUrl": "https://elct.org/",
+      "noteSw": "Sauti itapakiwa baadaye; kwa sasa kiungo cha KKKT kitaifa.",
+      "noteEn": "Audio will be uploaded later; national ELCT link for now."
+    },
+    {
+      "id": "ser-4",
+      "date": "2026-08-23",
+      "titleSw": "Chumvi na nuru katika Shinyanga",
+      "titleEn": "Salt and light in Shinyanga",
+      "preacherSw": "Mwalimu wa Neno",
+      "preacherEn": "Lay preacher",
+      "mediaType": "youtube",
+      "mediaUrl": "https://www.youtube.com/results?search_query=ELCT+sermon",
+      "noteSw": "Mahubiri ya wikendi ya vijana.",
+      "noteEn": "Youth weekend sermon."
+    }
+  ],
+  "contacts": [
+    {
+      "id": "con-pastor",
+      "roleSw": "Mchungaji wa usharika",
+      "roleEn": "Congregation pastor",
+      "nameSw": "Mchungaji (jina litajazwa na ofisi)",
+      "nameEn": "Pastor (name to be filled by the office)",
+      "phone": "+255 700 000 001",
+      "email": "pastor.office@example.invalid",
+      "noteSw": "Namba ya ofisi ya kichungaji — si simu binafsi. Badilisha kwenye Msimamizi.",
+      "noteEn": "Pastoral office number — not a private mobile. Change it in Admin."
+    },
+    {
+      "id": "con-office",
+      "roleSw": "Ofisi ya usharika / karani",
+      "roleEn": "Congregation office / clerk",
+      "nameSw": "Karani wa ofisi",
+      "nameEn": "Office clerk",
+      "phone": "+255 700 000 002",
+      "email": "office@example.invalid",
+      "noteSw": "Cheti, tangazo rasmi, na maswali ya kalenda.",
+      "noteEn": "Certificates, official notices, and calendar questions."
+    }
+  ],
+  "pastoralRequests": [],
+  "hymns": [
+    {
+      "id": "hymn-001",
+      "number": "001",
+      "titleSw": "Mungu wetu ni ngome yetu",
+      "titleEn": "A mighty fortress is our God",
+      "firstLineSw": "Mungu wetu ni ngome yetu, ngome imara milele",
+      "source": "M. Luther / kimapokeo — public domain (mbegu)",
+      "tags": ["sifa", "imani", "luther"],
+      "lyricsSw": "Mungu wetu ni ngome yetu,\nngome imara milele.\nYeye ni kinga na nguvu,\ntusaidie hatutishwi.\n\nIjapokuwa adui huja,\nBwana ndiye shinda yetu.\nNeno lake linasimama;\nRoho wetu unatulia.",
+      "lyricsEn": "A mighty fortress is our God,\na bulwark never failing.\nOur helper he amid the flood\nof mortal ills prevailing.\n\nThe Word above all earthly powers,\nno thanks to them, abideth.\nThe Spirit and the gifts are ours\nthrough him who with us sideth."
+    },
+    {
+      "id": "hymn-002",
+      "number": "002",
+      "titleSw": "Sifa na utukufu",
+      "titleEn": "Praise to the Lord, the Almighty",
+      "firstLineSw": "Sifa na utukufu kwa Mungu Mwenyezi",
+      "source": "J. Neander / kimapokeo — public domain (mbegu)",
+      "tags": ["sifa", "kuingia"],
+      "lyricsSw": "Sifa na utukufu kwa Mungu Mwenyezi,\nmfalme wa viumbe, Baba wa huruma.\nNjoni, msifu;\nngoma na sauti viniwe pamoja.\n\nYeye hutulinda mchana na usiku;\nneema yake hairudi tupu.\nTumwimbie sasa,\nMungu wa Israeli, Mungu wetu.",
+      "lyricsEn": "Praise to the Lord, the Almighty,\nthe King of creation.\nO my soul, praise him,\nfor he is your health and salvation.\n\nPonder anew what the Almighty can do,\nif with his love he befriend you."
+    },
+    {
+      "id": "hymn-003",
+      "number": "003",
+      "titleSw": "Rafiki wa kweli ni Yesu",
+      "titleEn": "What a friend we have in Jesus",
+      "firstLineSw": "Rafiki wa kweli ni Yesu, mtunzaji wa dhiki zetu",
+      "source": "J. Scriven / C. Converse — public domain (mbegu)",
+      "tags": ["maombi", "faraja"],
+      "lyricsSw": "Rafiki wa kweli ni Yesu,\nmtunzaji wa dhiki zetu.\nKwa maombi twamwendea;\nhatuhitaji kubeba peke yetu.\n\nJe, tuna majonzi mengi?\nTwende kwake tena.\nYeye anasikia kilio\nna kutupa amani yake.",
+      "lyricsEn": "What a friend we have in Jesus,\nall our sins and griefs to bear.\nWhat a privilege to carry\neverything to God in prayer.\n\nHave we trials and temptations?\nIs there trouble anywhere?\nWe should never be discouraged:\ntake it to the Lord in prayer."
+    },
+    {
+      "id": "hymn-004",
+      "number": "004",
+      "titleSw": "Kaa nami, ee Bwana",
+      "titleEn": "Abide with me",
+      "firstLineSw": "Kaa nami, ee Bwana, jioni inakaribia",
+      "source": "H. F. Lyte — public domain (mbegu)",
+      "tags": ["jioni", "faraja"],
+      "lyricsSw": "Kaa nami, ee Bwana,\njioni inakaribia.\nGiza laisha;\nwewe u nuru yetu.\n\nMsaada wa dunia hupita,\nwewe habadiliki.\nKaa nami, Rafiki,\nhadi asubuhi.",
+      "lyricsEn": "Abide with me, fast falls the eventide.\nThe darkness deepens; Lord, with me abide.\nWhen other helpers fail and comforts flee,\nhelp of the helpless, O abide with me."
+    },
+    {
+      "id": "hymn-005",
+      "number": "005",
+      "titleSw": "Ninajua Mwokozi yu hai",
+      "titleEn": "I know that my Redeemer lives",
+      "firstLineSw": "Ninajua Mwokozi yu hai, yu hai milele",
+      "source": "S. Medley — public domain (mbegu)",
+      "tags": ["ufufuo", "pasaka"],
+      "lyricsSw": "Ninajua Mwokozi yu hai,\nyu hai milele.\nYeye hunena jina langu\nmbele za Baba.\n\nYeye ni fungu langu hai;\nkifo hakina neno la mwisho.\nTumsifu Bwana wa Pasaka\nShinyanga na duniani.",
+      "lyricsEn": "I know that my Redeemer lives;\nwhat comfort this sweet sentence gives.\nHe lives, he lives, who once was dead;\nhe lives, my ever-living head."
+    },
+    {
+      "id": "hymn-006",
+      "number": "006",
+      "titleSw": "Njooni, tumwabudu",
+      "titleEn": "O come, all ye faithful",
+      "firstLineSw": "Njooni, tumwabudu, furaha na imani",
+      "source": "Kimila / Wade — public domain (mbegu)",
+      "tags": ["krismasi", "sifa"],
+      "lyricsSw": "Njooni, tumwabudu,\nfuraha na imani.\nNjooni, njooni Betlehemu;\nmwone Mwana mfalme.\n\nEe, tumwimbie,\nMungu katika mwili.\nUtukufu kwa Baba\njuu mbinguni.",
+      "lyricsEn": "O come, all ye faithful, joyful and triumphant.\nO come ye, o come ye to Bethlehem.\nCome and behold him, born the King of angels.\nO come, let us adore him, Christ the Lord."
+    },
+    {
+      "id": "hymn-007",
+      "number": "007",
+      "titleSw": "Furaha kuu duniani",
+      "titleEn": "Joy to the world",
+      "firstLineSw": "Furaha kuu duniani, Bwana amefika",
+      "source": "I. Watts — public domain (mbegu)",
+      "tags": ["krismasi", "sifa"],
+      "lyricsSw": "Furaha kuu duniani,\nBwana amefika.\nNchi na milima na mito\nvipokee Mfalme.\n\nHatazui dhambi tena\nkama zamani.\nNeema na kweli zimekutana;\ntumwimbie sasa.",
+      "lyricsEn": "Joy to the world, the Lord is come.\nLet earth receive her King.\nLet every heart prepare him room,\nand heaven and nature sing."
+    },
+    {
+      "id": "hymn-008",
+      "number": "008",
+      "titleSw": "Utakatifu, utakatifu, utakatifu",
+      "titleEn": "Holy, holy, holy",
+      "firstLineSw": "Utakatifu, utakatifu, Mungu Mwenyezi",
+      "source": "R. Heber — public domain (mbegu)",
+      "tags": ["utatu", "sifa"],
+      "lyricsSw": "Utakatifu, utakatifu, utakatifu,\nMungu Mwenyezi.\nAsubuhi na jioni\ntwakuimbia.\n\nUtakatifu, utakatifu, utakatifu,\nMungu wa Utatu.\nHuruma na nguvu na sifa\nvyote ni vyako.",
+      "lyricsEn": "Holy, holy, holy, Lord God Almighty.\nEarly in the morning our song shall rise to thee.\nHoly, holy, holy, merciful and mighty,\nGod in three persons, blessed Trinity."
+    },
+    {
+      "id": "hymn-009",
+      "number": "009",
+      "titleSw": "Baba yetu uliye mbinguni",
+      "titleEn": "Our Father, who art in heaven",
+      "firstLineSw": "Baba yetu uliye mbinguni, jina lako litukuzwe",
+      "source": "Maandiko / kimapokeo la liturujia (mbegu)",
+      "tags": ["maombi", "liturujia"],
+      "lyricsSw": "Baba yetu uliye mbinguni,\njina lako litukuzwe.\nUfalme wako ufike,\nmapenzi yako yatimizwe\nduniani kama mbinguni.\n\nUtupe leo mkate wetu.\nUtusamehe deni zetu\nkama nasi tuwasamehevyo wadeni.\nUsitutie majaribuni,\nutuokoe na yule mwovu.\nAmina.",
+      "lyricsEn": "Our Father, who art in heaven,\nhallowed be thy name.\nThy kingdom come, thy will be done\non earth as it is in heaven.\n\nGive us this day our daily bread.\nForgive us our trespasses\nas we forgive those who trespass against us.\nLead us not into temptation,\nbut deliver us from evil. Amen."
+    },
+    {
+      "id": "hymn-010",
+      "number": "010",
+      "titleSw": "Mwana-Kondoo wa Mungu",
+      "titleEn": "Lamb of God",
+      "firstLineSw": "Mwana-Kondoo wa Mungu, uondoaye dhambi za dunia",
+      "source": "Agnus Dei / kimapokeo (mbegu)",
+      "tags": ["meza", "liturujia"],
+      "lyricsSw": "Mwana-Kondoo wa Mungu,\nuondoaye dhambi za dunia,\ntuhurumie.\n\nMwana-Kondoo wa Mungu,\nuondoaye dhambi za dunia,\ntupe amani yako.",
+      "lyricsEn": "Lamb of God, you take away\nthe sin of the world,\nhave mercy on us.\n\nLamb of God, you take away\nthe sin of the world,\ngrant us your peace."
+    },
+    {
+      "id": "hymn-011",
+      "number": "011",
+      "titleSw": "Roho Mtakatifu, njoo",
+      "titleEn": "Come, Holy Spirit",
+      "firstLineSw": "Roho Mtakatifu njoo, uishi mioyoni mwetu",
+      "source": "Veni Creator / kimapokeo (mbegu)",
+      "tags": ["roho", "pentekoste"],
+      "lyricsSw": "Roho Mtakatifu, njoo,\nuishi mioyoni mwetu.\nUtupe nuru na nguvu\nkusema Neno kwa uaminifu.\n\nUufunge kanisa moja;\nuwasha moto wa upendo.\nTuko Shinyanga, lakini\nwewe ni upepo wa dunia yote.",
+      "lyricsEn": "Come, Holy Spirit, heavenly dove,\nwith all your quickening powers.\nKindle a flame of sacred love\nin these cold hearts of ours."
+    },
+    {
+      "id": "hymn-012",
+      "number": "012",
+      "titleSw": "Yesu ni nuru ya ulimwengu",
+      "titleEn": "Jesus, light of the world",
+      "firstLineSw": "Yesu ni nuru ya ulimwengu, nuru katika giza",
+      "source": "Kimapokeo la KKKT / maandishi ya mbegu",
+      "tags": ["nuru", "uanafunzi"],
+      "lyricsSw": "Yesu ni nuru ya ulimwengu,\nnuru katika giza.\nAnatuongoza njiani;\nhatuendi peke yetu.\n\nTuangaze Chamaguha,\nnyumba na soko na shule.\nNuru yako isiwekwe chini;\niwekwe juu ya mlima.",
+      "lyricsEn": "Jesus, the light of the world,\nshine in our darkness.\nLead us on the road;\nwe do not walk alone.\n\nLet Chamaguha see your light\nin home and market and school.\nA lamp is not hidden;\nit is set on a hill."
+    },
+    {
+      "id": "hymn-013",
+      "number": "013",
+      "titleSw": "Neema ya ajabu",
+      "titleEn": "Amazing grace",
+      "firstLineSw": "Neema ya ajabu, iliyoniponya",
+      "source": "J. Newton — public domain (mbegu)",
+      "tags": ["neema", "ushuhuda"],
+      "lyricsSw": "Neema ya ajabu,\niliyoniponya.\nNilipotea, sasa nimeonekana;\nnilikuwa kipofu, sasa naona.\n\nNeema ilinifundisha kuogopa,\nneema ikaondoa hofu.\nSaa niliyoamini kwanza,\nneema ilikuwa tamu.",
+      "lyricsEn": "Amazing grace, how sweet the sound\nthat saved a wretch like me.\nI once was lost, but now am found;\nwas blind, but now I see.\n\n'Twas grace that taught my heart to fear,\nand grace my fears relieved.\nHow precious did that grace appear\nthe hour I first believed."
+    },
+    {
+      "id": "hymn-014",
+      "number": "014",
+      "titleSw": "Twamsifu Mungu Baba",
+      "titleEn": "We praise you, Father",
+      "firstLineSw": "Twamsifu Mungu Baba, Mwana na Roho Mtakatifu",
+      "source": "Gloria Patri / mbegu ya liturujia",
+      "tags": ["utatu", "liturujia"],
+      "lyricsSw": "Twamsifu Mungu Baba,\nMwana na Roho Mtakatifu.\nKama mwanzo, sasa na milele.\nAmina.\n\nUtukufu kwa Baba juu,\nna duniani amani\nkwa watu wa mapenzi mema.",
+      "lyricsEn": "Glory be to the Father,\nand to the Son, and to the Holy Spirit.\nAs it was in the beginning,\nis now, and ever shall be. Amen."
+    },
+    {
+      "id": "hymn-015",
+      "number": "015",
+      "titleSw": "Karibu meza ya Bwana",
+      "titleEn": "Come to the Lord’s table",
+      "firstLineSw": "Karibu meza ya Bwana, mkate na kikombe",
+      "source": "Mbegu ya liturujia ya KKKT (si kitabu rasmi)",
+      "tags": ["meza", "ushirika"],
+      "lyricsSw": "Karibu meza ya Bwana,\nmkate na kikombe.\nMwili wake kwa ajili yetu;\ndamu yake agano jipya.\n\nSio kwa stahili zetu,\nBali kwa mwaliko wake.\nTule kwa imani;\ntuondoke tukiwa wamoja.",
+      "lyricsEn": "Come to the table of the Lord,\nbread and cup for the hungry.\nHis body given for us;\nhis blood the new covenant.\n\nNot by our merit,\nbut by his invitation.\nEat in faith;\ngo out as one people."
+    },
+    {
+      "id": "hymn-016",
+      "number": "016",
+      "titleSw": "Asante kwa neema yako",
+      "titleEn": "Thank you for your grace",
+      "firstLineSw": "Asante Bwana kwa neema yako kila asubuhi",
+      "source": "Mbegu ya shukrani (maandishi ya programu)",
+      "tags": ["shukrani", "sadaka"],
+      "lyricsSw": "Asante Bwana kwa neema yako\nkila asubuhi.\nMvua na jua na mkate\nvyote ni kipawa.\n\nTunakuletea shukrani,\nsi bei ya upendo wako.\nPokea mioyo yetu\npamoja na sadaka.",
+      "lyricsEn": "Thank you, Lord, for grace\neach morning new.\nRain and sun and bread\nare all your gift.\n\nWe bring thanksgiving,\nnot a price for love.\nReceive our hearts\ntogether with the offering."
+    },
+    {
+      "id": "hymn-017",
+      "number": "017",
+      "titleSw": "Twendeni kwa imani",
+      "titleEn": "Forward in faith",
+      "firstLineSw": "Twendeni kwa imani, njia ina nuru",
+      "source": "Mbegu ya uanafunzi",
+      "tags": ["uanafunzi", "kutumwa"],
+      "lyricsSw": "Twendeni kwa imani,\nnjia ina nuru.\nKristus anatutangulia;\nhatuogopi jangwa.\n\nShinyanga ni shamba lake.\nTuseme kweli kwa upole.\nImani hutembea;\nhaikai kanisani tu.",
+      "lyricsEn": "Forward in faith,\nthe road has light.\nChrist goes before us;\nwe do not fear the wilderness.\n\nShinyanga is his field.\nSpeak truth with gentleness.\nFaith walks;\nit does not stay in the pew alone."
+    },
+    {
+      "id": "hymn-018",
+      "number": "018",
+      "titleSw": "Mungu ni pendo",
+      "titleEn": "God is love",
+      "firstLineSw": "Mungu ni pendo, atupendaye hutunzwa naye",
+      "source": "1 Yohana / kimapokeo (mbegu)",
+      "tags": ["pendo", "watoto"],
+      "lyricsSw": "Mungu ni pendo;\natupendaye hutunzwa naye.\nTusife hofu,\npendo hukamilisha.\n\nTupendane sisi kwa sisi,\nkama alivyotupenda.\nHili ndilo sheria na manabii\nkatika nyumba hii.",
+      "lyricsEn": "God is love;\nwhoever lives in love lives in God.\nThere is no fear in love;\nperfect love drives out fear.\n\nLet us love one another,\nas he first loved us.\nThis is the law and the prophets\nin this house."
+    },
+    {
+      "id": "hymn-019",
+      "number": "019",
+      "titleSw": "Yesu, tumaini langu",
+      "titleEn": "Jesus, my hope",
+      "firstLineSw": "Yesu, tumaini langu, nakuja kwako leo",
+      "source": "Mbegu ya imani",
+      "tags": ["imani", "faraja"],
+      "lyricsSw": "Yesu, tumaini langu,\nnakuja kwako leo.\nMizigo yangu ni mizito;\nunibebeshe neno lako.\n\nSio dhahabu wala sifa,\nBali wewe pekee.\nNikikosa yote,\nnikufanane nawe.",
+      "lyricsEn": "Jesus, my hope,\nI come to you today.\nMy loads are heavy;\ncarry me by your word.\n\nNot gold and not applause,\nbut you alone.\nIf I lose all else,\nlet me still resemble you."
+    },
+    {
+      "id": "hymn-020",
+      "number": "020",
+      "titleSw": "Bwana amefufuka",
+      "titleEn": "The Lord is risen",
+      "firstLineSw": "Bwana amefufuka, kweli amefufuka",
+      "source": "Pasaka / kimapokeo (mbegu)",
+      "tags": ["pasaka", "ufufuo"],
+      "lyricsSw": "Bwana amefufuka,\nkweli amefufuka!\nKifo kimekwisha;\nuzima umeanza.\n\nTwaimba asubuhi ya wiki,\nkanisa lote pamoja.\nHaleluya, Haleluya,\nYesu yu hai.",
+      "lyricsEn": "The Lord is risen,\nhe is risen indeed.\nDeath is finished;\nlife has begun.\n\nWe sing on the first day of the week,\nthe whole church together.\nAlleluia, alleluia,\nJesus lives."
+    },
+    {
+      "id": "hymn-021",
+      "number": "021",
+      "titleSw": "Ee Mungu, twakuomba",
+      "titleEn": "O God, we pray",
+      "firstLineSw": "Ee Mungu twakuomba kwa nchi yetu Tanzania",
+      "source": "Mbegu ya maombi ya taifa",
+      "tags": ["maombi", "taifa"],
+      "lyricsSw": "Ee Mungu, twakuomba\nkwa nchi yetu Tanzania.\nUtupe amani na mkate,\nhaki na huruma.\n\nUwalinde wagonjwa na watoto,\nwakulima na walimu.\nShinyanga iwe na maji na tumaini;\nkanisa liwe chumvi.",
+      "lyricsEn": "O God, we pray\nfor our land Tanzania.\nGive peace and daily bread,\njustice and mercy.\n\nGuard the sick and the children,\nfarmers and teachers.\nLet Shinyanga have water and hope;\nlet the church be salt."
+    },
+    {
+      "id": "hymn-022",
+      "number": "022",
+      "titleSw": "Imbeni kwa Bwana wimbo mpya",
+      "titleEn": "Sing to the Lord a new song",
+      "firstLineSw": "Imbeni kwa Bwana wimbo mpya, kwaya na kanisa",
+      "source": "Zaburi 96 / mbegu",
+      "tags": ["kwaya", "sifa"],
+      "lyricsSw": "Imbeni kwa Bwana wimbo mpya;\nkanisa lote lisifu.\nNgoma, kinanda na sauti\nvimpe heshima.\n\nSio show, ni sadaka.\nMioyo ndiyo ala kuu.\nKwaya iongoze,\nsi kujificha nyuma ya sauti.",
+      "lyricsEn": "Sing to the Lord a new song;\nlet the whole church praise.\nDrum, keyboard and voice\ngive him honour.\n\nThis is not a show; it is an offering.\nThe heart is the first instrument.\nLet the choir lead,\nnot hide behind the sound."
+    },
+    {
+      "id": "hymn-023",
+      "number": "023",
+      "titleSw": "Watoto, njoni kwake Yesu",
+      "titleEn": "Children, come to Jesus",
+      "firstLineSw": "Watoto njoni kwake Yesu, anawapenda",
+      "source": "Mbegu ya shule ya Jumapili",
+      "tags": ["watoto", "yesu"],
+      "lyricsSw": "Watoto, njoni kwake Yesu;\nanawapenda.\nMikono yake iko wazi;\nkiti kipo mbele.\n\nMfunzeni Neno kwa wimbo.\nMchezo na sala vina nafasi.\nKanisa ni nyumba yao pia,\nsi ya watu wazima tu.",
+      "lyricsEn": "Children, come to Jesus;\nhe loves you.\nHis arms are open;\nthere is a seat in front.\n\nTeach the Word with a song.\nPlay and prayer both belong.\nThe church is their house too,\nnot only for adults."
+    },
+    {
+      "id": "hymn-024",
+      "number": "024",
+      "titleSw": "Wanawake wa imani",
+      "titleEn": "Women of faith",
+      "firstLineSw": "Wanawake wa imani, kama Maria na Marta",
+      "source": "Mbegu ya UW — si wimbo rasmi wa kitabu",
+      "tags": ["uw", "huduma"],
+      "lyricsSw": "Wanawake wa imani,\nkama Maria na Marta.\nNeno na huduma pamoja;\nsi kinyume.\n\nUW si kundi la siri.\nNi sala, ziara na mkate.\nMungu awaimarishe\nkatika usharika huu.",
+      "lyricsEn": "Women of faith,\nlike Mary and Martha.\nWord and service together;\nnot opposed.\n\nUW is not a secret club.\nIt is prayer, visits and bread.\nGod strengthen you\nin this congregation."
+    },
+    {
+      "id": "hymn-025",
+      "number": "025",
+      "titleSw": "Vijana wa Kristo",
+      "titleEn": "Youth of Christ",
+      "firstLineSw": "Vijana wa Kristo, simameni imara",
+      "source": "Mbegu ya vijana",
+      "tags": ["vijana", "uanafunzi"],
+      "lyricsSw": "Vijana wa Kristo,\nsimameni imara.\nSio aibu kuomba;\nsio dhaifu kusamehe.\n\nTumieni simu kwa nuru,\nsi kwa kuharibu jina.\nKesho ya kanisa\ninaanaza leo.",
+      "lyricsEn": "Youth of Christ,\nstand firm.\nIt is not shame to pray;\nit is not weakness to forgive.\n\nUse the phone for light,\nnot to break a name.\nThe church’s tomorrow\nbegins today."
+    },
+    {
+      "id": "hymn-026",
+      "number": "026",
+      "titleSw": "Nitakwenda na Neno",
+      "titleEn": "I will walk with the Word",
+      "firstLineSw": "Nitakwenda na Neno, kipaimara si mwisho",
+      "source": "Mbegu ya kipaimara",
+      "tags": ["kipaimara", "ubatizo"],
+      "lyricsSw": "Nitakwenda na Neno;\nkipaimara si mwisho.\nNi ndoano ya imani\nmbele ya kanisa.\n\nRoho, niongoze.\nNikikosea, nirudishe.\nNitahudumu kwa furaha\nkatika DKMZV.",
+      "lyricsEn": "I will walk with the Word;\nconfirmation is not the end.\nIt is a yes of faith\nbefore the church.\n\nSpirit, lead me.\nWhen I stray, bring me home.\nI will serve with joy\nin DKMZV."
+    },
+    {
+      "id": "hymn-027",
+      "number": "027",
+      "titleSw": "Sadaka yetu ni shukrani",
+      "titleEn": "Our offering is thanksgiving",
+      "firstLineSw": "Sadaka yetu ni shukrani, si malipo ya neema",
+      "source": "Mbegu ya sadaka",
+      "tags": ["sadaka", "shukrani"],
+      "lyricsSw": "Sadaka yetu ni shukrani,\nsi malipo ya neema.\nMkononi mna kidogo;\nmoyo una mengi.\n\nM-Pesa au sarafu,\nBwana anaona nia.\nUtupe furaha ya kutoa\nbila kelele.",
+      "lyricsEn": "Our offering is thanksgiving,\nnot a fee for grace.\nThe hand may hold little;\nthe heart can hold much.\n\nM-Pesa or coins,\nthe Lord sees the will.\nGive us joy in giving\nwithout a show."
+    },
+    {
+      "id": "hymn-028",
+      "number": "028",
+      "titleSw": "Neno lako ni taa",
+      "titleEn": "Your word is a lamp",
+      "firstLineSw": "Neno lako ni taa ya miguu yangu",
+      "source": "Zaburi 119:105 — public domain (mbegu)",
+      "tags": ["neno", "mafunzo"],
+      "lyricsSw": "Neno lako ni taa\nya miguu yangu,\nna mwanga wa njia yangu.\n\nSitasahau sheria yako.\nNitaifanya iwe wimbo\nnyumbani na kanisani.",
+      "lyricsEn": "Your word is a lamp\nto my feet\nand a light to my path.\n\nI will not forget your teaching.\nI will make it a song\nat home and in church."
+    },
+    {
+      "id": "hymn-029",
+      "number": "029",
+      "titleSw": "Amani ya Kristo ikae",
+      "titleEn": "The peace of Christ remain",
+      "firstLineSw": "Amani ya Kristo ikae mioyoni mwenu",
+      "source": "Mbegu ya amani / Kolosai",
+      "tags": ["amani", "kutumwa"],
+      "lyricsSw": "Amani ya Kristo ikae\nmioyoni mwenu.\nMsitane njiani;\nsameheaneni.\n\nAmani si ukimya wa soko.\nNi Yesu katikati.\nTwende nyumbani tukiwa wamoja.",
+      "lyricsEn": "Let the peace of Christ\nremain in your hearts.\nDo not quarrel on the road;\nforgive one another.\n\nPeace is not the silence of the market.\nIt is Jesus in the midst.\nGo home as one people."
+    },
+    {
+      "id": "hymn-030",
+      "number": "030",
+      "titleSw": "Twakwenda na baraka",
+      "titleEn": "We go with the blessing",
+      "firstLineSw": "Twakwenda na baraka, tumetumwa duniani",
+      "source": "Mbegu ya kutumwa",
+      "tags": ["kutumwa", "baraka"],
+      "lyricsSw": "Twakwenda na baraka;\ntumetumwa duniani.\nNeno tulilosikia\nliwe mkate wa jirani.\n\nBwana atubariki na kutulinda;\nuso wake uangaze.\nAmani mpaka tukutane tena.",
+      "lyricsEn": "We go with the blessing;\nwe are sent into the world.\nThe Word we heard\nbecomes bread for the neighbour.\n\nThe Lord bless and keep us;\nhis face shine upon us.\nPeace until we meet again."
+    },
+    {
+      "id": "hymn-031",
+      "number": "031",
+      "titleSw": "Msalaba wa Yesu",
+      "titleEn": "The cross of Jesus",
+      "firstLineSw": "Msalaba wa Yesu ni fahari yetu",
+      "source": "Mbegu ya Lent / Ijumaa Kuu",
+      "tags": ["msalaba", "lent"],
+      "lyricsSw": "Msalaba wa Yesu\nni fahari yetu.\nSio aibu, ni upendo\nulioenda mpaka mwisho.\n\nTuchukue msalaba wetu,\nsi wa wengine.\nKatika mateso madogo\ntukumbuke wake mkuu.",
+      "lyricsEn": "The cross of Jesus\nis our boast.\nNot shame, but love\nthat went to the end.\n\nLet us take up our cross,\nnot another’s.\nIn small sufferings\nremember his great one."
+    },
+    {
+      "id": "hymn-032",
+      "number": "032",
+      "titleSw": "Maji ya uzima",
+      "titleEn": "Water of life",
+      "firstLineSw": "Maji ya uzima yanatiririka katika ubatizo",
+      "source": "Mbegu ya ubatizo",
+      "tags": ["ubatizo", "neema"],
+      "lyricsSw": "Maji ya uzima\nyanatiririka katika ubatizo.\nJina la Baba, Mwana na Roho\nlinawekwa juu yetu.\n\nMtoto au mtu mzima,\nni mlango ule ule.\nKanisa, kumbuka ahadi yako:\nilea katika Neno.",
+      "lyricsEn": "Water of life\nflows in baptism.\nThe name of Father, Son and Spirit\nis placed upon us.\n\nInfant or adult,\nthe door is the same.\nChurch, remember your promise:\nraise them in the Word."
+    },
+    {
+      "id": "hymn-033",
+      "number": "033",
+      "titleSw": "Familia ya kanisa",
+      "titleEn": "The church family",
+      "firstLineSw": "Familia ya kanisa si damu, ni maji na Neno",
+      "source": "Mbegu ya ushirika",
+      "tags": ["ushirika", "umoja"],
+      "lyricsSw": "Familia ya kanisa\nsi damu, ni maji na Neno.\nWageni wanakuwa ndugu;\nndugu wanakumbuka wageni.\n\nUsharika wa Angaza,\ntuwe nyumba salama.\nBila orodha ya siri,\nna bila kusahau jina.",
+      "lyricsEn": "The church family\nis not blood, but water and Word.\nStrangers become kin;\nkin remember the stranger.\n\nAngaza congregation,\nbe a safe house.\nNo secret lists,\nand no forgotten name."
+    },
+    {
+      "id": "hymn-034",
+      "number": "034",
+      "titleSw": "Shukrani za mavuno",
+      "titleEn": "Harvest thanksgiving",
+      "firstLineSw": "Shukrani za mavuno, Mungu wa mvua na jua",
+      "source": "Mbegu ya mavuno",
+      "tags": ["mavuno", "shukrani"],
+      "lyricsSw": "Shukrani za mavuno,\nMungu wa mvua na jua.\nPamba, mahindi na muwa\nvyote vina mikono yake.\n\nTusisahau mjane\nna aliye na njaa.\nMavuno ni ya kushiriki,\nsi ya kujisifia.",
+      "lyricsEn": "Harvest thanksgiving,\nGod of rain and sun.\nCotton, maize and cane\nall bear his hands.\n\nDo not forget the widow\nand the hungry.\nHarvest is for sharing,\nnot for boasting."
+    },
+    {
+      "id": "hymn-035",
+      "number": "035",
+      "titleSw": "Mchungaji mwema",
+      "titleEn": "The good shepherd",
+      "firstLineSw": "Mchungaji mwema huacha tisini na tisa",
+      "source": "Yohana 10 / Luka 15 — mbegu",
+      "tags": ["yesu", "ziara"],
+      "lyricsSw": "Mchungaji mwema\nhuacha tisini na tisa\nkwenda kumtafuta mmoja.\n\nYesu anatuita kwa jina.\nOfisi haiwezi kumchukua nafasi,\nlakini tunaweza kufungua mlango.\nNjoo, umeonekana.",
+      "lyricsEn": "The good shepherd\nleaves the ninety-nine\nto seek the one.\n\nJesus calls us by name.\nThe office cannot replace him,\nbut we can open a door.\nCome, you are seen."
+    },
+    {
+      "id": "hymn-036",
+      "number": "036",
+      "titleSw": "Tunakwenda kwa amani",
+      "titleEn": "Go in peace",
+      "firstLineSw": "Tunakwenda kwa amani, tumtumikie Bwana",
+      "source": "Mbegu ya kutumwa / liturujia",
+      "tags": ["kutumwa", "amani"],
+      "lyricsSw": "Tunakwenda kwa amani;\ntumtumikie Bwana.\nFuraha ya Neno iende\nnyumbani na sokoni.\n\nAmina, Amina.\nKristus yu pamoja nasi\nhadi tukutane Jumapili ijayo.",
+      "lyricsEn": "Go in peace;\nserve the Lord.\nLet the joy of the Word travel\nhome and to the market.\n\nAmen, amen.\nChrist is with us\nuntil we meet next Sunday."
+    }
+  ]
+}

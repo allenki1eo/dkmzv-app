@@ -54,10 +54,19 @@
 
 ## Design (Canvy)
 
-- App name mark: **DKMZV** / cross + Shinyanga-friendly Lutheran tone (dignified, not flashy)  
-- Colors: deep liturgical feel (e.g. purple/green/gold accents) — Canvy proposes palette  
-- Deliver: launcher icon, splash, adaptive icon for Android `mipmap`
+- App name mark: **DKMZV** / official KKKT DKMZV emblem (cross + heart + Bible + globe). **Locked** as the launcher icon — not a geometric purple/gold substitute.
+- Adaptive launcher **background is `#FFFFFF`** (not `#2E0854`). Purple stays on the splash field only.
+- Splash: purple `#2E0854` field + white card with the official logo (`brand/dkmzv-splash.png`).
+- Liturgical purple / green / gold remain UI accents.
+- Deliver: launcher icon, splash, adaptive icon for Android `mipmap`. Exact drop paths: `docs/BRAND_ASSETS.md` and `brand/README.md`.
 
 ---
+
+## Implementation notes (v1 shipped)
+
+- **Mobile:** Flutter (SW+EN + offline hymns).
+- **Data:** seed-first JSON (`assets/seed/church.json`) persisted locally. Members stay anonymous. Firebase/Auth optional later; FCM stub on Home.
+- **Admin:** in-app, PIN `dkmzv` (demo). No member directory.
+- **Congregation texture:** Usharika wa Angaza, Chamaguha, Shinyanga. Placeholder role phones only.
 
 *Allen asked Idealy to send this to Cursor agents to create v1. Cod't builds; Canvy brand.*

@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../data/store.dart';
+import '../theme/brand.dart';
+import '../widgets/common.dart';
+
+const _cats = ['all', 'worship', 'choir', 'uw', 'youth', 'confirmation', 'meeting'];
+
+class EventsScreen extends StatefulWidget {
+  const EventsScreen({super.key});
+
+  @override
+  State<EventsScreen> createState() => _EventsScreenState();
+}
+
+class _EventsScreenState extends State<EventsScreen> {
+  String _cat = 'all';
+
+  @override
+  Widget build(BuildContext context) {
+    final store = context.watch<ChurchStore>();
+    final s = sOf(context);
+    final items = [...store.data.events]
+      ..sort((a, b) => a.start.compareTo(b.start));
+    final filtered =
+        _cat == 'all' ? items : items.where((e) => e.category == _cat).toList();
+
+    return Scaffold(
+      appBar: BrandAppBar(title: s.tabEvents),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 52,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              children: [
+                for (final c in _cats)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FilterChip(
+                      selected: _cat == c,
+                      label: Text(c == 'all' ? s.filterAll : s.cat(c)),
+                      onSelected: (_) => setState(() => _cat = c),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: filtered.isEmpty
+                ? Center(child: Text(s.noEvents))
+                : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                    itemCount: filtered.length,
+                    itemBuilder: (_, i) {
+                      final e = filtered[i];
+                      return Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor:
+                                DkmzvBrand.green.withValues(alpha: 0.15),
+                            child: const Icon(Icons.event,
+                                color: DkmzvBrand.green, size: 20),
+                          ),
+                          title: Text(e.title(store.sw)),
+                          subtitle: Text(
+                            '${formatDateTime(e.start, store.localeCode)}\n${e.place(store.sw)}',
+                          ),
+                          isThreeLine: true,
+                          trailing: Chip(
+                            label: Text(s.cat(e.category),
+                                style: const TextStyle(fontSize: 11)),
+                          ),
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              showDragHandle: true,
+                              builder: (_) => Padding(
+                                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(e.title(store.sw),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge),
+                                    const SizedBox(height: 8),
+                                    Text(formatDateTime(
+                                        e.start, store.localeCode)),
+                                    Text(e.place(store.sw)),
+                                    const SizedBox(height: 8),
+                                    Text(e.detail(store.sw)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
