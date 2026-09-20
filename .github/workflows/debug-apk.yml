@@ -1,4 +1,4 @@
-name: Debug APK
+name: Sideload APK
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   pull-requests: write
 
 jobs:
-  debug-apk:
+  sideload-apk:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,16 +38,50 @@ jobs:
       - name: Test
         run: flutter test
 
-      - name: Assemble debug APK
-        run: flutter build apk --debug
+      - name: Assemble release APKs (split per ABI)
+        run: flutter build apk --release --split-per-abi
 
-      - name: Upload APK artifact
+      - name: Name phone APK
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk dist/dkmzv-app-arm64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk dist/dkmzv-app-armv7.apk
+          ls -lh dist
+
+      - name: Upload arm64 APK (phones)
         uses: actions/upload-artifact@v4
         with:
-          name: dkmzv-app-debug
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: dkmzv-app-arm64
+          path: dist/dkmzv-app-arm64.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload armv7 APK (older phones)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dkmzv-app-armv7
+          path: dist/dkmzv-app-armv7.apk
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish sideload release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1-sideload
+          name: DKMZV v1 sideload
+          prerelease: true
+          make_latest: false
+          files: dist/dkmzv-app-arm64.apk
+          body: |
+            Parish sideload APK for **64-bit Android phones** (`arm64-v8a`).
+            Release-minified, one ABI — typically ~15–25 MB instead of the 149 MB debug fat APK.
+
+            Direct file: the `dkmzv-app-arm64.apk` asset on this release.
+
+            Older 32-bit phones: download `dkmzv-app-armv7` from the workflow Artifacts.
+
+            Debug-signed (not a Play upload key). Demo PIN `dkmzv`. Seed paybill/phones are placeholders.
 
       - name: Comment download URL on PR
         if: github.event_name == 'pull_request'
@@ -55,19 +89,21 @@ jobs:
         with:
           script: |
             const runUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const releaseUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/releases/tag/v1-sideload`;
             const body = [
-              '**Debug APK** is attached to this workflow run as artifact `dkmzv-app-debug` (`app-debug.apk`).',
+              '**Smaller sideload APK** (release, arm64 only — not the 149 MB debug fat file).',
               '',
-              `Download: ${runUrl}`,
+              `This run: ${runUrl} → Artifacts → \`dkmzv-app-arm64\``,
+              `Stable link after merge/push: ${releaseUrl} → \`dkmzv-app-arm64.apk\``,
               '',
-              'Open the run → **Artifacts** → `dkmzv-app-debug`. Adaptive launcher plate is `#FFFFFF` (official KKKT emblem); purple `#2E0854` is splash only.',
+              'Use **arm64** on current phones. Use \`dkmzv-app-armv7\` only on old 32-bit devices.',
             ].join('\n');
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            const marker = '**Debug APK** is attached to this workflow run';
+            const marker = '**Smaller sideload APK**';
             const existing = comments.find((c) => c.user?.type === 'Bot' && c.body?.includes(marker));
             if (existing) {
               await github.rest.issues.updateComment({

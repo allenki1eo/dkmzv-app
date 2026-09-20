@@ -105,7 +105,14 @@ Those three Flutter files are listed under `flutter:` `assets:` in `pubspec.yaml
 
 Official emblem source + an AI alternate sit in `brand/archive-official-emblem/` as a backup. The live launcher is the same mark from `brand/`.
 
-CI on this branch builds a **debug APK** and uploads artifact `dkmzv-app-debug` (`app-debug.apk`). See [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml).
+CI builds a **release** APK split by CPU, not a 149 MB debug fat file:
+
+```bash
+flutter build apk --release --split-per-abi
+# phones: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+```
+
+Download: [v1-sideload release](https://github.com/allenki1eo/dkmzv-app/releases/tag/v1-sideload) → `dkmzv-app-arm64.apk` (typical 15–25 MB). Older 32-bit phones use the `armv7` artifact on [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml). Debug-signed for parish install, not Play.
 
 ## Optional later: Firebase
 
