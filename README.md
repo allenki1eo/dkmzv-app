@@ -31,7 +31,7 @@ flutter pub get
 flutter run
 ```
 
-On a device or emulator. First install uses the official KKKT DKMZV launcher icon on a **white** plate.
+On a device or emulator. First install uses the Canvy v1 launcher (gold cross + DKMZV on purple `#2E0854`).
 
 Web (for a quick desktop look — Android remains the product):
 
@@ -70,12 +70,35 @@ Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`
 
 ## Brand / Canvy
 
-Official church emblem is locked as the app icon.
+**Source of truth:** [`brand/`](brand/) (keep Canvy’s README there). Drop map: [`docs/BRAND_ASSETS.md`](docs/BRAND_ASSETS.md).
 
-- **Source of truth:** [`brand/`](brand/) (keep this folder in the repo)
-- **Exact drop paths:** [`docs/BRAND_ASSETS.md`](docs/BRAND_ASSETS.md) and [`brand/README.md`](brand/README.md)
+### Palette
 
-Do **not** put purple `#2E0854` on the adaptive-icon background. Purple is splash field only. Adaptive background is `#FFFFFF`.
+| Token | Hex |
+| --- | --- |
+| Deep purple (plate / splash / adaptive bg) | `#2E0854` |
+| Gold | `#D4AF37` |
+| Cream | `#FDF5E6` |
+| Sage | `#A2AD91` |
+
+### Exact copy paths
+
+After extracting a pack over `brand/`:
+
+| From | To |
+| --- | --- |
+| `brand/mipmap-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}/ic_launcher.png` | `android/app/src/main/res/mipmap-*/ic_launcher.png` |
+| same `ic_launcher_round.png` | matching `mipmap-*/ic_launcher_round.png` |
+| `brand/ic_launcher_foreground.png` | `android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png` |
+| Adaptive background | solid `#2E0854` in `android/app/src/main/res/values/colors.xml` (`ic_launcher_background`) — not the tiny swatch PNG |
+| `mipmap-anydpi-v26/ic_launcher.xml` (+ round) | background `@color/ic_launcher_background`, foreground `@mipmap/ic_launcher_foreground` |
+| `brand/dkmzv-splash.png` | `assets/brand/dkmzv-splash.png` and `android/.../drawable-nodpi/dkmzv_splash.png` |
+| `brand/dkmzv-icon-master-1024.png` | `assets/brand/dkmzv-icon-master-1024.png` |
+| `brand/dkmzv-playstore-512.png` | `assets/brand/dkmzv-playstore-512.png` |
+
+Those three Flutter files are listed under `flutter:` `assets:` in `pubspec.yaml`. Splash uses `assets/brand/dkmzv-splash.png` (in-app + Android `launch_background.xml`).
+
+The earlier official KKKT emblem is archived at `brand/archive-official-emblem/`.
 
 ## Optional later: Firebase
 

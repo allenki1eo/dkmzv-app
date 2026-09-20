@@ -31,7 +31,7 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           ClipOval(
             child: Image.asset(
-              DkmzvBrand.playstoreAsset,
+              DkmzvBrand.logoAsset,
               width: 32,
               height: 32,
               fit: BoxFit.cover,

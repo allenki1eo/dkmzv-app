@@ -1,47 +1,48 @@
 # Brand assets — where Canvy drops files
 
-**Source of truth:** [`brand/README.md`](../brand/README.md) and the files under `brand/`.
+**Source of truth:** [`brand/`](../brand/) and [`brand/README.md`](../brand/README.md).
 
-Allen locked the **official KKKT DKMZV emblem** (cross + heart + Bible + globe text) as the app icon.
+Extract a new pack over `brand/`, then copy into the Flutter/Android tree using the map below.
 
-## Critical colour rule
+## Palette (theme)
 
-| Surface | Colour | Why |
+| Token | Hex | Use |
 | --- | --- | --- |
-| Adaptive launcher **background** | `#FFFFFF` | Official silver/red mark stays true. **Not** `#2E0854`. |
-| Launcher mipmaps | Emblem on **white plate** | `brand/mipmap-*/ic_launcher.png` (+ `_round`) |
-| Adaptive foreground | `brand/ic_launcher_foreground.png` | Copied to `android/app/src/main/res/drawable-nodpi/` |
-| Splash field | `#2E0854` purple | Purple is splash chrome only |
-| Splash art | `brand/dkmzv-splash.png` | Purple field + white card + official logo |
+| Deep purple | `#2E0854` | Adaptive launcher **background**, splash field, app bars |
+| Gold | `#D4AF37` | Cross / accents |
+| Cream | `#FDF5E6` | Surfaces / wordmark |
+| Sage | `#A2AD91` | Subtitle / secondary accents |
 
-## Drop / overwrite map
+Do **not** rely on `brand/ic_launcher_background_swatch.png` for the adaptive plate — use the solid colour `#2E0854`.
 
-When Canvy ships a new pack, extract it over `brand/`, then copy:
+## Exact drop map
 
 | Pack file | App path |
 | --- | --- |
 | `brand/mipmap-mdpi/ic_launcher.png` | `android/app/src/main/res/mipmap-mdpi/ic_launcher.png` |
-| `brand/mipmap-hdpi/ic_launcher.png` | `android/app/src/main/res/mipmap-hdpi/ic_launcher.png` |
-| `brand/mipmap-xhdpi/ic_launcher.png` | `android/app/src/main/res/mipmap-xhdpi/ic_launcher.png` |
-| `brand/mipmap-xxhdpi/ic_launcher.png` | `android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png` |
-| `brand/mipmap-xxxhdpi/ic_launcher.png` | `android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png` |
-| same folders `ic_launcher_round.png` | matching `mipmap-*/ic_launcher_round.png` |
-| `brand/ic_launcher_foreground.png` | `android/app/src/main/res/drawable-nodpi/ic_launcher_foreground.png` |
-| `brand/dkmzv-splash.png` | `android/app/src/main/res/drawable-nodpi/dkmzv_splash.png` **and** `assets/brand/dkmzv-splash.png` |
+| `brand/mipmap-mdpi/ic_launcher_round.png` | `android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png` |
+| same for `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi` | matching `mipmap-*` |
+| `brand/ic_launcher_foreground.png` | `android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png` (also copied to `drawable-nodpi/`) |
+| `brand/dkmzv-splash.png` | `assets/brand/dkmzv-splash.png` **and** `android/app/src/main/res/drawable-nodpi/dkmzv_splash.png` |
 | `brand/dkmzv-icon-master-1024.png` | `assets/brand/dkmzv-icon-master-1024.png` |
 | `brand/dkmzv-playstore-512.png` | `assets/brand/dkmzv-playstore-512.png` |
-| `brand/dkmzv-logo-official-source.png` | `assets/brand/dkmzv-logo-official-source.png` |
 
-Adaptive XML (do not change the white plate):
+Registered in `pubspec.yaml` under `flutter:` → `assets:`.
 
-- `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`
-- `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml`
-- `android/app/src/main/res/values/colors.xml` → `ic_launcher_background` = `#FFFFFF`
+## Adaptive icon XML
 
-Splash XML:
+`android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml` (+ `_round`):
 
-- `android/app/src/main/res/drawable/launch_background.xml` (and `drawable-v21/`) uses `@color/dkmzv_splash_field` (`#2E0854`) + `@drawable/dkmzv_splash`.
+- background `@color/ic_launcher_background` = **`#2E0854`**
+- foreground `@mipmap/ic_launcher_foreground`
 
-Flutter in-app splash/logo: `assets/brand/dkmzv-splash.png` and `assets/brand/dkmzv-playstore-512.png` (see `lib/theme/brand.dart`).
+`android/app/src/main/res/values/colors.xml`
 
-Web favicon: `web/favicon.png` (copy of playstore 512 for now).
+## Splash (equivalent of flutter_native_splash)
+
+- Android: `drawable/launch_background.xml` (+ `drawable-v21`) = purple field `#2E0854` + `@drawable/dkmzv_splash`
+- Flutter boot: `DkmzvBrand.splashAsset` → `assets/brand/dkmzv-splash.png` (`lib/app.dart`, `lib/theme/brand.dart`)
+
+## Archive
+
+`brand/archive-official-emblem/` holds the earlier official KKKT DKMZV silver/red emblem (Allen lock). Current launcher/splash are this Canvy v1 gold-cross pack.

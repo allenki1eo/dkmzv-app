@@ -21,7 +21,7 @@ class ContactScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
           Center(
-            child: Image.asset(DkmzvBrand.playstoreAsset, width: 120, height: 120),
+            child: Image.asset(DkmzvBrand.logoAsset, width: 120, height: 120),
           ),
           const SizedBox(height: 8),
           Text(c.name(store.sw),

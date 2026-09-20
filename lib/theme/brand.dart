@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// Liturgical palette. Purple is for chrome/splash **fields** only —
-/// never the adaptive launcher background (that plate is white).
+/// Canvy v1 palette. Purple plate is also the adaptive-icon background.
 class DkmzvBrand {
   static const purple = Color(0xFF2E0854);
   static const purpleDeep = Color(0xFF1C0433);
-  static const green = Color(0xFF2E6B4F);
-  static const gold = Color(0xFFC9A227);
-  static const cream = Color(0xFFF7F3EA);
+  static const gold = Color(0xFFD4AF37);
+  static const cream = Color(0xFFFDF5E6);
+  static const sage = Color(0xFFA2AD91);
+  static const green = sage;
   static const card = Color(0xFFFFFCF7);
   static const ink = Color(0xFF1B1424);
   static const muted = Color(0xFF5C5366);
@@ -20,7 +20,7 @@ class DkmzvBrand {
     final scheme = ColorScheme.fromSeed(
       seedColor: purple,
       primary: purple,
-      secondary: green,
+      secondary: sage,
       tertiary: gold,
       surface: cream,
       brightness: Brightness.light,
@@ -44,7 +44,7 @@ class DkmzvBrand {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: purple.withValues(alpha: 0.08),
+        backgroundColor: sage.withValues(alpha: 0.22),
         selectedColor: purple.withValues(alpha: 0.16),
         labelStyle: const TextStyle(color: ink, fontWeight: FontWeight.w500),
         side: BorderSide.none,

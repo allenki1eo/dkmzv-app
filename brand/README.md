@@ -1,17 +1,19 @@
-# DKMZV App — brand pack (official logo locked)
+# DKMZV App — brand pack v1
 
-**Locked mark:** Official KKKT DKMZV emblem (cross + heart + Bible + globe text).
+KKKT DKMZV (Lutheran, Shinyanga). Dignified liturgical tone.
 
-## Notes
-- Launcher/mipmap use the official logo on a **white** square plate (best readability).
-- Adaptive background: `#FFFFFF` (not purple) so the silver/red mark stays true.
-- Splash: purple `#2E0854` field with white card holding the official logo.
-- Fine curved Swahili text will soften below ~96px; still the church’s real mark as requested.
+## Palette
+- Deep purple (plate / splash): `#2E0854`
+- Gold (cross / accents): `#D4AF37`
+- Cream (wordmark): `#FDF5E6`
+- Liturgical sage green (subtitle accents): `#A2AD91`
 
-## Files
-- `dkmzv-logo-official-source.png` — source
-- `dkmzv-icon-master-1024.png` — launcher master
-- `mipmap-*/ic_launcher.png` (+ round)
-- `ic_launcher_foreground.png` + white bg swatch
-- `dkmzv-splash.png`
-- `dkmzv-playstore-512.png`
+## Deliverables
+- `dkmzv-icon-master-1024.png` — launcher master (purple squircle + gold cross + DKMZV)
+- `mipmap-*/ic_launcher.png` (+ round) — density sizes
+- `ic_launcher_foreground.png` — adaptive foreground (gold cross + DKMZV on transparent)
+- `ic_launcher_background_swatch.png` — use solid `#2E0854` for adaptive background
+- `dkmzv-splash.png` — splash / launch screen
+- `dkmzv-playstore-512.png` — Play Store icon
+
+Suggested adaptive XML: background `@color` `#2E0854`, foreground `@mipmap/ic_launcher_foreground`.
