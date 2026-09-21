@@ -80,6 +80,37 @@ void main() {
     expect(find.byType(BackgroundCanvas), findsOneWidget);
   });
 
+  testWidgets('sadaka groups render in dark mode without layout errors',
+      (tester) async {
+    await store.setThemeMode('dark');
+    await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
+    await tester.pumpAndSettle();
+    expect(Theme.of(tester.element(find.byType(NavigationBar))).brightness,
+        Brightness.dark);
+
+    await tester.tap(find.text('Sadaka'));
+    await tester.pumpAndSettle();
+    expect(find.text('SADAKA ZA BAHASHA'), findsOneWidget);
+    expect(find.text('Exempt'), findsWidgets);
+    await tester.scrollUntilVisible(
+      find.text('SHUKRANI'),
+      250,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('FUNGU LA KUMI'), findsOneWidget);
+    expect(find.text('SHUKRANI'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Ujenzi'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ujenzi'));
+    await tester.pumpAndSettle();
+    expect(find.text('Chagua kiasi'), findsOneWidget);
+    // Card stays disabled until the office pastes a Stripe Payment Link.
+    final card = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Lipa kwa kadi'));
+    expect(card.onPressed, isNull);
+  });
+
   testWidgets('hymn search and favorite', (tester) async {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();

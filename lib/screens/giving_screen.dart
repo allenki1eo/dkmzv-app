@@ -216,7 +216,7 @@ class _GiveSheetState extends State<_GiveSheet> {
     final amounts = c.amounts.isEmpty ? store.data.giving.tips : c.amounts;
 
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
