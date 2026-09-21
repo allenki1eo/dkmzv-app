@@ -13,8 +13,10 @@ IconData motifIcon(String motif) {
       return Icons.account_balance_outlined;
     case 'sunrise':
       return Icons.wb_twilight_outlined;
+    case 'village':
+      return Icons.holiday_village_outlined;
     case 'cross':
-      return Icons.add_outlined;
+      return Icons.church;
     default:
       return Icons.church_outlined;
   }

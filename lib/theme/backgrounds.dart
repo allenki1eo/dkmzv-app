@@ -87,14 +87,16 @@ class BackgroundCanvas extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(asset, fit: BoxFit.cover, alignment: Alignment.topCenter),
+        // Light enough that the wallpaper still reads, heavy enough that
+        // body text keeps its contrast in both brightnesses.
         DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                canvas.withValues(alpha: dark ? 0.88 : 0.86),
-                canvas.withValues(alpha: dark ? 0.94 : 0.93),
+                canvas.withValues(alpha: dark ? 0.74 : 0.70),
+                canvas.withValues(alpha: dark ? 0.86 : 0.84),
               ],
             ),
           ),
