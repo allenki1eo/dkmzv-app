@@ -7,6 +7,7 @@ class AppTheme {
   static ThemeData build({
     required Color accent,
     required Brightness brightness,
+    bool translucent = false,
   }) {
     final dark = brightness == Brightness.dark;
     final s = dark ? Surfaces.dark : Surfaces.light;
@@ -31,7 +32,9 @@ class AppTheme {
       brightness: brightness,
       colorScheme: scheme,
       fontFamily: DkmzvBrand.sans,
-      scaffoldBackgroundColor: s.canvas,
+      // A chosen wallpaper is painted behind the navigator, so the scaffold
+      // has to let it through.
+      scaffoldBackgroundColor: translucent ? Colors.transparent : s.canvas,
       canvasColor: s.canvas,
       splashFactory: InkSparkle.splashFactory,
       textTheme: text,

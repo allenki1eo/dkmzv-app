@@ -44,9 +44,16 @@ class _DkmzvAppState extends State<DkmzvApp> {
           return MaterialApp(
             title: s.appName,
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.build(accent: accent, brightness: Brightness.light),
-            darkTheme:
-                AppTheme.build(accent: accent, brightness: Brightness.dark),
+            theme: AppTheme.build(
+              accent: accent,
+              brightness: Brightness.light,
+              translucent: background.asset != null,
+            ),
+            darkTheme: AppTheme.build(
+              accent: accent,
+              brightness: Brightness.dark,
+              translucent: background.asset != null,
+            ),
             themeMode: store.themeMode,
             locale: locale,
             supportedLocales: const [Locale('sw'), Locale('en')],

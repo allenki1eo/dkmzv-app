@@ -72,6 +72,12 @@ void main() {
     await tester.tap(find.text('Maua'));
     await tester.pumpAndSettle();
     expect(store.backgroundId, 'maua');
+
+    // The wallpaper is painted behind the navigator, so scaffolds must let it
+    // through instead of covering it with the canvas colour.
+    final themed = Theme.of(tester.element(find.text('Maua')));
+    expect(themed.scaffoldBackgroundColor, Colors.transparent);
+    expect(find.byType(BackgroundCanvas), findsOneWidget);
   });
 
   testWidgets('hymn search and favorite', (tester) async {
