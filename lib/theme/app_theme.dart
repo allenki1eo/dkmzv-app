@@ -241,13 +241,16 @@ class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected) ? s.onAction : null),
+            states.contains(WidgetState.selected) ? s.onAction : s.card),
         trackColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected) ? s.action : null),
+            states.contains(WidgetState.selected)
+                ? s.action
+                : s.hairline),
         trackOutlineColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(WidgetState.selected)
                 ? Colors.transparent
-                : s.hairline),
+                : s.muted.withValues(alpha: 0.35)),
+        trackOutlineWidth: const WidgetStatePropertyAll(1),
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: s.action,

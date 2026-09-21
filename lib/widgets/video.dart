@@ -155,16 +155,19 @@ class WatchCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  sermon.isLive ? s.liveLead : s.latestSermon,
-                  style: TextStyle(
-                    color: sermon.isLive ? DkmzvBrand.live : surfaces.muted,
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.3,
+                if (!sermon.isLive)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: Insets.xs),
+                    child: Text(
+                      s.latestSermon,
+                      style: TextStyle(
+                        color: surfaces.muted,
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: Insets.xs),
                 Text(
                   sermon.title(store.sw),
                   maxLines: 2,
