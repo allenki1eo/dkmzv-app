@@ -5,6 +5,7 @@ import '../data/store.dart';
 import '../services/links.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
+import 'jumuiya_map_screen.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -32,8 +33,16 @@ class ContactScreen extends StatelessWidget {
           Text(c.address(store.sw), textAlign: TextAlign.center),
           const SizedBox(height: 12),
           FilledButton.icon(
-            onPressed: () => openExternal(context, c.mapUrl, s),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const JumuiyaMapScreen()),
+            ),
             icon: const Icon(Icons.map_outlined),
+            label: Text(s.jumuiyaMap),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => openExternal(context, c.mapUrl, s),
+            icon: const Icon(Icons.open_in_new),
             label: Text(s.map),
           ),
           SectionLabel(s.officeHours),

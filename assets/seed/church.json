@@ -1,30 +1,133 @@
 {
-  "version": 1,
+  "version": 2,
   "settings": {
     "adminPin": "dkmzv",
     "fcmConfigured": false,
-    "defaultLocale": "sw"
+    "defaultLocale": "sw",
+    "selectedCongregationId": "cong-ebenezer",
+    "currentMemberId": ""
   },
   "church": {
-    "nameSw": "KKKT DKMZV — Usharika wa Angaza",
-    "nameEn": "ELCT DKMZV — Angaza Congregation",
+    "nameSw": "KKKT DKMZV — Usharika wa Ebenezer",
+    "nameEn": "ELCT DKMZV — Ebenezer Congregation",
     "shortName": "DKMZV",
     "denominationSw": "Kanisa la Kiinjili la Kilutheri Tanzania",
     "denominationEn": "Evangelical Lutheran Church in Tanzania",
     "dioceseSw": "Dayosisi Mashariki ya Ziwa Viktoria (DKMZV/ELVD)",
     "dioceseEn": "East of Lake Victoria Diocese (DKMZV/ELVD)",
-    "addressSw": "Ushirika, Chamaguha, Shinyanga Mjini, Tanzania",
-    "addressEn": "Ushirika, Chamaguha, Shinyanga Urban, Tanzania",
-    "mapUrl": "https://www.google.com/maps?q=-3.67011,33.44624",
-    "latitude": -3.67011,
-    "longitude": 33.44624,
+    "addressSw": "Old Shinyanga Road, Shinyanga Mjini, Tanzania",
+    "addressEn": "Old Shinyanga Road, Shinyanga Urban, Tanzania",
+    "mapUrl": "https://www.openstreetmap.org/?mlat=-3.669681&mlon=33.427495#map=16/-3.669681/33.427495",
+    "latitude": -3.669681,
+    "longitude": 33.427495,
     "officeHoursSw": "Jumatatu–Ijumaa 09:00–15:00 · Jumamosi 09:00–12:00\nJumapili: ofisi imefungwa (ibada pekee)",
     "officeHoursEn": "Monday–Friday 09:00–15:00 · Saturday 09:00–12:00\nSunday: office closed (worship only)",
     "whatsappNoteSw": "Kundi la WhatsApp la usharika linasimamiwa na ofisi. Omba kiungo kwa mchungaji au karani — si orodha ya simu za waumini.",
     "whatsappNoteEn": "The congregation WhatsApp group is managed by the office. Ask the pastor or clerk for the invite — this is not a member phone directory.",
-    "aboutSw": "Usharika mwenza wa KKKT katika Shinyanga. Programu hii ni mwenza wa waumini: tangazo, ibada, nyimbo, matukio na sadaka. Haiwezi kuchukua nafasi ya WhatsApp wala kuwa ERP ya usharika.",
-    "aboutEn": "A Lutheran congregation in Shinyanga. This app is a member companion for notices, worship, hymns, events and giving. It does not replace WhatsApp and is not church ERP."
+    "aboutSw": "Dayosisi ya KKKT mjini Shinyanga. Kanisa kuu: Usharika wa Ebenezer. Pia: Angaza (Chamaguha) na Makedonia (Lubaga). Programu hii ni mwenza wa waumini: tangazo, ibada, nyimbo, mahubiri ya YouTube, ramani ya jumuiya na usajili. Haiwezi kuchukua nafasi ya WhatsApp wala kuwa ERP ya usharika.",
+    "aboutEn": "A KKKT diocese in Shinyanga. Cathedral: Ebenezer Congregation. Also: Angaza (Chamaguha) and Makedonia (Lubaga). This app is a member companion for notices, worship, hymns, YouTube sermons, jumuiya maps and light registration. It does not replace WhatsApp and is not church ERP."
   },
+  "congregations": [
+    {
+      "id": "cong-ebenezer",
+      "nameSw": "Usharika wa Ebenezer",
+      "nameEn": "Ebenezer Congregation",
+      "roleSw": "Kanisa kuu",
+      "roleEn": "Cathedral / main church",
+      "isMain": true,
+      "approximate": false,
+      "addressSw": "Old Shinyanga Road, Shinyanga Mjini",
+      "addressEn": "Old Shinyanga Road, Shinyanga Urban",
+      "latitude": -3.669681,
+      "longitude": 33.427495,
+      "noteSw": "Usharika mkuu wa KKKT DKMZV mjini Shinyanga.",
+      "noteEn": "The main KKKT DKMZV congregation in Shinyanga town."
+    },
+    {
+      "id": "cong-angaza",
+      "nameSw": "Usharika wa Angaza",
+      "nameEn": "Angaza Congregation",
+      "roleSw": "Usharika mwenza",
+      "roleEn": "Sister congregation",
+      "isMain": false,
+      "approximate": false,
+      "addressSw": "Ushirika, Chamaguha, Shinyanga Mjini",
+      "addressEn": "Ushirika, Chamaguha, Shinyanga Urban",
+      "latitude": -3.670113,
+      "longitude": 33.446236,
+      "noteSw": "Ramani: Kanisa la Angaza, Chamaguha (OpenStreetMap node N5316355224).",
+      "noteEn": "Map: Angaza church, Chamaguha (OpenStreetMap node N5316355224)."
+    },
+    {
+      "id": "cong-makedonia",
+      "nameSw": "Usharika wa Makedonia",
+      "nameEn": "Makedonia Congregation",
+      "roleSw": "Usharika mwenza",
+      "roleEn": "Sister congregation",
+      "isMain": false,
+      "approximate": true,
+      "addressSw": "Lubaga, Shinyanga Mjini (makadirio)",
+      "addressEn": "Lubaga, Shinyanga Urban (approximate)",
+      "latitude": -3.66167,
+      "longitude": 33.41659,
+      "noteSw": "Pin ni makadirio ya mtaa wa Lubaga — ofisi inaweza kurekebisha kwenye Msimamizi.",
+      "noteEn": "Pin is an approximate Lubaga neighbourhood — the office can correct it in Admin."
+    }
+  ],
+  "jumuiyas": [
+    {
+      "id": "jum-ebenezer-kanisa",
+      "congregationId": "cong-ebenezer",
+      "nameSw": "Jumuiya ya Kanisani",
+      "nameEn": "Church-yard jumuiya",
+      "meetingNoteSw": "Mkutano karibu na kanisa kuu, wiki nyingine Jumatano jioni.",
+      "meetingNoteEn": "Meets near the cathedral, most Wednesday evenings.",
+      "latitude": -3.669681,
+      "longitude": 33.427495
+    },
+    {
+      "id": "jum-ebenezer-oldroad",
+      "congregationId": "cong-ebenezer",
+      "nameSw": "Jumuiya ya Old Shinyanga",
+      "nameEn": "Old Shinyanga jumuiya",
+      "meetingNoteSw": "Nyumba kwa nyumba kwenye Old Shinyanga Road.",
+      "meetingNoteEn": "House-to-house along Old Shinyanga Road.",
+      "latitude": -3.6689,
+      "longitude": 33.4225
+    },
+    {
+      "id": "jum-angaza-chamaguha",
+      "congregationId": "cong-angaza",
+      "nameSw": "Jumuiya ya Chamaguha",
+      "nameEn": "Chamaguha jumuiya",
+      "meetingNoteSw": "Karibu na Kanisa la Angaza.",
+      "meetingNoteEn": "Near Angaza church.",
+      "latitude": -3.670113,
+      "longitude": 33.446236
+    },
+    {
+      "id": "jum-angaza-ushirika",
+      "congregationId": "cong-angaza",
+      "nameSw": "Jumuiya ya Ushirika",
+      "nameEn": "Ushirika jumuiya",
+      "meetingNoteSw": "Mtaa wa Ushirika, Chamaguha.",
+      "meetingNoteEn": "Ushirika street, Chamaguha.",
+      "latitude": -3.6725,
+      "longitude": 33.4488
+    },
+    {
+      "id": "jum-makedonia-lubaga",
+      "congregationId": "cong-makedonia",
+      "nameSw": "Jumuiya ya Lubaga",
+      "nameEn": "Lubaga jumuiya",
+      "meetingNoteSw": "Mtaa wa Lubaga (makadirio).",
+      "meetingNoteEn": "Lubaga neighbourhood (approximate).",
+      "latitude": -3.66167,
+      "longitude": 33.41659
+    }
+  ],
+  "members": [],
+  "homePins": [],
   "sundayTimes": [
     {
       "id": "sun-0730",
@@ -372,6 +475,20 @@
   "givingNotes": [],
   "sermons": [
     {
+      "id": "ser-live",
+      "date": "2026-09-20",
+      "titleSw": "Ibada kuu — moja kwa moja",
+      "titleEn": "Main service — live",
+      "preacherSw": "Mchungaji wa Ebenezer",
+      "preacherEn": "Ebenezer pastor",
+      "mediaType": "youtube",
+      "mediaUrl": "https://www.youtube.com/results?search_query=KKKT+DKMZV+Ebenezer+ibada+live",
+      "noteSw": "Mahubiri mengi yanatiririka YouTube kutoka simu. Bandika kiungo halisi cha live kwenye Msimamizi (watch / youtu.be / live) — watu wataona hapa na wanaweza kushiriki kiungo.",
+      "noteEn": "Most sermons stream live on YouTube from a phone. Paste the real live URL in Admin (watch / youtu.be / live) — members watch here and can share the link.",
+      "isLive": true,
+      "congregationId": "cong-ebenezer"
+    },
+    {
       "id": "ser-1",
       "date": "2026-09-13",
       "titleSw": "Neno lililopandwa vizuri",
@@ -379,9 +496,11 @@
       "preacherSw": "Mchungaji wa usharika",
       "preacherEn": "Congregation pastor",
       "mediaType": "youtube",
-      "mediaUrl": "https://www.youtube.com/results?search_query=KKKT+mahubiri+Kilutheri",
-      "noteSw": "Kiungo ni utafutaji wa YouTube (demo). Weka video halisi ya usharika kwenye Msimamizi.",
-      "noteEn": "Link is a YouTube search (demo). Paste the congregation’s real video in Admin."
+      "mediaUrl": "https://www.youtube.com/watch?v=8XUYZoguhEQ",
+      "noteSw": "Mfano wa video ya YouTube (A Mighty Fortress). Badilisha na mahubiri ya usharika kwenye Msimamizi.",
+      "noteEn": "Sample YouTube video (A Mighty Fortress). Replace with the congregation sermon in Admin.",
+      "isLive": false,
+      "congregationId": "cong-ebenezer"
     },
     {
       "id": "ser-2",
@@ -390,22 +509,26 @@
       "titleEn": "Faith that walks",
       "preacherSw": "Mchungaji mgeni wa jimbo",
       "preacherEn": "Visiting diocesan pastor",
-      "mediaType": "facebook",
-      "mediaUrl": "https://www.facebook.com/search/posts/?q=KKKT%20DKMZV",
-      "noteSw": "Utafutaji wa Facebook — si ukurasa wa mwanachama.",
-      "noteEn": "Facebook search — not a member profile."
+      "mediaType": "youtube",
+      "mediaUrl": "https://youtu.be/8XUYZoguhEQ",
+      "noteSw": "Kiungo kifupi cha YouTube — fungua ndani ya programu au shiriki.",
+      "noteEn": "Short YouTube link — watch in-app or share.",
+      "isLive": false,
+      "congregationId": "cong-angaza"
     },
     {
       "id": "ser-3",
       "date": "2026-08-30",
       "titleSw": "Mchungaji mwema",
       "titleEn": "The good shepherd",
-      "preacherSw": "Mchungaji wa usharika",
-      "preacherEn": "Congregation pastor",
-      "mediaType": "audio",
-      "mediaUrl": "https://elct.org/",
-      "noteSw": "Sauti itapakiwa baadaye; kwa sasa kiungo cha KKKT kitaifa.",
-      "noteEn": "Audio will be uploaded later; national ELCT link for now."
+      "preacherSw": "Mchungaji wa Makedonia",
+      "preacherEn": "Makedonia pastor",
+      "mediaType": "youtube",
+      "mediaUrl": "https://www.youtube.com/results?search_query=KKKT+mahubiri+Kilutheri",
+      "noteSw": "Utafutaji wa YouTube — ofisi inaweza kubandika video ya Makedonia.",
+      "noteEn": "YouTube search — the office can paste a Makedonia video.",
+      "isLive": false,
+      "congregationId": "cong-makedonia"
     },
     {
       "id": "ser-4",
@@ -415,9 +538,11 @@
       "preacherSw": "Mwalimu wa Neno",
       "preacherEn": "Lay preacher",
       "mediaType": "youtube",
-      "mediaUrl": "https://www.youtube.com/results?search_query=ELCT+sermon",
-      "noteSw": "Mahubiri ya wikendi ya vijana.",
-      "noteEn": "Youth weekend sermon."
+      "mediaUrl": "https://www.youtube.com/live/8XUYZoguhEQ",
+      "noteSw": "Mfano wa kiungo cha /live — programu inasoma namba ya video.",
+      "noteEn": "Sample /live link — the app reads the video id.",
+      "isLive": false,
+      "congregationId": "cong-angaza"
     }
   ],
   "contacts": [

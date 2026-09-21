@@ -46,7 +46,8 @@ class ChurchStore extends ChangeNotifier {
     final raw = prefs.getString(_dataKey);
     final ChurchData parsed;
     if (raw != null && raw.isNotEmpty) {
-      parsed = ChurchData.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+      parsed = await migrateV2(
+          ChurchData.fromJson(jsonDecode(raw) as Map<String, dynamic>));
     } else {
       parsed = await loadSeed();
       await prefs.setString(_dataKey, jsonEncode(parsed.toJson()));
@@ -65,6 +66,36 @@ class ChurchStore extends ChangeNotifier {
   static Future<ChurchData> loadSeed() async {
     final seed = await rootBundle.loadString(seedAsset);
     return ChurchData.fromJson(jsonDecode(seed) as Map<String, dynamic>);
+  }
+
+  /// v1 installs stored `church_data_v1` without congregations. Fill from seed.
+  static Future<ChurchData> migrateV2(ChurchData data) async {
+    if (data.congregations.isNotEmpty && data.version >= 2) {
+      _ensureSelectedCongregation(data);
+      return data;
+    }
+    final seed = await loadSeed();
+    if (data.congregations.isEmpty) {
+      data.congregations = seed.congregations;
+    }
+    if (data.jumuiyas.isEmpty) {
+      data.jumuiyas = seed.jumuiyas;
+    }
+    data.members = data.members;
+    data.homePins = data.homePins;
+    data.version = 2;
+    _ensureSelectedCongregation(data);
+    return data;
+  }
+
+  static void _ensureSelectedCongregation(ChurchData data) {
+    if (data.congregations.isEmpty) return;
+    final current = data.settings.selectedCongregationId;
+    final known = data.congregationById(current);
+    if (known != null) return;
+    final main = data.congregations.where((c) => c.isMain);
+    data.settings.selectedCongregationId =
+        main.isNotEmpty ? main.first.id : data.congregations.first.id;
   }
 
   /// In-memory store for tests (no SharedPreferences).
@@ -245,6 +276,128 @@ class ChurchStore extends ChangeNotifier {
     await persist();
   }
 
+  Congregation? get selectedCongregation {
+    final byId = data.congregationById(data.settings.selectedCongregationId);
+    if (byId != null) return byId;
+    for (final c in data.congregations) {
+      if (c.isMain) return c;
+    }
+    return data.congregations.isEmpty ? null : data.congregations.first;
+  }
+
+  MemberRecord? get currentMember {
+    final id = data.settings.currentMemberId;
+    if (id == null || id.isEmpty) return null;
+    for (final m in data.members) {
+      if (m.id == id) return m;
+    }
+    return data.members.isEmpty ? null : data.members.first;
+  }
+
+  Sermon? get liveSermon {
+    final live = data.sermons.where((s) => s.isLive).toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
+    return live.isEmpty ? null : live.first;
+  }
+
+  List<Jumuiya> jumuiyasFor(String congregationId) =>
+      data.jumuiyas.where((j) => j.congregationId == congregationId).toList();
+
+  List<HomePin> pinsForJumuiya(String jumuiyaId) =>
+      data.homePins.where((p) => p.jumuiyaId == jumuiyaId).toList();
+
+  Future<void> selectCongregation(String id) async {
+    data.settings.selectedCongregationId = id;
+    await persist();
+  }
+
+  Future<void> saveMember(MemberRecord member) async {
+    _upsert(data.members, member.id, member, (list) => data.members = list);
+    data.settings.currentMemberId = member.id;
+    if (member.shareHomePin &&
+        member.homeLat != null &&
+        member.homeLng != null &&
+        member.jumuiyaId.isNotEmpty) {
+      await pingHome(
+        memberId: member.id,
+        jumuiyaId: member.jumuiyaId,
+        congregationId: member.congregationId,
+        label: member.fullName.trim().isEmpty
+            ? 'Nyumba'
+            : 'Nyumba ya ${member.fullName.trim()}',
+        lat: member.homeLat!,
+        lng: member.homeLng!,
+        note: member.householdNote,
+        persistAfter: false,
+      );
+    }
+    await persist();
+  }
+
+  Future<void> deleteMember(String id) async {
+    data.members = data.members.where((m) => m.id != id).toList();
+    data.homePins = data.homePins.where((p) => p.memberId != id).toList();
+    if (data.settings.currentMemberId == id) {
+      data.settings.currentMemberId = null;
+    }
+    await persist();
+  }
+
+  Future<void> pingHome({
+    required String memberId,
+    required String jumuiyaId,
+    required String congregationId,
+    required String label,
+    required double lat,
+    required double lng,
+    String note = '',
+    bool persistAfter = true,
+  }) async {
+    final existing = data.homePins.where((p) => p.memberId == memberId);
+    final id = existing.isNotEmpty ? existing.first.id : _uuid.v4();
+    _upsert(
+      data.homePins,
+      id,
+      HomePin(
+        id: id,
+        memberId: memberId,
+        jumuiyaId: jumuiyaId,
+        congregationId: congregationId,
+        label: label.trim().isEmpty ? 'Nyumba' : label.trim(),
+        latitude: lat,
+        longitude: lng,
+        note: note.trim(),
+        at: DateTime.now().toIso8601String(),
+      ),
+      (list) => data.homePins = list,
+    );
+    final member = data.members.where((m) => m.id == memberId);
+    if (member.isNotEmpty) {
+      member.first.shareHomePin = true;
+      member.first.homeLat = lat;
+      member.first.homeLng = lng;
+      member.first.jumuiyaId = jumuiyaId;
+      member.first.congregationId = congregationId;
+    }
+    if (persistAfter) await persist();
+  }
+
+  Future<void> deleteHomePin(String id) async {
+    data.homePins = data.homePins.where((p) => p.id != id).toList();
+    await persist();
+  }
+
+  Future<void> upsertCongregation(Congregation item) async {
+    _upsert(data.congregations, item.id, item,
+        (list) => data.congregations = list);
+    await persist();
+  }
+
+  Future<void> upsertJumuiya(Jumuiya item) async {
+    _upsert(data.jumuiyas, item.id, item, (list) => data.jumuiyas = list);
+    await persist();
+  }
+
   Future<void> upsertSermon(Sermon item) async {
     _upsert(data.sermons, item.id, item, (list) => data.sermons = list);
     await persist();
@@ -316,6 +469,10 @@ class ChurchStore extends ChangeNotifier {
           if (e is Hymn) return e.id;
           if (e is RoleContact) return e.id;
           if (e is SundaySlot) return e.id;
+          if (e is Congregation) return e.id;
+          if (e is Jumuiya) return e.id;
+          if (e is MemberRecord) return e.id;
+          if (e is HomePin) return e.id;
           return '';
         };
     final next = [...current];

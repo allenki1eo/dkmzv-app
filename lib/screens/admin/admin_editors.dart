@@ -403,6 +403,9 @@ class AdminSermons extends StatelessWidget {
           mediaUrl: '',
           noteSw: '',
           noteEn: '',
+          isLive: false,
+          congregationId:
+              store.selectedCongregation?.id ?? '',
         );
     final date = TextEditingController(text: item.date);
     final tSw = TextEditingController(text: item.titleSw);
@@ -413,6 +416,12 @@ class AdminSermons extends StatelessWidget {
     final url = TextEditingController(text: item.mediaUrl);
     final nSw = TextEditingController(text: item.noteSw);
     final nEn = TextEditingController(text: item.noteEn);
+    final live = ValueNotifier(item.isLive);
+    final congId = ValueNotifier(
+      item.congregationId.isNotEmpty
+          ? item.congregationId
+          : (store.selectedCongregation?.id ?? ''),
+    );
     final s = sOf(context);
     final ok = await showDialog<bool>(
       context: context,
@@ -422,6 +431,29 @@ class AdminSermons extends StatelessWidget {
           width: 420,
           child: SingleChildScrollView(
             child: Column(children: [
+              ValueListenableBuilder(
+                valueListenable: live,
+                builder: (_, v, _) => SwitchListTile(
+                  title: Text(s.liveNow),
+                  value: v,
+                  onChanged: (n) => live.value = n,
+                ),
+              ),
+              ValueListenableBuilder(
+                valueListenable: congId,
+                builder: (_, v, _) => DropdownButtonFormField<String>(
+                  initialValue: store.data.congregations.any((c) => c.id == v)
+                      ? v
+                      : null,
+                  decoration: InputDecoration(labelText: s.congregations),
+                  items: [
+                    for (final c in store.data.congregations)
+                      DropdownMenuItem(
+                          value: c.id, child: Text(c.name(store.sw))),
+                  ],
+                  onChanged: (n) => congId.value = n ?? '',
+                ),
+              ),
               TextField(controller: date, decoration: InputDecoration(labelText: s.date)),
               TextField(controller: tSw, decoration: InputDecoration(labelText: s.titleSw)),
               TextField(controller: tEn, decoration: InputDecoration(labelText: s.titleEn)),
@@ -448,10 +480,12 @@ class AdminSermons extends StatelessWidget {
         titleEn: tEn.text.trim(),
         preacherSw: pSw.text.trim(),
         preacherEn: pEn.text.trim(),
-        mediaType: type.text.trim(),
+        mediaType: type.text.trim().isEmpty ? 'youtube' : type.text.trim(),
         mediaUrl: url.text.trim(),
         noteSw: nSw.text.trim(),
         noteEn: nEn.text.trim(),
+        isLive: live.value,
+        congregationId: congId.value,
       ));
     }
   }
@@ -843,6 +877,82 @@ class AdminChurch extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class AdminMembers extends StatelessWidget {
+  const AdminMembers({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final store = context.watch<ChurchStore>();
+    final s = sOf(context);
+    final items = store.data.members;
+    return Scaffold(
+      appBar: AppBar(title: Text(s.membersAdmin)),
+      body: items.isEmpty
+          ? Center(child: Text(s.noMembers))
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+              children: [
+                Text(s.registerLead,
+                    style: const TextStyle(color: Color(0xFF6B6274))),
+                const SizedBox(height: 8),
+                for (final m in items)
+                  Card(
+                    child: ListTile(
+                      title: Text(m.fullName),
+                      subtitle: Text([
+                        store.data
+                                .congregationById(m.congregationId)
+                                ?.name(store.sw) ??
+                            '',
+                        store.data.jumuiyaById(m.jumuiyaId)?.name(store.sw) ??
+                            '',
+                        m.phone,
+                      ].where((e) => e.isNotEmpty).join(' · ')),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () => _confirmDelete(
+                            context, m.id, () => store.deleteMember(m.id)),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+    );
+  }
+}
+
+class AdminHomePins extends StatelessWidget {
+  const AdminHomePins({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final store = context.watch<ChurchStore>();
+    final s = sOf(context);
+    final items = store.data.homePins;
+    return Scaffold(
+      appBar: AppBar(title: Text(s.homePins)),
+      body: items.isEmpty
+          ? Center(child: Text(s.noMembers))
+          : ListView(
+              children: [
+                for (final p in items)
+                  ListTile(
+                    leading: const Icon(Icons.home_outlined),
+                    title: Text(p.label),
+                    subtitle: Text(
+                        '${p.latitude.toStringAsFixed(5)}, ${p.longitude.toStringAsFixed(5)}'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () => _confirmDelete(
+                          context, p.id, () => store.deleteHomePin(p.id)),
+                    ),
+                  ),
+              ],
+            ),
     );
   }
 }

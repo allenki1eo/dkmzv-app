@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
@@ -27,4 +28,12 @@ Future<void> copyText(BuildContext context, String value, S s) async {
 Future<void> dial(BuildContext context, String phone, S s) async {
   final cleaned = phone.replaceAll(' ', '');
   await openExternal(context, 'tel:$cleaned', s);
+}
+
+Future<void> shareText(String text, {String? subject}) async {
+  final trimmed = text.trim();
+  if (trimmed.isEmpty) return;
+  await SharePlus.instance.share(
+    ShareParams(text: trimmed, subject: subject),
+  );
 }

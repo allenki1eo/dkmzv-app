@@ -30,22 +30,33 @@ class ChurchSettings {
     required this.adminPin,
     required this.fcmConfigured,
     required this.defaultLocale,
+    this.selectedCongregationId = '',
+    this.currentMemberId,
   });
 
   String adminPin;
   bool fcmConfigured;
   String defaultLocale;
+  String selectedCongregationId;
+  String? currentMemberId;
 
-  factory ChurchSettings.fromJson(Map<String, dynamic> j) => ChurchSettings(
-        adminPin: _s(j['adminPin'], 'dkmzv'),
-        fcmConfigured: _b(j['fcmConfigured']),
-        defaultLocale: _s(j['defaultLocale'], 'sw'),
-      );
+  factory ChurchSettings.fromJson(Map<String, dynamic> j) {
+    final member = _s(j['currentMemberId']);
+    return ChurchSettings(
+      adminPin: _s(j['adminPin'], 'dkmzv'),
+      fcmConfigured: _b(j['fcmConfigured']),
+      defaultLocale: _s(j['defaultLocale'], 'sw'),
+      selectedCongregationId: _s(j['selectedCongregationId']),
+      currentMemberId: member.isEmpty ? null : member,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'adminPin': adminPin,
         'fcmConfigured': fcmConfigured,
         'defaultLocale': defaultLocale,
+        'selectedCongregationId': selectedCongregationId,
+        'currentMemberId': currentMemberId ?? '',
       };
 }
 
@@ -137,6 +148,230 @@ class ChurchInfo {
         'whatsappNoteEn': whatsappNoteEn,
         'aboutSw': aboutSw,
         'aboutEn': aboutEn,
+      };
+}
+
+class Congregation {
+  Congregation({
+    required this.id,
+    required this.nameSw,
+    required this.nameEn,
+    required this.roleSw,
+    required this.roleEn,
+    required this.isMain,
+    required this.approximate,
+    required this.addressSw,
+    required this.addressEn,
+    required this.latitude,
+    required this.longitude,
+    required this.noteSw,
+    required this.noteEn,
+  });
+
+  String id;
+  String nameSw;
+  String nameEn;
+  String roleSw;
+  String roleEn;
+  bool isMain;
+  bool approximate;
+  String addressSw;
+  String addressEn;
+  double latitude;
+  double longitude;
+  String noteSw;
+  String noteEn;
+
+  String name(bool sw) => sw ? nameSw : nameEn;
+  String role(bool sw) => sw ? roleSw : roleEn;
+  String address(bool sw) => sw ? addressSw : addressEn;
+  String note(bool sw) => sw ? noteSw : noteEn;
+
+  String get osmUrl =>
+      'https://www.openstreetmap.org/?mlat=$latitude&mlon=$longitude#map=16/$latitude/$longitude';
+
+  factory Congregation.fromJson(Map<String, dynamic> j) => Congregation(
+        id: _s(j['id']),
+        nameSw: _s(j['nameSw']),
+        nameEn: _s(j['nameEn']),
+        roleSw: _s(j['roleSw']),
+        roleEn: _s(j['roleEn']),
+        isMain: _b(j['isMain']),
+        approximate: _b(j['approximate']),
+        addressSw: _s(j['addressSw']),
+        addressEn: _s(j['addressEn']),
+        latitude: _d(j['latitude']),
+        longitude: _d(j['longitude']),
+        noteSw: _s(j['noteSw']),
+        noteEn: _s(j['noteEn']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'nameSw': nameSw,
+        'nameEn': nameEn,
+        'roleSw': roleSw,
+        'roleEn': roleEn,
+        'isMain': isMain,
+        'approximate': approximate,
+        'addressSw': addressSw,
+        'addressEn': addressEn,
+        'latitude': latitude,
+        'longitude': longitude,
+        'noteSw': noteSw,
+        'noteEn': noteEn,
+      };
+}
+
+class Jumuiya {
+  Jumuiya({
+    required this.id,
+    required this.congregationId,
+    required this.nameSw,
+    required this.nameEn,
+    required this.meetingNoteSw,
+    required this.meetingNoteEn,
+    required this.latitude,
+    required this.longitude,
+  });
+
+  String id;
+  String congregationId;
+  String nameSw;
+  String nameEn;
+  String meetingNoteSw;
+  String meetingNoteEn;
+  double latitude;
+  double longitude;
+
+  String name(bool sw) => sw ? nameSw : nameEn;
+  String meetingNote(bool sw) => sw ? meetingNoteSw : meetingNoteEn;
+
+  factory Jumuiya.fromJson(Map<String, dynamic> j) => Jumuiya(
+        id: _s(j['id']),
+        congregationId: _s(j['congregationId']),
+        nameSw: _s(j['nameSw']),
+        nameEn: _s(j['nameEn']),
+        meetingNoteSw: _s(j['meetingNoteSw']),
+        meetingNoteEn: _s(j['meetingNoteEn']),
+        latitude: _d(j['latitude']),
+        longitude: _d(j['longitude']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'congregationId': congregationId,
+        'nameSw': nameSw,
+        'nameEn': nameEn,
+        'meetingNoteSw': meetingNoteSw,
+        'meetingNoteEn': meetingNoteEn,
+        'latitude': latitude,
+        'longitude': longitude,
+      };
+}
+
+class HomePin {
+  HomePin({
+    required this.id,
+    required this.memberId,
+    required this.jumuiyaId,
+    required this.congregationId,
+    required this.label,
+    required this.latitude,
+    required this.longitude,
+    required this.note,
+    required this.at,
+  });
+
+  String id;
+  String memberId;
+  String jumuiyaId;
+  String congregationId;
+  String label;
+  double latitude;
+  double longitude;
+  String note;
+  String at;
+
+  factory HomePin.fromJson(Map<String, dynamic> j) => HomePin(
+        id: _s(j['id']),
+        memberId: _s(j['memberId']),
+        jumuiyaId: _s(j['jumuiyaId']),
+        congregationId: _s(j['congregationId']),
+        label: _s(j['label']),
+        latitude: _d(j['latitude']),
+        longitude: _d(j['longitude']),
+        note: _s(j['note']),
+        at: _s(j['at']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'memberId': memberId,
+        'jumuiyaId': jumuiyaId,
+        'congregationId': congregationId,
+        'label': label,
+        'latitude': latitude,
+        'longitude': longitude,
+        'note': note,
+        'at': at,
+      };
+}
+
+class MemberRecord {
+  MemberRecord({
+    required this.id,
+    required this.fullName,
+    required this.congregationId,
+    required this.jumuiyaId,
+    required this.phone,
+    required this.householdNote,
+    required this.shareHomePin,
+    this.homeLat,
+    this.homeLng,
+    required this.registeredAt,
+  });
+
+  String id;
+  String fullName;
+  String congregationId;
+  String jumuiyaId;
+  /// Kept on this phone for the office inbox — never shown as a public directory.
+  String phone;
+  String householdNote;
+  bool shareHomePin;
+  double? homeLat;
+  double? homeLng;
+  String registeredAt;
+
+  factory MemberRecord.fromJson(Map<String, dynamic> j) {
+    final lat = j['homeLat'];
+    final lng = j['homeLng'];
+    return MemberRecord(
+      id: _s(j['id']),
+      fullName: _s(j['fullName']),
+      congregationId: _s(j['congregationId']),
+      jumuiyaId: _s(j['jumuiyaId']),
+      phone: _s(j['phone']),
+      householdNote: _s(j['householdNote']),
+      shareHomePin: _b(j['shareHomePin']),
+      homeLat: lat == null || '$lat'.isEmpty ? null : _d(lat),
+      homeLng: lng == null || '$lng'.isEmpty ? null : _d(lng),
+      registeredAt: _s(j['registeredAt']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'fullName': fullName,
+        'congregationId': congregationId,
+        'jumuiyaId': jumuiyaId,
+        'phone': phone,
+        'householdNote': householdNote,
+        'shareHomePin': shareHomePin,
+        'homeLat': homeLat,
+        'homeLng': homeLng,
+        'registeredAt': registeredAt,
       };
 }
 
@@ -502,6 +737,8 @@ class Sermon {
     required this.mediaUrl,
     required this.noteSw,
     required this.noteEn,
+    this.isLive = false,
+    this.congregationId = '',
   });
 
   String id;
@@ -514,6 +751,8 @@ class Sermon {
   String mediaUrl;
   String noteSw;
   String noteEn;
+  bool isLive;
+  String congregationId;
 
   String title(bool sw) => sw ? titleSw : titleEn;
   String preacher(bool sw) => sw ? preacherSw : preacherEn;
@@ -530,6 +769,8 @@ class Sermon {
         mediaUrl: _s(j['mediaUrl']),
         noteSw: _s(j['noteSw']),
         noteEn: _s(j['noteEn']),
+        isLive: _b(j['isLive']),
+        congregationId: _s(j['congregationId']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -543,6 +784,8 @@ class Sermon {
         'mediaUrl': mediaUrl,
         'noteSw': noteSw,
         'noteEn': noteEn,
+        'isLive': isLive,
+        'congregationId': congregationId,
       };
 }
 
@@ -694,6 +937,10 @@ class ChurchData {
     required this.version,
     required this.settings,
     required this.church,
+    required this.congregations,
+    required this.jumuiyas,
+    required this.members,
+    required this.homePins,
     required this.sundayTimes,
     required this.announcements,
     required this.services,
@@ -709,6 +956,10 @@ class ChurchData {
   int version;
   ChurchSettings settings;
   ChurchInfo church;
+  List<Congregation> congregations;
+  List<Jumuiya> jumuiyas;
+  List<MemberRecord> members;
+  List<HomePin> homePins;
   List<SundaySlot> sundayTimes;
   List<Announcement> announcements;
   List<ServiceOrder> services;
@@ -726,6 +977,20 @@ class ChurchData {
             Map<String, dynamic>.from(j['settings'] as Map? ?? {})),
         church: ChurchInfo.fromJson(
             Map<String, dynamic>.from(j['church'] as Map? ?? {})),
+        congregations: (j['congregations'] as List? ?? [])
+            .map((e) =>
+                Congregation.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        jumuiyas: (j['jumuiyas'] as List? ?? [])
+            .map((e) => Jumuiya.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        members: (j['members'] as List? ?? [])
+            .map((e) =>
+                MemberRecord.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        homePins: (j['homePins'] as List? ?? [])
+            .map((e) => HomePin.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
         sundayTimes: (j['sundayTimes'] as List? ?? [])
             .map((e) =>
                 SundaySlot.fromJson(Map<String, dynamic>.from(e as Map)))
@@ -768,6 +1033,10 @@ class ChurchData {
         'version': version,
         'settings': settings.toJson(),
         'church': church.toJson(),
+        'congregations': congregations.map((e) => e.toJson()).toList(),
+        'jumuiyas': jumuiyas.map((e) => e.toJson()).toList(),
+        'members': members.map((e) => e.toJson()).toList(),
+        'homePins': homePins.map((e) => e.toJson()).toList(),
         'sundayTimes': sundayTimes.map((e) => e.toJson()).toList(),
         'announcements': announcements.map((e) => e.toJson()).toList(),
         'services': services.map((e) => e.toJson()).toList(),
@@ -779,6 +1048,20 @@ class ChurchData {
         'pastoralRequests': pastoralRequests.map((e) => e.toJson()).toList(),
         'hymns': hymns.map((e) => e.toJson()).toList(),
       };
+
+  Congregation? congregationById(String id) {
+    for (final c in congregations) {
+      if (c.id == id) return c;
+    }
+    return null;
+  }
+
+  Jumuiya? jumuiyaById(String id) {
+    for (final j in jumuiyas) {
+      if (j.id == id) return j;
+    }
+    return null;
+  }
 
   List<Announcement> get sortedAnnouncements {
     final list = [...announcements];
