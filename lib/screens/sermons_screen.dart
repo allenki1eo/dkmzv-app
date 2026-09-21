@@ -32,8 +32,8 @@ class SermonsScreen extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(s.liveLead,
-                        style: const TextStyle(
-                            color: DkmzvBrand.muted, height: 1.4)),
+                        style: TextStyle(
+                            color: Surfaces.of(context).muted, height: 1.4)),
                   );
                 }
                 final ser = items[i - 1];
@@ -48,38 +48,31 @@ class SermonsScreen extends StatelessWidget {
                         Row(
                           children: [
                             if (ser.isLive) ...[
-                              Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: DkmzvBrand.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Text(s.liveNow,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w800)),
-                              ),
+                              Pill(s.liveNow,
+                                  color: DkmzvBrand.red, filled: true),
+                              const SizedBox(width: 8),
                             ],
                             Text(formatDate(ser.date, store.localeCode),
-                                style: const TextStyle(
-                                    color: DkmzvBrand.muted, fontSize: 12)),
+                                style: TextStyle(
+                                    color: Surfaces.of(context).muted,
+                                    fontSize: 12)),
                           ],
                         ),
+                        const SizedBox(height: 6),
                         Text(ser.title(store.sw),
                             style: Theme.of(context).textTheme.titleMedium),
                         Text('${s.preacher}: ${ser.preacher(store.sw)}'),
                         if (cong != null)
                           Text(cong.name(store.sw),
-                              style: const TextStyle(
-                                  color: DkmzvBrand.muted, fontSize: 13)),
+                              style: TextStyle(
+                                  color: Surfaces.of(context).muted,
+                                  fontSize: 13)),
                         if (ser.note(store.sw).isNotEmpty) ...[
                           const SizedBox(height: 6),
                           Text(ser.note(store.sw),
-                              style: const TextStyle(
-                                  color: DkmzvBrand.muted, fontSize: 13)),
+                              style: TextStyle(
+                                  color: Surfaces.of(context).muted,
+                                  fontSize: 13)),
                         ],
                         const SizedBox(height: 8),
                         Wrap(

@@ -51,7 +51,7 @@ class ContactScreen extends StatelessWidget {
           Text(c.about(store.sw)),
           const SizedBox(height: 8),
           Text(c.whatsapp(store.sw),
-              style: const TextStyle(color: DkmzvBrand.muted)),
+              style: TextStyle(color: Surfaces.of(context).muted)),
           SectionLabel(s.roleContacts),
           Text(s.notDirectory,
               style: const TextStyle(
@@ -74,8 +74,8 @@ class ContactScreen extends StatelessWidget {
                     if (role.email.isNotEmpty) Text(role.email),
                     const SizedBox(height: 6),
                     Text(role.note(store.sw),
-                        style: const TextStyle(
-                            color: DkmzvBrand.muted, fontSize: 13)),
+                        style: TextStyle(
+                            color: Surfaces.of(context).muted, fontSize: 13)),
                     const SizedBox(height: 8),
                     Row(
                       children: [

@@ -67,17 +67,18 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
               ),
             ),
           Text(formatDate(ser.date, store.localeCode),
-              style: const TextStyle(color: DkmzvBrand.muted, fontSize: 12)),
+              style: TextStyle(color: Surfaces.of(context).muted, fontSize: 12)),
           Text(ser.title(store.sw),
               style: Theme.of(context).textTheme.titleLarge),
           Text('${s.preacher}: ${ser.preacher(store.sw)}'),
           if (cong != null)
             Text(cong.name(store.sw),
-                style: const TextStyle(color: DkmzvBrand.muted)),
+                style: TextStyle(color: Surfaces.of(context).muted)),
           if (ser.note(store.sw).isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(ser.note(store.sw),
-                style: const TextStyle(color: DkmzvBrand.muted, height: 1.4)),
+                style: TextStyle(
+                    color: Surfaces.of(context).muted, height: 1.4)),
           ],
           const SizedBox(height: 16),
           if (_web != null)
@@ -90,7 +91,8 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
             )
           else ...[
             Text(s.youtubeNeedUrl,
-                style: const TextStyle(color: DkmzvBrand.muted, height: 1.4)),
+                style: TextStyle(
+                    color: Surfaces.of(context).muted, height: 1.4)),
             const SizedBox(height: 12),
           ],
           const SizedBox(height: 12),

@@ -1,15 +1,39 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'hymn_search.dart';
 import 'models.dart';
+import '../theme/brand.dart';
 import '../theme/liturgical.dart';
 
+/// `#RRGGBB` or `#AARRGGBB` to a [Color]; null when the office typed junk.
+Color? parseHexColor(String raw) {
+  var hex = raw.trim().replaceFirst('#', '');
+  if (hex.length == 6) hex = 'FF$hex';
+  if (hex.length != 8) return null;
+  final value = int.tryParse(hex, radix: 16);
+  return value == null ? null : Color(value);
+}
+
+/// Metres between two WGS84 points (haversine) — used for jumuiya geofences.
+double metersBetween(double lat1, double lng1, double lat2, double lng2) {
+  const earth = 6371000.0;
+  double rad(double d) => d * math.pi / 180.0;
+  final dLat = rad(lat2 - lat1);
+  final dLng = rad(lng2 - lng1);
+  final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+      math.cos(rad(lat1)) * math.cos(rad(lat2)) *
+          math.sin(dLng / 2) * math.sin(dLng / 2);
+  return earth * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+}
+
 const seedAsset = 'assets/seed/church.json';
+const dataVersion = 3;
 const _dataKey = 'church_data_v1';
 const _localeKey = 'locale_code';
 const _favKey = 'favorite_hymn_ids';
@@ -68,9 +92,12 @@ class ChurchStore extends ChangeNotifier {
     return ChurchData.fromJson(jsonDecode(seed) as Map<String, dynamic>);
   }
 
-  /// v1 installs stored `church_data_v1` without congregations. Fill from seed.
+  /// Older installs miss congregations (v1) or offering groups (v2).
+  /// Fill only what is empty so office edits survive.
   static Future<ChurchData> migrateV2(ChurchData data) async {
-    if (data.congregations.isNotEmpty && data.version >= 2) {
+    if (data.version >= dataVersion &&
+        data.congregations.isNotEmpty &&
+        data.giving.categories.isNotEmpty) {
       _ensureSelectedCongregation(data);
       return data;
     }
@@ -81,9 +108,19 @@ class ChurchStore extends ChangeNotifier {
     if (data.jumuiyas.isEmpty) {
       data.jumuiyas = seed.jumuiyas;
     }
-    data.members = data.members;
-    data.homePins = data.homePins;
-    data.version = 2;
+    if (data.giving.categories.isEmpty) {
+      data.giving.categories = seed.giving.categories;
+    }
+    if (data.giving.payments.stripeNoteSw.isEmpty) {
+      data.giving.payments = seed.giving.payments;
+    }
+    for (final c in data.congregations) {
+      final fromSeed = seed.congregationById(c.id);
+      if (c.accentHex.isEmpty && fromSeed != null) {
+        c.accentHex = fromSeed.accentHex;
+      }
+    }
+    data.version = dataVersion;
     _ensureSelectedCongregation(data);
     return data;
   }
@@ -225,6 +262,8 @@ class ChurchStore extends ChangeNotifier {
     required int amount,
     required String purposeId,
     required String note,
+    String categoryId = '',
+    String method = 'mpesa',
   }) async {
     data.givingNotes = [
       GivingNote(
@@ -233,9 +272,44 @@ class ChurchStore extends ChangeNotifier {
         amount: amount,
         purposeId: purposeId,
         note: note.trim(),
+        categoryId: categoryId,
+        method: method,
       ),
       ...data.givingNotes,
     ];
+    await persist();
+  }
+
+  Future<void> deleteGivingNote(String id) async {
+    data.givingNotes = data.givingNotes.where((n) => n.id != id).toList();
+    await persist();
+  }
+
+  /// My own notes per offering group — bahasha stays apart from fungu la kumi.
+  Map<String, int> get givingTotalsByGroup {
+    final totals = <String, int>{};
+    for (final n in data.givingNotes) {
+      final group =
+          data.giving.categoryById(n.categoryId)?.group ?? GivingGroups.sadaka;
+      totals[group] = (totals[group] ?? 0) + n.amount;
+    }
+    return totals;
+  }
+
+  Future<void> upsertGivingCategory(GivingCategory item) async {
+    _upsert(data.giving.categories, item.id, item,
+        (list) => data.giving.categories = list);
+    await persist();
+  }
+
+  Future<void> deleteGivingCategory(String id) async {
+    data.giving.categories =
+        data.giving.categories.where((c) => c.id != id).toList();
+    await persist();
+  }
+
+  Future<void> savePayments(PaymentConfig payments) async {
+    data.giving.payments = payments;
     await persist();
   }
 
@@ -276,6 +350,36 @@ class ChurchStore extends ChangeNotifier {
     await persist();
   }
 
+  ThemeMode get themeMode {
+    switch (data.settings.themeMode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
+    }
+  }
+
+  Future<void> setThemeMode(String mode) async {
+    data.settings.themeMode =
+        const {'light', 'dark', 'system'}.contains(mode) ? mode : 'system';
+    await persist();
+  }
+
+  String get backgroundId => data.settings.backgroundId;
+
+  Future<void> setBackground(String id) async {
+    data.settings.backgroundId = id;
+    await persist();
+  }
+
+  /// Identity colour of the active usharika (vestments stay liturgical).
+  Color get parishAccent {
+    final hex = selectedCongregation?.accentHex ?? '';
+    return parseHexColor(hex) ?? DkmzvBrand.purple;
+  }
+
   Congregation? get selectedCongregation {
     final byId = data.congregationById(data.settings.selectedCongregationId);
     if (byId != null) return byId;
@@ -305,6 +409,51 @@ class ChurchStore extends ChangeNotifier {
 
   List<HomePin> pinsForJumuiya(String jumuiyaId) =>
       data.homePins.where((p) => p.jumuiyaId == jumuiyaId).toList();
+
+  List<HomePin> pinsForCongregation(String congregationId) =>
+      data.homePins.where((p) => p.congregationId == congregationId).toList();
+
+  List<MemberRecord> membersForCongregation(String congregationId) =>
+      data.members.where((m) => m.congregationId == congregationId).toList();
+
+  List<MemberRecord> membersForJumuiya(String jumuiyaId) =>
+      data.members.where((m) => m.jumuiyaId == jumuiyaId).toList();
+
+  List<MemberRecord> searchMembers(String query) {
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return data.members;
+    return data.members.where((m) {
+      final jumuiya = data.jumuiyaById(m.jumuiyaId)?.nameSw ?? '';
+      return '${m.fullName} ${m.kaya} ${m.phone} $jumuiya'
+          .toLowerCase()
+          .contains(q);
+    }).toList();
+  }
+
+  /// Home pins that fall inside the jumuiya geofence circle.
+  List<HomePin> pinsInsideGeofence(Jumuiya jumuiya) => data.homePins
+      .where((p) =>
+          metersBetween(
+              jumuiya.latitude, jumuiya.longitude, p.latitude, p.longitude) <=
+          jumuiya.radiusMeters)
+      .toList();
+
+  /// Nearest jumuiya whose geofence contains the point, else null.
+  Jumuiya? jumuiyaAt(double lat, double lng, {String? congregationId}) {
+    Jumuiya? best;
+    var bestDistance = double.infinity;
+    for (final j in data.jumuiyas) {
+      if (congregationId != null && j.congregationId != congregationId) {
+        continue;
+      }
+      final d = metersBetween(j.latitude, j.longitude, lat, lng);
+      if (d <= j.radiusMeters && d < bestDistance) {
+        best = j;
+        bestDistance = d;
+      }
+    }
+    return best;
+  }
 
   Future<void> selectCongregation(String id) async {
     data.settings.selectedCongregationId = id;
@@ -398,6 +547,30 @@ class ChurchStore extends ChangeNotifier {
     await persist();
   }
 
+  Future<void> deleteJumuiya(String id) async {
+    data.jumuiyas = data.jumuiyas.where((j) => j.id != id).toList();
+    await persist();
+  }
+
+  Future<void> deleteCongregation(String id) async {
+    data.congregations = data.congregations.where((c) => c.id != id).toList();
+    data.jumuiyas = data.jumuiyas.where((j) => j.congregationId != id).toList();
+    _ensureSelectedCongregation(data);
+    await persist();
+  }
+
+  /// One switch for "tuna live sasa" on today's stream.
+  Future<void> setLiveSermon(String sermonId, bool live) async {
+    for (final s in data.sermons) {
+      if (s.id == sermonId) {
+        s.isLive = live;
+      } else if (live) {
+        s.isLive = false;
+      }
+    }
+    await persist();
+  }
+
   Future<void> upsertSermon(Sermon item) async {
     _upsert(data.sermons, item.id, item, (list) => data.sermons = list);
     await persist();
@@ -473,6 +646,7 @@ class ChurchStore extends ChangeNotifier {
           if (e is Jumuiya) return e.id;
           if (e is MemberRecord) return e.id;
           if (e is HomePin) return e.id;
+          if (e is GivingCategory) return e.id;
           return '';
         };
     final next = [...current];

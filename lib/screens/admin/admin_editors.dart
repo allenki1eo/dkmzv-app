@@ -632,6 +632,8 @@ class AdminGiving extends StatelessWidget {
                     .where((e) => e > 0)
                     .toList(),
                 purposes: g.purposes,
+                categories: g.categories,
+                payments: g.payments,
               ));
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(s.saved)));
@@ -881,46 +883,104 @@ class AdminChurch extends StatelessWidget {
   }
 }
 
-class AdminMembers extends StatelessWidget {
+/// Roster of waumini: search by name, kaya, jumuiya or phone.
+class AdminMembers extends StatefulWidget {
   const AdminMembers({super.key});
+
+  @override
+  State<AdminMembers> createState() => _AdminMembersState();
+}
+
+class _AdminMembersState extends State<AdminMembers> {
+  final _query = TextEditingController();
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  String _statusLabel(dynamic s, String status) {
+    switch (status) {
+      case 'kijana':
+        return s.statusKijana as String;
+      case 'mtoto':
+        return s.statusMtoto as String;
+      case 'mgeni':
+        return s.statusMgeni as String;
+      default:
+        return s.statusMwanachama as String;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
-    final items = store.data.members;
+    final items = store.searchMembers(_query.text);
     return Scaffold(
-      appBar: AppBar(title: Text(s.membersAdmin)),
-      body: items.isEmpty
-          ? Center(child: Text(s.noMembers))
-          : ListView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-              children: [
-                Text(s.registerLead,
-                    style: const TextStyle(color: Color(0xFF6B6274))),
-                const SizedBox(height: 8),
-                for (final m in items)
-                  Card(
-                    child: ListTile(
-                      title: Text(m.fullName),
-                      subtitle: Text([
-                        store.data
-                                .congregationById(m.congregationId)
-                                ?.name(store.sw) ??
-                            '',
-                        store.data.jumuiyaById(m.jumuiyaId)?.name(store.sw) ??
-                            '',
-                        m.phone,
-                      ].where((e) => e.isNotEmpty).join(' · ')),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        onPressed: () => _confirmDelete(
-                            context, m.id, () => store.deleteMember(m.id)),
-                      ),
-                    ),
-                  ),
-              ],
+      appBar: AppBar(title: Text(s.registeredMembers)),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: TextField(
+              controller: _query,
+              onChanged: (_) => setState(() {}),
+              decoration: InputDecoration(
+                labelText: s.searchMembers,
+                prefixIcon: const Icon(Icons.search, size: 20),
+              ),
             ),
+          ),
+          Expanded(
+            child: items.isEmpty
+                ? EmptyState(s.noMembers, icon: Icons.people_outline)
+                : ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
+                    children: [
+                      for (final m in items)
+                        Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor:
+                                  accentOf(context).withValues(alpha: 0.12),
+                              child: Text(
+                                m.fullName.isEmpty
+                                    ? '?'
+                                    : m.fullName.trim()[0].toUpperCase(),
+                                style: TextStyle(
+                                    color: accentOf(context),
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            title: Text(m.fullName),
+                            subtitle: Text([
+                              store.data
+                                      .congregationById(m.congregationId)
+                                      ?.name(store.sw) ??
+                                  '',
+                              store.data
+                                      .jumuiyaById(m.jumuiyaId)
+                                      ?.name(store.sw) ??
+                                  '',
+                              if (m.kaya.isNotEmpty) m.kaya,
+                              _statusLabel(s, m.status),
+                              m.phone,
+                            ].where((e) => e.isNotEmpty).join(' · ')),
+                            isThreeLine: true,
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete_outline),
+                              onPressed: () => _confirmDelete(
+                                  context, m.id, () => store.deleteMember(m.id)),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
