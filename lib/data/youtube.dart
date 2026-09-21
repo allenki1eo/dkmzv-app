@@ -105,12 +105,16 @@ String _playerHtml({String? videoId, String? channelId}) {
     player = new YT.Player('player', {
       height: '100%',
       width: '100%',
+      // Pins the player's own origin. Without it a WebView document can
+      // present an origin YouTube will not configure against.
+      host: 'https://www.youtube.com',
       $source
       playerVars: {
         $extraVars
         playsinline: 1,
         rel: 0,
         modestbranding: 1,
+        enablejsapi: 1,
         origin: window.location.origin
       },
       events: {

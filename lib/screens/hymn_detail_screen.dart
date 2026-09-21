@@ -44,38 +44,43 @@ class HymnDetailScreen extends StatelessWidget {
           Text(
             hymn.title(store.sw),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: p.cloth,
-                  height: 1.25,
-                ),
+            style: Theme.of(context).textTheme.headlineSmall
+                ?.copyWith(color: p.cloth, height: 1.25),
           ),
           const SizedBox(height: 6),
           Text(
             hymn.title(!store.sw),
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: p.cloth.withValues(alpha: 0.55),
-                fontStyle: FontStyle.italic),
+              color: p.cloth.withValues(alpha: 0.55),
+              fontStyle: FontStyle.italic,
+            ),
           ),
           const SizedBox(height: 14),
-          Text(s.offlineCached,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: p.cloth, fontSize: 13)),
+          Text(
+            s.offlineCached,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: p.cloth, fontSize: 13),
+          ),
           const SizedBox(height: 20),
           SelectableText(
             hymn.lyrics(store.sw),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  height: 1.7,
-                  fontWeight: FontWeight.w500,
-                  color: Surfaces.of(context).ink,
-                ),
+              height: 1.7,
+              fontWeight: FontWeight.w500,
+              color: Surfaces.of(context).ink,
+            ),
           ),
           const SizedBox(height: 28),
-          Text('${s.hymnSource}: ${hymn.source}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: p.cloth.withValues(alpha: 0.5), fontSize: 12)),
+          Text(
+            '${s.hymnSource}: ${hymn.source}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: p.cloth.withValues(alpha: 0.5),
+              fontSize: 12,
+            ),
+          ),
         ],
       ),
     );

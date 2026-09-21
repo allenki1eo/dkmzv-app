@@ -20,10 +20,9 @@ SeasonPalette pOf(BuildContext context) => context.watch<ChurchStore>().palette;
 
 /// Identity accent of the active usharika, lifted for dark mode. Used for
 /// icons, active states and small badges — never to fill a card or a button.
-Color accentOf(BuildContext context) => accentForBrightness(
-  context.watch<ChurchStore>().parishAccent,
-  Theme.of(context).brightness,
-);
+/// The one accent in the app. Kept as a function so call sites do not have to
+/// know it is no longer chosen per usharika.
+Color accentOf(BuildContext context) => Surfaces.of(context).accent;
 
 class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BrandAppBar({
@@ -206,9 +205,9 @@ class SectionLabel extends StatelessWidget {
               text,
               style: TextStyle(
                 color: s.ink,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w600,
-                letterSpacing: -0.3,
+                letterSpacing: -0.2,
               ),
             ),
           ),

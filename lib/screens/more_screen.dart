@@ -5,11 +5,8 @@ import '../data/store.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
 import '../widgets/tab_bar.dart';
-import '../widgets/parish.dart';
-import 'admin/admin_gate.dart';
 import 'appearance_screen.dart';
 import 'church_year_screen.dart';
-import 'congregations_screen.dart';
 import 'contact_screen.dart';
 import 'events_screen.dart';
 import 'giving_screen.dart';
@@ -31,7 +28,7 @@ class MoreScreen extends StatelessWidget {
       appBar: BrandAppBar(
         title: s.moreTitle,
         subtitle: congregation?.name(store.sw),
-        actions: const [ParishButton(), LocaleToggle()],
+        actions: const [LocaleToggle()],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -76,12 +73,6 @@ class MoreScreen extends StatelessWidget {
           ),
           _tile(
             context,
-            Icons.account_balance_outlined,
-            s.congregations,
-            const CongregationsScreen(),
-          ),
-          _tile(
-            context,
             Icons.map_outlined,
             s.jumuiyaMap,
             const JumuiyaMapScreen(),
@@ -110,12 +101,6 @@ class MoreScreen extends StatelessWidget {
             Icons.palette_outlined,
             s.appearance,
             const AppearanceScreen(),
-          ),
-          _tile(
-            context,
-            Icons.admin_panel_settings_outlined,
-            s.admin,
-            const AdminGate(),
           ),
           const SizedBox(height: 12),
           FootNote(s.whatsappComplement, icon: Icons.chat_bubble_outline),

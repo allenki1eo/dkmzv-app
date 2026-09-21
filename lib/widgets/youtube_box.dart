@@ -50,6 +50,11 @@ class _YoutubeBoxState extends State<YoutubeBox> {
   bool _ready = false;
   bool _failed = false;
 
+  /// What the player said went wrong, kept so the parish can report it.
+  /// 101 and 150 mean the owner forbids embedding; 153 is a configuration
+  /// refusal; `timeout` means the player never answered at all.
+  String? _reason;
+
   /// How long to wait for the player to say it is ready before assuming the
   /// embed will never come up. Generous, because parish data is slow.
   static const _timeout = Duration(seconds: 12);
@@ -105,12 +110,19 @@ class _YoutubeBoxState extends State<YoutubeBox> {
       if (mounted && !_ready) setState(() => _ready = true);
       return;
     }
-    if (message.startsWith('error:')) _fail();
+    if (message.startsWith('error:')) {
+      _fail(message.substring('error:'.length));
+    }
   }
 
-  void _fail() {
+  void _fail([String reason = 'timeout']) {
     _watchdog?.cancel();
-    if (mounted && !_failed) setState(() => _failed = true);
+    if (mounted && !_failed) {
+      setState(() {
+        _failed = true;
+        _reason = reason;
+      });
+    }
   }
 
   @override
@@ -126,6 +138,7 @@ class _YoutubeBoxState extends State<YoutubeBox> {
         videoId: widget.videoId,
         openUrl: widget.openUrl,
         live: widget.live,
+        reason: _reason,
       );
     }
     return ClipRRect(
@@ -171,11 +184,15 @@ class _Fallback extends StatelessWidget {
     required this.videoId,
     required this.openUrl,
     required this.live,
+    this.reason,
   });
 
   final String? videoId;
   final String openUrl;
   final bool live;
+
+  /// Player error code, shown small so it can be reported back.
+  final String? reason;
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +214,9 @@ class _Fallback extends StatelessWidget {
             const SizedBox(width: Insets.sm),
             Expanded(
               child: Text(
-                s.watchOnYoutubeInstead,
+                reason == null
+                    ? s.watchOnYoutubeInstead
+                    : '\${s.watchOnYoutubeInstead} (\$reason)',
                 style: TextStyle(
                   color: surfaces.muted,
                   fontSize: 12.5,

@@ -27,9 +27,12 @@ double metersBetween(double lat1, double lng1, double lat2, double lng2) {
   double rad(double d) => d * math.pi / 180.0;
   final dLat = rad(lat2 - lat1);
   final dLng = rad(lng2 - lng1);
-  final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-      math.cos(rad(lat1)) * math.cos(rad(lat2)) *
-          math.sin(dLng / 2) * math.sin(dLng / 2);
+  final a =
+      math.sin(dLat / 2) * math.sin(dLat / 2) +
+      math.cos(rad(lat1)) *
+          math.cos(rad(lat2)) *
+          math.sin(dLng / 2) *
+          math.sin(dLng / 2);
   return earth * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
 }
 
@@ -59,6 +62,7 @@ class ChurchStore extends ChangeNotifier {
   List<String> favoriteIds;
   List<String> recentHymnIds;
   String? lastOpenedIbadaId;
+
   /// When set (`purple`/`green`/`white`/`red`), UI cloth follows that vestment.
   String? vestmentPreview;
 
@@ -72,7 +76,8 @@ class ChurchStore extends ChangeNotifier {
     final ChurchData parsed;
     if (raw != null && raw.isNotEmpty) {
       parsed = await migrateV2(
-          ChurchData.fromJson(jsonDecode(raw) as Map<String, dynamic>));
+        ChurchData.fromJson(jsonDecode(raw) as Map<String, dynamic>),
+      );
     } else {
       parsed = await loadSeed();
       await prefs.setString(_dataKey, jsonEncode(parsed.toJson()));
@@ -95,12 +100,7 @@ class ChurchStore extends ChangeNotifier {
 
   /// Accents that shipped before the purple-free palette. Phones carrying
   /// them get the new colours; anything the office chose itself is left alone.
-  static const _retiredAccents = {
-    '#2E0854',
-    '#8A5A00',
-    '#123A5C',
-    '#6C3FA0',
-  };
+  static const _retiredAccents = {'#2E0854', '#8A5A00', '#123A5C', '#6C3FA0'};
 
   /// Older installs miss congregations (v1), offering groups (v2) or the
   /// neutral palette (v3). Fill only what is empty or retired so office edits
@@ -149,8 +149,9 @@ class ChurchStore extends ChangeNotifier {
     final known = data.congregationById(current);
     if (known != null) return;
     final main = data.congregations.where((c) => c.isMain);
-    data.settings.selectedCongregationId =
-        main.isNotEmpty ? main.first.id : data.congregations.first.id;
+    data.settings.selectedCongregationId = main.isNotEmpty
+        ? main.first.id
+        : data.congregations.first.id;
   }
 
   /// In-memory store for tests (no SharedPreferences).
@@ -231,14 +232,11 @@ class ChurchStore extends ChangeNotifier {
     return data.latestService();
   }
 
-  List<Hymn> get favoriteHymns => data.hymns
-      .where((h) => favoriteIds.contains(h.id))
-      .toList();
+  List<Hymn> get favoriteHymns =>
+      data.hymns.where((h) => favoriteIds.contains(h.id)).toList();
 
-  List<Hymn> get recentHymns => recentHymnIds
-      .map(data.hymnById)
-      .whereType<Hymn>()
-      .toList();
+  List<Hymn> get recentHymns =>
+      recentHymnIds.map(data.hymnById).whereType<Hymn>().toList();
 
   List<Hymn> hymnsMatching(String query) => searchHymns(data.hymns, query);
 
@@ -271,8 +269,9 @@ class ChurchStore extends ChangeNotifier {
   }
 
   Future<void> deletePastoral(String id) async {
-    data.pastoralRequests =
-        data.pastoralRequests.where((r) => r.id != id).toList();
+    data.pastoralRequests = data.pastoralRequests
+        .where((r) => r.id != id)
+        .toList();
     await persist();
   }
 
@@ -315,14 +314,19 @@ class ChurchStore extends ChangeNotifier {
   }
 
   Future<void> upsertGivingCategory(GivingCategory item) async {
-    _upsert(data.giving.categories, item.id, item,
-        (list) => data.giving.categories = list);
+    _upsert(
+      data.giving.categories,
+      item.id,
+      item,
+      (list) => data.giving.categories = list,
+    );
     await persist();
   }
 
   Future<void> deleteGivingCategory(String id) async {
-    data.giving.categories =
-        data.giving.categories.where((c) => c.id != id).toList();
+    data.giving.categories = data.giving.categories
+        .where((c) => c.id != id)
+        .toList();
     await persist();
   }
 
@@ -331,15 +335,13 @@ class ChurchStore extends ChangeNotifier {
     await persist();
   }
 
-  bool verifyPin(String pin) => pin.trim() == data.settings.adminPin;
-
-  Future<void> changePin(String pin) async {
-    data.settings.adminPin = pin.trim();
-    await persist();
-  }
-
   Future<void> upsertAnnouncement(Announcement item) async {
-    _upsert(data.announcements, item.id, item, (list) => data.announcements = list);
+    _upsert(
+      data.announcements,
+      item.id,
+      item,
+      (list) => data.announcements = list,
+    );
     await persist();
   }
 
@@ -380,8 +382,9 @@ class ChurchStore extends ChangeNotifier {
   }
 
   Future<void> setThemeMode(String mode) async {
-    data.settings.themeMode =
-        const {'light', 'dark', 'system'}.contains(mode) ? mode : 'system';
+    data.settings.themeMode = const {'light', 'dark', 'system'}.contains(mode)
+        ? mode
+        : 'system';
     await persist();
   }
 
@@ -468,10 +471,16 @@ class ChurchStore extends ChangeNotifier {
 
   /// Home pins that fall inside the jumuiya geofence circle.
   List<HomePin> pinsInsideGeofence(Jumuiya jumuiya) => data.homePins
-      .where((p) =>
-          metersBetween(
-              jumuiya.latitude, jumuiya.longitude, p.latitude, p.longitude) <=
-          jumuiya.radiusMeters)
+      .where(
+        (p) =>
+            metersBetween(
+              jumuiya.latitude,
+              jumuiya.longitude,
+              p.latitude,
+              p.longitude,
+            ) <=
+            jumuiya.radiusMeters,
+      )
       .toList();
 
   /// Nearest jumuiya whose geofence contains the point, else null.
@@ -573,8 +582,12 @@ class ChurchStore extends ChangeNotifier {
   }
 
   Future<void> upsertCongregation(Congregation item) async {
-    _upsert(data.congregations, item.id, item,
-        (list) => data.congregations = list);
+    _upsert(
+      data.congregations,
+      item.id,
+      item,
+      (list) => data.congregations = list,
+    );
     await persist();
   }
 
@@ -669,7 +682,8 @@ class ChurchStore extends ChangeNotifier {
     void Function(List<T>) assign, {
     String Function(T)? idOf,
   }) {
-    final getter = idOf ??
+    final getter =
+        idOf ??
         (T e) {
           if (e is Announcement) return e.id;
           if (e is ServiceOrder) return e.id;
@@ -695,4 +709,3 @@ class ChurchStore extends ChangeNotifier {
     assign(next);
   }
 }
-

@@ -83,12 +83,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
           children: [
-            Text(s.registerLead,
-                style: TextStyle(color: surfaces.muted, height: 1.45)),
+            Text(
+              s.registerLead,
+              style: TextStyle(color: surfaces.muted, height: 1.45),
+            ),
             if (store.currentMember != null) ...[
               const SizedBox(height: 12),
-              Pill(s.alreadyRegistered,
-                  color: DkmzvBrand.clothGreen, icon: Icons.verified_user_outlined),
+              Pill(
+                s.alreadyRegistered,
+                color: DkmzvBrand.clothGreen,
+                icon: Icons.verified_user_outlined,
+              ),
             ],
             SectionLabel(s.fullName),
             TextFormField(
@@ -160,8 +165,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               key: ValueKey('jum-$_jumuiyaId'),
-              initialValue:
-                  jumuiyas.any((j) => j.id == _jumuiyaId) ? _jumuiyaId : null,
+              initialValue: jumuiyas.any((j) => j.id == _jumuiyaId)
+                  ? _jumuiyaId
+                  : null,
               decoration: InputDecoration(labelText: s.jumuiya),
               items: [
                 for (final j in jumuiyas)
@@ -211,8 +217,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(s.shareMyHome),
-              subtitle: Text(s.homePinsNote,
-                  style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+              subtitle: Text(
+                s.homePinsNote,
+                style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+              ),
               value: _sharePin,
               onChanged: (v) => setState(() => _sharePin = v),
             ),
@@ -225,12 +233,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  const Icon(Icons.check_circle,
-                      color: DkmzvBrand.clothGreen, size: 18),
+                  const Icon(
+                    Icons.check_circle,
+                    color: DkmzvBrand.clothGreen,
+                    size: 18,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(s.registeredOk,
-                        style: const TextStyle(color: DkmzvBrand.clothGreen)),
+                    child: Text(
+                      s.registeredOk,
+                      style: const TextStyle(color: DkmzvBrand.clothGreen),
+                    ),
                   ),
                 ],
               ),
@@ -262,24 +275,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_form.currentState!.validate()) return;
     if (_congregationId == null) return;
     final existing = store.currentMember;
-    await store.saveMember(MemberRecord(
-      id: existing?.id ?? const Uuid().v4(),
-      fullName: _name.text.trim(),
-      congregationId: _congregationId!,
-      jumuiyaId: _jumuiyaId ?? '',
-      phone: _phone.text.trim(),
-      householdNote: _note.text.trim(),
-      shareHomePin: _sharePin,
-      homeLat: existing?.homeLat,
-      homeLng: existing?.homeLng,
-      registeredAt: existing?.registeredAt ?? DateTime.now().toIso8601String(),
-      kaya: _kaya.text.trim(),
-      gender: _gender,
-      status: _status,
-      baptized: _baptized,
-      confirmed: _confirmed,
-      birthYear: _birthYear.text.trim(),
-    ));
+    await store.saveMember(
+      MemberRecord(
+        id: existing?.id ?? const Uuid().v4(),
+        fullName: _name.text.trim(),
+        congregationId: _congregationId!,
+        jumuiyaId: _jumuiyaId ?? '',
+        phone: _phone.text.trim(),
+        householdNote: _note.text.trim(),
+        shareHomePin: _sharePin,
+        homeLat: existing?.homeLat,
+        homeLng: existing?.homeLng,
+        registeredAt:
+            existing?.registeredAt ?? DateTime.now().toIso8601String(),
+        kaya: _kaya.text.trim(),
+        gender: _gender,
+        status: _status,
+        baptized: _baptized,
+        confirmed: _confirmed,
+        birthYear: _birthYear.text.trim(),
+      ),
+    );
     await store.selectCongregation(_congregationId!);
     if (mounted) setState(() => _saved = true);
   }

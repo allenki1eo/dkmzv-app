@@ -42,8 +42,6 @@ void main() {
     );
     expect(store.data.pastoralRequests, isNotEmpty);
     expect(store.data.pastoralRequests.first.message, contains('familia'));
-    expect(store.verifyPin('dkmzv'), isTrue);
-    expect(store.verifyPin('wrong'), isFalse);
   });
 }
 

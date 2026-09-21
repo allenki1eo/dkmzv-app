@@ -39,7 +39,9 @@ class _DkmzvAppState extends State<DkmzvApp> {
         builder: (_, store, _) {
           final s = S(store.localeCode);
           final locale = store.sw ? const Locale('sw') : const Locale('en');
-          final accent = store.parishAccent;
+          // One accent for the whole app. Per-usharika colours were an
+          // office setting; the phone is now the member's, not the office's.
+          const accent = DkmzvBrand.accent;
           final background = AppBackground.byId(store.backgroundId);
           return MaterialApp(
             title: s.appName,

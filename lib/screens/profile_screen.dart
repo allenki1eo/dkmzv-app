@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Insets.lg),
-                  AmberButton(
+                  FlatButton(
                     label: s.register,
                     icon: Icons.person_add_alt_rounded,
                     onPressed: () => _push(context, const RegisterScreen()),
@@ -95,13 +95,13 @@ class ProfileScreen extends StatelessWidget {
                     height: 82,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: surfaces.amber,
+                      color: surfaces.action,
                       shape: BoxShape.circle,
                     ),
                     child: Text(
                       initialsOf(member.fullName),
                       style: TextStyle(
-                        color: surfaces.onAmber,
+                        color: surfaces.onAction,
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
                       ),
@@ -160,13 +160,13 @@ class ProfileScreen extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: surfaces.amber.withValues(alpha: 0.18),
+                      color: surfaces.subtle,
                       borderRadius: BorderRadius.circular(Radii.sm),
                     ),
                     child: Icon(
                       Icons.mail_outline_rounded,
                       size: 20,
-                      color: surfaces.amber,
+                      color: surfaces.ink,
                     ),
                   ),
                   const SizedBox(width: Insets.md),

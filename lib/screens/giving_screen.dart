@@ -38,7 +38,9 @@ class GivingScreen extends StatelessWidget {
               runSpacing: 8,
               children: [
                 for (final entry in totals.entries)
-                  Pill('${_groupName(s, entry.key)} · TZS ${formatMoney(entry.value)}'),
+                  Pill(
+                    '${_groupName(s, entry.key)} · TZS ${formatMoney(entry.value)}',
+                  ),
               ],
             ),
             const SizedBox(height: 12),
@@ -52,11 +54,14 @@ class GivingScreen extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(_methodIcon(n.method), color: surfaces.muted),
                   title: Text('TZS ${formatMoney(n.amount)}'),
-                  subtitle: Text([
-                    g.categoryById(n.categoryId)?.label(store.sw) ?? n.purposeId,
-                    formatDateTime(n.at, store.localeCode),
-                    if (n.note.isNotEmpty) n.note,
-                  ].join(' · ')),
+                  subtitle: Text(
+                    [
+                      g.categoryById(n.categoryId)?.label(store.sw) ??
+                          n.purposeId,
+                      formatDateTime(n.at, store.localeCode),
+                      if (n.note.isNotEmpty) n.note,
+                    ].join(' · '),
+                  ),
                 ),
               ),
             const SizedBox(height: 8),
@@ -126,8 +131,11 @@ class _GroupBlock extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               if (exempt)
-                Pill(s.exempt,
-                    color: DkmzvBrand.sage, icon: Icons.verified_outlined),
+                Pill(
+                  s.exempt,
+                  color: DkmzvBrand.sage,
+                  icon: Icons.verified_outlined,
+                ),
             ],
           ),
         ),
@@ -144,16 +152,20 @@ class _GroupBlock extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(c.label(store.sw),
-                              style:
-                                  Theme.of(context).textTheme.titleSmall),
+                          Text(
+                            c.label(store.sw),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
                           if (c.note(store.sw).isNotEmpty) ...[
                             const SizedBox(height: 3),
-                            Text(c.note(store.sw),
-                                style: TextStyle(
-                                    color: surfaces.muted,
-                                    fontSize: 12.5,
-                                    height: 1.35)),
+                            Text(
+                              c.note(store.sw),
+                              style: TextStyle(
+                                color: surfaces.muted,
+                                fontSize: 12.5,
+                                height: 1.35,
+                              ),
+                            ),
                           ],
                         ],
                       ),
@@ -177,7 +189,8 @@ Future<void> showGiveSheet(BuildContext context, GivingCategory category) {
     showDragHandle: true,
     builder: (_) => Padding(
       padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom),
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: _GiveSheet(category: category),
     ),
   );
@@ -210,8 +223,9 @@ class _GiveSheetState extends State<_GiveSheet> {
     final surfaces = Surfaces.of(context);
     final c = widget.category;
     final payments = store.data.giving.payments;
-    final stripeUrl =
-        c.stripeUrl.isNotEmpty ? c.stripeUrl : payments.defaultStripeUrl;
+    final stripeUrl = c.stripeUrl.isNotEmpty
+        ? c.stripeUrl
+        : payments.defaultStripeUrl;
     final cardReady = payments.stripeEnabled && stripeUrl.isNotEmpty;
     final amounts = c.amounts.isEmpty ? store.data.giving.tips : c.amounts;
 
@@ -225,20 +239,26 @@ class _GiveSheetState extends State<_GiveSheet> {
             Row(
               children: [
                 Expanded(
-                  child: Text(c.label(store.sw),
-                      style: Theme.of(context).textTheme.headlineSmall),
+                  child: Text(
+                    c.label(store.sw),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
                 if (c.exempt) Pill(s.exempt, color: DkmzvBrand.sage),
               ],
             ),
             if (c.note(store.sw).isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text(c.note(store.sw),
-                  style: TextStyle(color: surfaces.muted, height: 1.4)),
+              Text(
+                c.note(store.sw),
+                style: TextStyle(color: surfaces.muted, height: 1.4),
+              ),
             ],
             const SizedBox(height: 16),
-            Text(s.chooseAmount,
-                style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+            Text(
+              s.chooseAmount,
+              style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -262,7 +282,8 @@ class _GiveSheetState extends State<_GiveSheet> {
             TextField(
               controller: _note,
               decoration: InputDecoration(
-                  labelText: '${s.note} (${s.optional})'),
+                labelText: '${s.note} (${s.optional})',
+              ),
             ),
             const SizedBox(height: 16),
             Row(
@@ -272,7 +293,9 @@ class _GiveSheetState extends State<_GiveSheet> {
                     onPressed: () {
                       setState(() => _method = 'mpesa');
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(store.data.giving.lipaNote(store.sw))),
+                        SnackBar(
+                          content: Text(store.data.giving.lipaNote(store.sw)),
+                        ),
                       );
                     },
                     icon: const Icon(Icons.phone_android, size: 18),
@@ -297,10 +320,11 @@ class _GiveSheetState extends State<_GiveSheet> {
             if (!cardReady) ...[
               const SizedBox(height: 8),
               FootNote(
-                  payments.stripeNote(store.sw).isEmpty
-                      ? s.cardComingSoon
-                      : payments.stripeNote(store.sw),
-                  icon: Icons.credit_card_off_outlined),
+                payments.stripeNote(store.sw).isEmpty
+                    ? s.cardComingSoon
+                    : payments.stripeNote(store.sw),
+                icon: Icons.credit_card_off_outlined,
+              ),
             ],
             const SizedBox(height: 14),
             SizedBox(
@@ -360,7 +384,13 @@ class _MpesaCard extends StatelessWidget {
             children: [
               _copyRow(context, s, s.paybill, giving.paybill, p.onCloth),
               _copyRow(context, s, s.account, giving.account, p.onCloth),
-              _copyRow(context, s, s.accountName, giving.accountName, p.onCloth),
+              _copyRow(
+                context,
+                s,
+                s.accountName,
+                giving.accountName,
+                p.onCloth,
+              ),
               _copyRow(context, s, s.till, giving.till, p.onCloth),
             ],
           ),
@@ -371,8 +401,7 @@ class _MpesaCard extends StatelessWidget {
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             tilePadding: EdgeInsets.zero,
-            title: Text(s.steps,
-                style: Theme.of(context).textTheme.titleSmall),
+            title: Text(s.steps, style: Theme.of(context).textTheme.titleSmall),
             children: [
               for (var i = 0; i < giving.steps(store.sw).length; i++)
                 ListTile(
@@ -381,11 +410,14 @@ class _MpesaCard extends StatelessWidget {
                   leading: CircleAvatar(
                     radius: 12,
                     backgroundColor: accentOf(context).withValues(alpha: 0.14),
-                    child: Text('${i + 1}',
-                        style: TextStyle(
-                            color: accentOf(context),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700)),
+                    child: Text(
+                      '${i + 1}',
+                      style: TextStyle(
+                        color: accentOf(context),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                   title: Text(giving.steps(store.sw)[i]),
                 ),
@@ -397,7 +429,12 @@ class _MpesaCard extends StatelessWidget {
   }
 
   Widget _copyRow(
-      BuildContext context, S s, String label, String value, Color onCloth) {
+    BuildContext context,
+    S s,
+    String label,
+    String value,
+    Color onCloth,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -406,14 +443,21 @@ class _MpesaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: TextStyle(
-                        color: onCloth.withValues(alpha: 0.72), fontSize: 12)),
-                Text(value,
-                    style: TextStyle(
-                        color: onCloth,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 17)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: onCloth.withValues(alpha: 0.72),
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: onCloth,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17,
+                  ),
+                ),
               ],
             ),
           ),

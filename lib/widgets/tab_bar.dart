@@ -174,11 +174,11 @@ class _CenterButton extends StatelessWidget {
           width: GlassTabBar.fabSize,
           height: GlassTabBar.fabSize,
           decoration: BoxDecoration(
-            color: s.amber,
-            shape: BoxShape.circle,
+            color: s.action,
+            borderRadius: BorderRadius.circular(Radii.lg),
             border: Border.all(color: s.canvas, width: 4),
           ),
-          child: Icon(action.icon, size: 25, color: s.onAmber),
+          child: Icon(action.icon, size: 23, color: s.onAction),
         ),
       ),
     );

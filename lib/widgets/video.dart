@@ -34,8 +34,11 @@ class YoutubeThumb extends StatelessWidget {
     final placeholder = Container(
       color: s.sunken,
       child: Center(
-        child: Icon(Icons.ondemand_video_outlined,
-            color: s.muted.withValues(alpha: 0.7), size: 26),
+        child: Icon(
+          Icons.ondemand_video_outlined,
+          color: s.muted.withValues(alpha: 0.7),
+          size: 26,
+        ),
       ),
     );
 
@@ -74,8 +77,11 @@ class YoutubeThumb extends StatelessWidget {
                   color: Colors.black.withValues(alpha: 0.55),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.play_arrow_rounded,
-                    color: Colors.white, size: 26),
+                child: const Icon(
+                  Icons.play_arrow_rounded,
+                  color: Colors.white,
+                  size: 26,
+                ),
               ),
             ),
             if (live)
@@ -98,8 +104,10 @@ class LiveBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(horizontal: Insets.sm, vertical: Insets.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Insets.sm,
+        vertical: Insets.xs,
+      ),
       decoration: BoxDecoration(
         color: DkmzvBrand.live,
         borderRadius: BorderRadius.circular(Radii.pill),
@@ -109,13 +117,15 @@ class LiveBadge extends StatelessWidget {
         children: [
           const Icon(Icons.circle, color: Colors.white, size: 7),
           const SizedBox(width: Insets.xs + 1),
-          Text(label.toUpperCase(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
-              )),
+          Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.5,
+            ),
+          ),
         ],
       ),
     );
@@ -136,8 +146,8 @@ class WatchCard extends StatelessWidget {
     final id = youtubeVideoId(sermon.mediaUrl);
 
     void open() => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => SermonPlayerScreen(sermon: sermon)),
-        );
+      MaterialPageRoute(builder: (_) => SermonPlayerScreen(sermon: sermon)),
+    );
 
     return AppCard(
       onTap: open,
@@ -173,10 +183,11 @@ class WatchCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: surfaces.ink,
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w600,
-                      height: 1.25),
+                    color: surfaces.ink,
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w600,
+                    height: 1.25,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -190,10 +201,11 @@ class WatchCard extends StatelessWidget {
                       child: FilledButton.icon(
                         onPressed: open,
                         icon: Icon(
-                            sermon.isLive
-                                ? Icons.sensors
-                                : Icons.play_arrow_rounded,
-                            size: 20),
+                          sermon.isLive
+                              ? Icons.sensors
+                              : Icons.play_arrow_rounded,
+                          size: 20,
+                        ),
                         label: Text(sermon.isLive ? s.watchLive : s.watchInApp),
                       ),
                     ),
@@ -229,9 +241,9 @@ class _ShareButton extends StatelessWidget {
           onTap: sermon.mediaUrl.isEmpty
               ? null
               : () => shareText(
-                    '${sermon.title(store.sw)}\n${sermon.mediaUrl}',
-                    subject: sermon.title(store.sw),
-                  ),
+                  '${sermon.title(store.sw)}\n${sermon.mediaUrl}',
+                  subject: sermon.title(store.sw),
+                ),
           child: Ink(
             width: 50,
             height: 50,
@@ -282,10 +294,11 @@ class SermonRow extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: surfaces.ink,
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.w600,
-                      height: 1.25),
+                    color: surfaces.ink,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w600,
+                    height: 1.25,
+                  ),
                 ),
                 const SizedBox(height: Insets.xs),
                 Text(
@@ -309,13 +322,17 @@ class SermonRow extends StatelessWidget {
                     Text(
                       id != null ? s.watchInApp : s.openMedia,
                       style: TextStyle(
-                          color: accentOf(context),
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w600),
+                        color: accentOf(context),
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(width: Insets.xs),
-                    Icon(Icons.arrow_forward,
-                        size: 13, color: accentOf(context)),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 13,
+                      color: accentOf(context),
+                    ),
                   ],
                 ),
               ],

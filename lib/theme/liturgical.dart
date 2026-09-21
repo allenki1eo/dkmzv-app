@@ -277,69 +277,118 @@ class LiturgicalCalendar {
 
     if (same(date, DateTime(y, 10, 31)) || same(date, reformationSunday)) {
       return LiturgicalMoment(
-          season: ChurchSeason.reformation, vestment: Vestment.red, date: date);
+        season: ChurchSeason.reformation,
+        vestment: Vestment.red,
+        date: date,
+      );
     }
     if (same(date, DateTime(y, 11, 1))) {
       return LiturgicalMoment(
-          season: ChurchSeason.allSaints, vestment: Vestment.white, date: date);
+        season: ChurchSeason.allSaints,
+        vestment: Vestment.white,
+        date: date,
+      );
     }
     if (same(date, palm)) {
       return LiturgicalMoment(
-          season: ChurchSeason.palmSunday, vestment: Vestment.red, date: date);
+        season: ChurchSeason.palmSunday,
+        vestment: Vestment.red,
+        date: date,
+      );
     }
     if (same(date, easter.subtract(const Duration(days: 2)))) {
       return LiturgicalMoment(
-          season: ChurchSeason.goodFriday, vestment: Vestment.red, date: date);
+        season: ChurchSeason.goodFriday,
+        vestment: Vestment.red,
+        date: date,
+      );
     }
     if (onOrAfter(palm) && before(easter)) {
       return LiturgicalMoment(
-          season: ChurchSeason.holyWeek, vestment: Vestment.purple, date: date);
+        season: ChurchSeason.holyWeek,
+        vestment: Vestment.purple,
+        date: date,
+      );
     }
     if (same(date, pent)) {
       return LiturgicalMoment(
-          season: ChurchSeason.pentecost, vestment: Vestment.red, date: date);
+        season: ChurchSeason.pentecost,
+        vestment: Vestment.red,
+        date: date,
+      );
     }
     if (same(date, trinity)) {
       return LiturgicalMoment(
-          season: ChurchSeason.trinity, vestment: Vestment.white, date: date);
+        season: ChurchSeason.trinity,
+        vestment: Vestment.white,
+        date: date,
+      );
     }
     if (onOrAfter(easter) && before(pent)) {
       return LiturgicalMoment(
-          season: ChurchSeason.easter, vestment: Vestment.white, date: date);
+        season: ChurchSeason.easter,
+        vestment: Vestment.white,
+        date: date,
+      );
     }
     if (onOrAfter(ash) && before(palm)) {
       return LiturgicalMoment(
-          season: ChurchSeason.lent, vestment: Vestment.purple, date: date);
+        season: ChurchSeason.lent,
+        vestment: Vestment.purple,
+        date: date,
+      );
     }
-    if (!date.isBefore(DateTime(y, 12, 25)) || date.isBefore(baptism.add(const Duration(days: 1)))) {
+    if (!date.isBefore(DateTime(y, 12, 25)) ||
+        date.isBefore(baptism.add(const Duration(days: 1)))) {
       if (date.month == 12 && date.day >= 25) {
         return LiturgicalMoment(
-            season: ChurchSeason.christmas, vestment: Vestment.white, date: date);
+          season: ChurchSeason.christmas,
+          vestment: Vestment.white,
+          date: date,
+        );
       }
       if (date.month == 1 && !date.isAfter(baptism)) {
         return LiturgicalMoment(
-            season: ChurchSeason.christmas, vestment: Vestment.white, date: date);
+          season: ChurchSeason.christmas,
+          vestment: Vestment.white,
+          date: date,
+        );
       }
     }
     if (onOrAfter(baptism.add(const Duration(days: 1))) && before(ash)) {
       return LiturgicalMoment(
-          season: ChurchSeason.epiphany, vestment: Vestment.green, date: date);
+        season: ChurchSeason.epiphany,
+        vestment: Vestment.green,
+        date: date,
+      );
     }
     if (onOrAfter(advent) && before(DateTime(y, 12, 25))) {
       return LiturgicalMoment(
-          season: ChurchSeason.advent, vestment: Vestment.purple, date: date);
+        season: ChurchSeason.advent,
+        vestment: Vestment.purple,
+        date: date,
+      );
     }
     if (onOrAfter(trinity.add(const Duration(days: 1))) && before(nextAdvent)) {
       return LiturgicalMoment(
-          season: ChurchSeason.ordinary, vestment: Vestment.green, date: date);
+        season: ChurchSeason.ordinary,
+        vestment: Vestment.green,
+        date: date,
+      );
     }
     if (date.isBefore(advent) && onOrAfter(trinity)) {
       return LiturgicalMoment(
-          season: ChurchSeason.ordinary, vestment: Vestment.green, date: date);
+        season: ChurchSeason.ordinary,
+        vestment: Vestment.green,
+        date: date,
+      );
     }
 
     return LiturgicalMoment(
-        season: ChurchSeason.ordinary, vestment: Vestment.green, date: date);
+      season: ChurchSeason.ordinary,
+      vestment: Vestment.green,
+      date: date,
+    );
   }
 
   /// Preview a vestment family without changing the clock.

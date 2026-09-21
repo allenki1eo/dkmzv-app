@@ -487,7 +487,7 @@ void main() {
     expect(store.watchNow?.mediaUrl, isNotEmpty);
   });
 
-  testWidgets('congregations, live mahubiri, and registration', (tester) async {
+  testWidgets('live mahubiri and member registration', (tester) async {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
 
@@ -497,25 +497,15 @@ void main() {
     await tester.tap(find.text('Zaidi'));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
-      find.text('Masharika'),
-      200,
-      scrollable: find.byType(Scrollable).last,
-    );
-    await tester.tap(find.text('Masharika'));
-    await tester.pumpAndSettle();
-    expect(find.text('Usharika wa Angaza'), findsWidgets);
-    expect(find.text('Usharika wa Makedonia'), findsWidgets);
-    expect(find.textContaining('Kanisa kuu'), findsWidgets);
-
-    Navigator.of(tester.element(find.text('Usharika wa Angaza').first)).pop();
-    await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(
       find.text('Usajili wa waumini'),
       200,
       scrollable: find.byType(Scrollable).last,
     );
+    await tester.ensureVisible(find.text('Usajili wa waumini'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Usajili wa waumini'));
     await tester.pumpAndSettle();
+
     await tester.enterText(find.byType(TextFormField).first, 'Baraka');
     await tester.scrollUntilVisible(
       find.text('Hifadhi'),
@@ -525,5 +515,18 @@ void main() {
     await tester.tap(find.text('Hifadhi'));
     await tester.pumpAndSettle();
     expect(store.currentMember?.fullName, 'Baraka');
+  });
+
+  testWidgets('the office is not reachable from the phone', (tester) async {
+    await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Zaidi'));
+    await tester.pumpAndSettle();
+
+    // Admin and the usharika picker moved to the web app. Neither should
+    // have a way in from a member's phone.
+    expect(find.text('Msimamizi'), findsNothing);
+    expect(find.text('Masharika'), findsNothing);
   });
 }

@@ -4,7 +4,15 @@ import 'package:provider/provider.dart';
 import '../data/store.dart';
 import '../widgets/common.dart';
 
-const _cats = ['all', 'worship', 'choir', 'uw', 'youth', 'confirmation', 'meeting'];
+const _cats = [
+  'all',
+  'worship',
+  'choir',
+  'uw',
+  'youth',
+  'confirmation',
+  'meeting',
+];
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -23,8 +31,9 @@ class _EventsScreenState extends State<EventsScreen> {
     final accent = accentOf(context);
     final items = [...store.data.events]
       ..sort((a, b) => a.start.compareTo(b.start));
-    final filtered =
-        _cat == 'all' ? items : items.where((e) => e.category == _cat).toList();
+    final filtered = _cat == 'all'
+        ? items
+        : items.where((e) => e.category == _cat).toList();
 
     return Scaffold(
       appBar: BrandAppBar(title: s.tabEvents),

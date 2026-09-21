@@ -8,7 +8,6 @@ import '../data/store.dart';
 import '../l10n/strings.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
-import '../widgets/parish.dart';
 import 'register_screen.dart';
 
 const osmPackageName = 'tz.kkkt.dkmzv.dkmzv_app';
@@ -33,7 +32,8 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
   void initState() {
     super.initState();
     final store = context.read<ChurchStore>();
-    _congregationId = widget.congregationId ??
+    _congregationId =
+        widget.congregationId ??
         store.selectedCongregation?.id ??
         (store.data.congregations.isEmpty
             ? ''
@@ -65,8 +65,9 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
     final surfaces = Surfaces.of(context);
     final cong = store.data.congregationById(_congregationId);
     final jumuiyas = store.jumuiyasFor(_congregationId);
-    final selected =
-        _jumuiyaId == null ? null : store.data.jumuiyaById(_jumuiyaId!);
+    final selected = _jumuiyaId == null
+        ? null
+        : store.data.jumuiyaById(_jumuiyaId!);
     final visible = _showAll ? jumuiyas : [?selected];
     final colors = <String, Color>{
       for (var i = 0; i < jumuiyas.length; i++)
@@ -75,23 +76,22 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
     final pins = _showAll
         ? store.pinsForCongregation(_congregationId)
         : (_jumuiyaId == null
-            ? const <HomePin>[]
-            : store.pinsForJumuiya(_jumuiyaId!));
-    final inside = selected == null ? 0 : store.pinsInsideGeofence(selected).length;
+              ? const <HomePin>[]
+              : store.pinsForJumuiya(_jumuiyaId!));
+    final inside = selected == null
+        ? 0
+        : store.pinsInsideGeofence(selected).length;
     final outside = selected == null
         ? 0
         : store.pinsForJumuiya(selected.id).length - inside;
     final center = selected != null
         ? LatLng(selected.latitude, selected.longitude)
         : cong != null
-            ? LatLng(cong.latitude, cong.longitude)
-            : const LatLng(-3.669681, 33.427495);
+        ? LatLng(cong.latitude, cong.longitude)
+        : const LatLng(-3.669681, 33.427495);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.jumuiyaMap),
-        actions: const [ParishButton()],
-      ),
+      appBar: AppBar(title: Text(s.jumuiyaMap)),
       body: Column(
         children: [
           Padding(
@@ -99,12 +99,19 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(cong?.name(store.sw) ?? s.congregations,
-                    style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  cong?.name(store.sw) ?? s.congregations,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const SizedBox(height: 2),
-                Text(s.geofenceHint,
-                    style: TextStyle(
-                        color: surfaces.muted, fontSize: 12.5, height: 1.35)),
+                Text(
+                  s.geofenceHint,
+                  style: TextStyle(
+                    color: surfaces.muted,
+                    fontSize: 12.5,
+                    height: 1.35,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 36,
@@ -124,8 +131,9 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
                             avatar: CircleAvatar(
-                                radius: 6,
-                                backgroundColor: colors[j.id] ?? DkmzvBrand.sage),
+                              radius: 6,
+                              backgroundColor: colors[j.id] ?? DkmzvBrand.sage,
+                            ),
                             label: Text(j.name(store.sw)),
                             selected: !_showAll && _jumuiyaId == j.id,
                             onSelected: (_) {
@@ -166,8 +174,9 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                             point: LatLng(j.latitude, j.longitude),
                             radius: j.radiusMeters,
                             useRadiusInMeter: true,
-                            color: (colors[j.id] ?? DkmzvBrand.sage)
-                                .withValues(alpha: 0.12),
+                            color: (colors[j.id] ?? DkmzvBrand.sage).withValues(
+                              alpha: 0.12,
+                            ),
                             borderColor: (colors[j.id] ?? DkmzvBrand.sage)
                                 .withValues(alpha: 0.75),
                             borderStrokeWidth: 1.6,
@@ -211,10 +220,16 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 3),
-                            child: Text(s.osmAttribution,
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.black87)),
+                              horizontal: 6,
+                              vertical: 3,
+                            ),
+                            child: Text(
+                              s.osmAttribution,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.black87,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -242,9 +257,10 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(s.tapMapHint,
-                      style:
-                          TextStyle(color: surfaces.muted, fontSize: 12.5)),
+                  child: Text(
+                    s.tapMapHint,
+                    style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 FilledButton.tonalIcon(
@@ -262,18 +278,25 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
     );
   }
 
-  Marker _marker(LatLng point, IconData icon, Color color, String tooltip,
-      {bool small = false}) {
+  Marker _marker(
+    LatLng point,
+    IconData icon,
+    Color color,
+    String tooltip, {
+    bool small = false,
+  }) {
     return Marker(
       point: point,
       width: small ? 34 : 44,
       height: small ? 34 : 44,
       child: Tooltip(
         message: tooltip,
-        child: Icon(icon,
-            color: color,
-            size: small ? 22 : 30,
-            shadows: const [Shadow(color: Colors.white, blurRadius: 6)]),
+        child: Icon(
+          icon,
+          color: color,
+          size: small ? 22 : 30,
+          shadows: const [Shadow(color: Colors.white, blurRadius: 6)],
+        ),
       ),
     );
   }
@@ -287,17 +310,20 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
           content: Text(s.registerToPin),
           action: SnackBarAction(
             label: s.register,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const RegisterScreen()),
-            ),
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const RegisterScreen())),
           ),
         ),
       );
       return;
     }
     // A tap inside another jumuiya's fence files the home under that jumuiya.
-    final fenced = store.jumuiyaAt(point.latitude, point.longitude,
-        congregationId: _congregationId);
+    final fenced = store.jumuiyaAt(
+      point.latitude,
+      point.longitude,
+      congregationId: _congregationId,
+    );
     final jumuiyaId = fenced?.id ?? _jumuiyaId ?? member.jumuiyaId;
     if (jumuiyaId.isEmpty) return;
     await store.pingHome(
@@ -307,8 +333,8 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
       label: member.kaya.trim().isNotEmpty
           ? member.kaya.trim()
           : member.fullName.trim().isEmpty
-              ? s.homePins
-              : 'Nyumba ya ${member.fullName.trim()}',
+          ? s.homePins
+          : 'Nyumba ya ${member.fullName.trim()}',
       lat: point.latitude,
       lng: point.longitude,
       note: member.householdNote,
@@ -317,9 +343,11 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
     final placed = store.data.jumuiyaById(jumuiyaId);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(placed == null
-            ? s.pinDropped
-            : '${s.pinDropped} · ${placed.name(store.sw)}'),
+        content: Text(
+          placed == null
+              ? s.pinDropped
+              : '${s.pinDropped} · ${placed.name(store.sw)}',
+        ),
       ),
     );
   }
@@ -358,13 +386,14 @@ class _GeofenceCard extends StatelessWidget {
               Container(
                 width: 10,
                 height: 10,
-                decoration:
-                    BoxDecoration(color: color, shape: BoxShape.circle),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(jumuiya.name(store.sw),
-                    style: Theme.of(context).textTheme.titleSmall),
+                child: Text(
+                  jumuiya.name(store.sw),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
               ),
               Pill('${jumuiya.radiusMeters.round()} m', color: color),
             ],
@@ -372,18 +401,26 @@ class _GeofenceCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              Pill('${s.homesInside}: $inside',
-                  color: DkmzvBrand.clothGreen, icon: Icons.home_outlined),
+              Pill(
+                '${s.homesInside}: $inside',
+                color: DkmzvBrand.clothGreen,
+                icon: Icons.home_outlined,
+              ),
               const SizedBox(width: 8),
               if (outside > 0)
-                Pill('${s.homesOutside}: $outside',
-                    color: DkmzvBrand.clothRed, icon: Icons.near_me_disabled),
+                Pill(
+                  '${s.homesOutside}: $outside',
+                  color: DkmzvBrand.clothRed,
+                  icon: Icons.near_me_disabled,
+                ),
             ],
           ),
           if (jumuiya.meetingNote(store.sw).isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text(jumuiya.meetingNote(store.sw),
-                style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+            Text(
+              jumuiya.meetingNote(store.sw),
+              style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+            ),
           ],
         ],
       ),

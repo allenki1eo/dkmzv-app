@@ -5,7 +5,6 @@ import '../data/store.dart';
 import '../theme/backgrounds.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
-import '../widgets/parish.dart';
 
 class AppearanceScreen extends StatelessWidget {
   const AppearanceScreen({super.key});
@@ -22,23 +21,28 @@ class AppearanceScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
         children: [
-          Text(s.appearanceHint,
-              style: TextStyle(color: surfaces.muted, height: 1.45)),
+          Text(
+            s.appearanceHint,
+            style: TextStyle(color: surfaces.muted, height: 1.45),
+          ),
           SectionLabel(s.themeMode),
           SegmentedButton<String>(
             segments: [
               ButtonSegment(
-                  value: 'system',
-                  icon: const Icon(Icons.brightness_auto_outlined, size: 18),
-                  label: Text(s.themeSystem)),
+                value: 'system',
+                icon: const Icon(Icons.brightness_auto_outlined, size: 18),
+                label: Text(s.themeSystem),
+              ),
               ButtonSegment(
-                  value: 'light',
-                  icon: const Icon(Icons.light_mode_outlined, size: 18),
-                  label: Text(s.themeLight)),
+                value: 'light',
+                icon: const Icon(Icons.light_mode_outlined, size: 18),
+                label: Text(s.themeLight),
+              ),
               ButtonSegment(
-                  value: 'dark',
-                  icon: const Icon(Icons.dark_mode_outlined, size: 18),
-                  label: Text(s.themeDark)),
+                value: 'dark',
+                icon: const Icon(Icons.dark_mode_outlined, size: 18),
+                label: Text(s.themeDark),
+              ),
             ],
             selected: {mode},
             showSelectedIcon: false,
@@ -52,8 +56,10 @@ class AppearanceScreen extends StatelessWidget {
             onChanged: (v) => store.setThemeMode(v ? 'dark' : 'light'),
           ),
           SectionLabel(s.background),
-          Text(s.backgroundHint,
-              style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+          Text(
+            s.backgroundHint,
+            style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+          ),
           const SizedBox(height: 12),
           GridView.count(
             crossAxisCount: 3,
@@ -71,29 +77,6 @@ class AppearanceScreen extends StatelessWidget {
                 ),
             ],
           ),
-          SectionLabel(s.parishLook),
-          Text(s.parishLookHint,
-              style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
-          const SizedBox(height: 12),
-          for (final c in store.data.congregations)
-            Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor:
-                      congregationColor(c).withValues(alpha: 0.16),
-                  child: Icon(motifIcon(c.motif),
-                      color: congregationColor(c), size: 20),
-                ),
-                title: Text(c.name(store.sw)),
-                subtitle: Text(c.tagline(store.sw).isEmpty
-                    ? c.role(store.sw)
-                    : c.tagline(store.sw)),
-                trailing: store.data.settings.selectedCongregationId == c.id
-                    ? const Icon(Icons.check_circle, size: 20)
-                    : null,
-                onTap: () => store.selectCongregation(c.id),
-              ),
-            ),
           SectionLabel(s.language),
           Card(
             child: ListTile(
@@ -149,20 +132,24 @@ class _BackgroundTile extends StatelessWidget {
               ),
               clipBehavior: Clip.antiAlias,
               child: background.asset == null
-                  ? Icon(Icons.format_color_reset_outlined,
-                      color: surfaces.muted)
+                  ? Icon(
+                      Icons.format_color_reset_outlined,
+                      color: surfaces.muted,
+                    )
                   : Image.asset(background.asset!, fit: BoxFit.cover),
             ),
           ),
           const SizedBox(height: 6),
-          Text(background.label(store.sw),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: selected ? accent : surfaces.ink,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              )),
+          Text(
+            background.label(store.sw),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: selected ? accent : surfaces.ink,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

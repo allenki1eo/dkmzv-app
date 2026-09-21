@@ -8,7 +8,6 @@ import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
 import '../widgets/member_ui.dart';
-import '../widgets/parish.dart';
 import '../widgets/tab_bar.dart';
 import '../widgets/video.dart';
 import 'announcements_screen.dart';
@@ -170,7 +169,6 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
-    final surfaces = Surfaces.of(context);
     final name = member?.fullName.split(' ').first;
 
     return Row(
@@ -180,43 +178,18 @@ class _Greeting extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                s.greetingFor(DateTime.now().hour),
-                style: TextStyle(
-                  color: surfaces.muted,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 3),
-              if (name == null)
-                DisplayHeading(lead: s.welcomeLeadA, accent: s.welcomeLeadB)
-              else
-                DisplayHeading(lead: s.welcomeLeadA, accent: name),
-              const SizedBox(height: Insets.xs + 2),
-              Row(
-                children: [
-                  Icon(Icons.church_outlined, size: 13, color: surfaces.muted),
-                  const SizedBox(width: 5),
-                  Flexible(
-                    child: Text(
-                      congregation?.name(store.sw) ??
-                          store.data.church.name(store.sw),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: surfaces.muted, fontSize: 12.5),
-                    ),
-                  ),
-                ],
+              Eyebrow(s.greetingFor(DateTime.now().hour)),
+              const SizedBox(height: Insets.sm),
+              DisplayHeading(
+                text: name ?? s.welcomeLeadB,
+                quiet:
+                    congregation?.name(store.sw) ??
+                    store.data.church.name(store.sw),
               ),
             ],
           ),
         ),
         const SizedBox(width: Insets.sm),
-        // The usharika switch and the language switch stay reachable from the
-        // first screen — a mwumini may follow a congregation they do not
-        // worship in every Sunday.
-        const ParishButton(),
         const LocaleToggle(),
         const SizedBox(width: Insets.sm),
         const _ProfileAvatar(),
@@ -306,7 +279,7 @@ class BahashaPanel extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Insets.lg),
-            AmberButton(
+            FlatButton(
               label: s.register,
               icon: Icons.person_add_alt_rounded,
               onPressed: onRegister,
@@ -418,7 +391,7 @@ class BahashaPanel extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Insets.lg),
-          AmberButton(
+          FlatButton(
             label: s.giveNow,
             icon: Icons.volunteer_activism_rounded,
             onPressed: onGive,
@@ -471,7 +444,7 @@ class _ActionGrid extends StatelessWidget {
           children: [
             Expanded(
               child: SoftTile(
-                tone: SoftTone.warm,
+                tone: SoftTone.subtle,
                 icon: Icons.menu_book_rounded,
                 title: s.tabIbada,
                 height: 96,
@@ -503,7 +476,7 @@ class _ActionGrid extends StatelessWidget {
             const SizedBox(width: Insets.md),
             Expanded(
               child: SoftTile(
-                tone: SoftTone.warm,
+                tone: SoftTone.subtle,
                 icon: Icons.map_outlined,
                 title: s.jumuiyaMap,
                 height: 96,
@@ -539,10 +512,10 @@ class _JumuiyaCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: surfaces.amber.withValues(alpha: 0.18),
+              color: surfaces.subtle,
               borderRadius: BorderRadius.circular(Radii.sm),
             ),
-            child: Icon(Icons.groups_rounded, size: 21, color: surfaces.amber),
+            child: Icon(Icons.groups_rounded, size: 21, color: surfaces.ink),
           ),
           const SizedBox(width: Insets.md),
           Expanded(
