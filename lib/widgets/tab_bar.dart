@@ -20,7 +20,7 @@ class TabItem {
   final String label;
 }
 
-/// The round amber button that sits in the middle of the bar.
+/// The raised button that sits in the middle of the bar.
 class CenterAction {
   const CenterAction({
     required this.icon,
@@ -37,7 +37,7 @@ class CenterAction {
 /// edge, with the one action a member reaches for raised in the middle of it.
 ///
 /// It blurs whatever scrolls under it, so a chosen wallpaper still reads
-/// through, and the selected destination is marked by a soft plate that
+/// through, and the selected destination is marked by a tinted plate that
 /// slides between tabs rather than appearing under the new one.
 class GlassTabBar extends StatelessWidget {
   const GlassTabBar({
@@ -58,7 +58,7 @@ class GlassTabBar extends StatelessWidget {
   /// Height of the bar itself, without the safe-area inset beneath it.
   static const double barHeight = 62;
 
-  /// Diameter of the raised centre button.
+  /// Side of the raised centre button, which is a rounded square.
   static const double fabSize = 54;
 
   /// What a scroll view should leave at its bottom so the last row can clear
