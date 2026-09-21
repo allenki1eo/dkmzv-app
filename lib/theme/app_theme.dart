@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
 import 'brand.dart';
@@ -53,6 +54,18 @@ class AppTheme {
       scaffoldBackgroundColor: translucent ? Colors.transparent : s.canvas,
       canvasColor: s.canvas,
       splashFactory: InkSparkle.splashFactory,
+      // Pushed screens slide in from the right and drag back from the edge,
+      // which is the gesture people already know from every other app on the
+      // phone.
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       textTheme: text,
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -84,8 +97,9 @@ class AppTheme {
         iconColor: tone,
         titleTextStyle: text.titleSmall,
         subtitleTextStyle: text.bodySmall?.copyWith(color: s.muted),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.md)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Radii.md),
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: s.card,
@@ -93,16 +107,21 @@ class AppTheme {
         labelStyle: labelColour,
         secondaryLabelStyle: labelColour,
         checkmarkColor: s.onAction,
-        side: WidgetStateBorderSide.resolveWith((states) => BorderSide(
-              color: states.contains(WidgetState.selected)
-                  ? Colors.transparent
-                  : s.hairline,
-            )),
+        side: WidgetStateBorderSide.resolveWith(
+          (states) => BorderSide(
+            color: states.contains(WidgetState.selected)
+                ? Colors.transparent
+                : s.hairline,
+          ),
+        ),
         showCheckmark: false,
-        padding:
-            const EdgeInsets.symmetric(horizontal: Insets.md, vertical: Insets.sm),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.pill)),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Insets.md,
+          vertical: Insets.sm,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Radii.pill),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -110,7 +129,9 @@ class AppTheme {
         labelStyle: TextStyle(color: s.muted, fontFamily: DkmzvBrand.sans),
         hintStyle: TextStyle(color: s.muted, fontFamily: DkmzvBrand.sans),
         contentPadding: const EdgeInsets.symmetric(
-            horizontal: Insets.lg, vertical: Insets.lg),
+          horizontal: Insets.lg,
+          vertical: Insets.lg,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(Radii.md),
           borderSide: BorderSide(color: s.hairline),
@@ -139,7 +160,8 @@ class AppTheme {
             fontSize: 15,
           ),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Radii.pill)),
+            borderRadius: BorderRadius.circular(Radii.pill),
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -154,7 +176,8 @@ class AppTheme {
             fontSize: 15,
           ),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Radii.pill)),
+            borderRadius: BorderRadius.circular(Radii.pill),
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -175,20 +198,27 @@ class AppTheme {
         hoverElevation: 0,
         highlightElevation: 0,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Radii.lg)),
+          borderRadius: BorderRadius.circular(Radii.lg),
+        ),
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith((states) =>
-              states.contains(WidgetState.selected) ? s.action : s.card),
-          foregroundColor: WidgetStateProperty.resolveWith((states) =>
-              states.contains(WidgetState.selected) ? s.onAction : s.ink),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) =>
+                states.contains(WidgetState.selected) ? s.action : s.card,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) =>
+                states.contains(WidgetState.selected) ? s.onAction : s.ink,
+          ),
           side: WidgetStateProperty.all(BorderSide(color: s.hairline)),
-          textStyle: WidgetStateProperty.all(const TextStyle(
-            fontFamily: DkmzvBrand.sans,
-            fontWeight: FontWeight.w600,
-            fontSize: 13.5,
-          )),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(
+              fontFamily: DkmzvBrand.sans,
+              fontWeight: FontWeight.w600,
+              fontSize: 13.5,
+            ),
+          ),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -196,7 +226,8 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         indicatorColor: tone.withValues(alpha: dark ? 0.22 : 0.10),
         indicatorShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Radii.pill)),
+          borderRadius: BorderRadius.circular(Radii.pill),
+        ),
         elevation: 0,
         height: 66,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
@@ -218,17 +249,20 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
         backgroundColor: dark ? DkmzvBrand.darkCard : DkmzvBrand.ink,
         contentTextStyle: TextStyle(
-            fontFamily: DkmzvBrand.sans,
-            color: dark ? DkmzvBrand.darkInk : Colors.white,
-            fontSize: 14),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.md)),
+          fontFamily: DkmzvBrand.sans,
+          color: dark ? DkmzvBrand.darkInk : Colors.white,
+          fontSize: 14,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Radii.md),
+        ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: s.card,
         surfaceTintColor: Colors.transparent,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(Radii.xl)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Radii.xl),
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: s.card,
@@ -240,16 +274,19 @@ class AppTheme {
         ),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected) ? s.onAction : s.card),
-        trackColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected)
-                ? s.action
-                : s.hairline),
-        trackOutlineColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected)
-                ? Colors.transparent
-                : s.muted.withValues(alpha: 0.35)),
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.selected) ? s.onAction : s.card,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.selected) ? s.action : s.hairline,
+        ),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? Colors.transparent
+              : s.muted.withValues(alpha: 0.35),
+        ),
         trackOutlineWidth: const WidgetStatePropertyAll(1),
       ),
       sliderTheme: SliderThemeData(
@@ -273,16 +310,19 @@ class AppTheme {
           letterSpacing: spacing,
           height: 1.12,
         );
-    TextStyle sans(double size, FontWeight weight,
-            {double height = 1.4, double spacing = 0}) =>
-        TextStyle(
-          fontFamily: DkmzvBrand.sans,
-          color: ink,
-          fontSize: size,
-          fontWeight: weight,
-          height: height,
-          letterSpacing: spacing,
-        );
+    TextStyle sans(
+      double size,
+      FontWeight weight, {
+      double height = 1.4,
+      double spacing = 0,
+    }) => TextStyle(
+      fontFamily: DkmzvBrand.sans,
+      color: ink,
+      fontSize: size,
+      fontWeight: weight,
+      height: height,
+      letterSpacing: spacing,
+    );
 
     return TextTheme(
       displaySmall: display(36, FontWeight.w700, -0.8),
@@ -303,6 +343,6 @@ class AppTheme {
 
   static Color _readableOn(Color background) =>
       background.computeLuminance() > 0.55
-          ? DkmzvBrand.ink
-          : const Color(0xFFFFFFFF);
+      ? DkmzvBrand.ink
+      : const Color(0xFFFFFFFF);
 }

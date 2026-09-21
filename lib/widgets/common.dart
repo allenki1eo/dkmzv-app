@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +21,9 @@ SeasonPalette pOf(BuildContext context) => context.watch<ChurchStore>().palette;
 /// Identity accent of the active usharika, lifted for dark mode. Used for
 /// icons, active states and small badges — never to fill a card or a button.
 Color accentOf(BuildContext context) => accentForBrightness(
-      context.watch<ChurchStore>().parishAccent,
-      Theme.of(context).brightness,
-    );
+  context.watch<ChurchStore>().parishAccent,
+  Theme.of(context).brightness,
+);
 
 class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BrandAppBar({
@@ -77,15 +78,21 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Text(
                     subtitle!,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(color: s.muted, fontSize: 11.5, height: 1.25),
+                    style: TextStyle(
+                      color: s.muted,
+                      fontSize: 11.5,
+                      height: 1.25,
+                    ),
                   ),
               ],
             ),
           ),
         ],
       ),
-      actions: [...?actions, const SizedBox(width: Insets.md)],
+      actions: [
+        ...?actions,
+        const SizedBox(width: Insets.md),
+      ],
     );
   }
 }
@@ -187,7 +194,11 @@ class SectionLabel extends StatelessWidget {
     final s = Surfaces.of(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          0, Insets.xl + 4, action == null ? 0 : 0, Insets.md),
+        0,
+        Insets.xl + 4,
+        action == null ? 0 : 0,
+        Insets.md,
+      ),
       child: Row(
         children: [
           Expanded(
@@ -219,6 +230,71 @@ class SectionLabel extends StatelessWidget {
 }
 
 /// Plain white card with a hairline. No shadow anywhere in the app.
+/// Press feedback for anything tappable that is not a button.
+///
+/// The surface dips a little under the finger and the phone gives a light
+/// tick. It is a small thing, but it is most of what separates a tap that
+/// feels considered from one that feels like a web page.
+class Pressable extends StatefulWidget {
+  const Pressable({
+    super.key,
+    required this.child,
+    required this.onTap,
+    this.onLongPress,
+    this.scale = 0.975,
+  });
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final double scale;
+
+  @override
+  State<Pressable> createState() => _PressableState();
+}
+
+class _PressableState extends State<Pressable> {
+  bool _down = false;
+
+  void _set(bool v) {
+    if (_down != v && mounted) setState(() => _down = v);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = widget.onTap != null || widget.onLongPress != null;
+    if (!enabled) return widget.child;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (_) => _set(true),
+      onTapCancel: () => _set(false),
+      onTapUp: (_) => _set(false),
+      onTap: widget.onTap == null
+          ? null
+          : () {
+              HapticFeedback.selectionClick();
+              widget.onTap!();
+            },
+      onLongPress: widget.onLongPress == null
+          ? null
+          : () {
+              HapticFeedback.mediumImpact();
+              widget.onLongPress!();
+            },
+      child: AnimatedScale(
+        scale: _down ? widget.scale : 1,
+        duration: const Duration(milliseconds: 140),
+        curve: Curves.easeOut,
+        child: AnimatedOpacity(
+          opacity: _down ? 0.9 : 1,
+          duration: const Duration(milliseconds: 140),
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+}
+
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -239,21 +315,16 @@ class AppCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
     final shape = BorderRadius.circular(Radii.lg);
-    return Material(
-      color: color ?? s.card,
-      borderRadius: shape,
-      child: InkWell(
+    final surface = DecoratedBox(
+      decoration: BoxDecoration(
+        color: color ?? s.card,
         borderRadius: shape,
-        onTap: onTap,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: shape,
-            border: Border.all(color: borderColor ?? s.hairline),
-          ),
-          child: Padding(padding: padding, child: child),
-        ),
+        border: Border.all(color: borderColor ?? s.hairline),
       ),
+      child: Padding(padding: padding, child: child),
     );
+    if (onTap == null) return surface;
+    return Pressable(onTap: onTap, child: surface);
   }
 }
 
@@ -282,7 +353,12 @@ class TileRow extends StatelessWidget {
     final tone = iconColor ?? accentOf(context);
     return AppCard(
       onTap: onTap,
-      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.md,
+        Insets.md,
+        Insets.md,
+        Insets.md,
+      ),
       child: Row(
         children: [
           Container(
@@ -299,19 +375,27 @@ class TileRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: TextStyle(
-                        color: s.ink,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        height: 1.25)),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: s.ink,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    height: 1.25,
+                  ),
+                ),
                 if (subtitle != null && subtitle!.isNotEmpty) ...[
                   const SizedBox(height: 2),
-                  Text(subtitle!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: s.muted, fontSize: 12.5, height: 1.35)),
+                  Text(
+                    subtitle!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: s.muted,
+                      fontSize: 12.5,
+                      height: 1.35,
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -335,20 +419,21 @@ class EmptyState extends StatelessWidget {
     final s = Surfaces.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
-          vertical: Insets.xxl, horizontal: Insets.xl),
+        vertical: Insets.xxl,
+        horizontal: Insets.xl,
+      ),
       child: Column(
         children: [
           if (icon != null) ...[
             Icon(icon, color: s.muted.withValues(alpha: 0.6), size: 30),
             const SizedBox(height: Insets.md),
           ],
-          Text(text,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: s.muted, height: 1.45)),
-          if (action != null) ...[
-            const SizedBox(height: Insets.lg),
-            action!,
-          ],
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: s.muted, height: 1.45),
+          ),
+          if (action != null) ...[const SizedBox(height: Insets.lg), action!],
         ],
       ),
     );
@@ -357,8 +442,13 @@ class EmptyState extends StatelessWidget {
 
 /// Small status pill — live, exempt, cathedral, approximate.
 class Pill extends StatelessWidget {
-  const Pill(this.label,
-      {super.key, this.color, this.filled = false, this.icon});
+  const Pill(
+    this.label, {
+    super.key,
+    this.color,
+    this.filled = false,
+    this.icon,
+  });
   final String label;
   final Color? color;
   final bool filled;
@@ -369,7 +459,10 @@ class Pill extends StatelessWidget {
     final surfaces = Surfaces.of(context);
     final tone = color ?? accentOf(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Insets.sm + 2, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Insets.sm + 2,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
         color: filled ? tone : tone.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(Radii.pill),
@@ -378,9 +471,7 @@ class Pill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon,
-                size: 12,
-                color: filled ? surfaces.card : tone),
+            Icon(icon, size: 12, color: filled ? surfaces.card : tone),
             const SizedBox(width: Insets.xs),
           ],
           Text(
@@ -427,19 +518,23 @@ class StatTile extends StatelessWidget {
         children: [
           Icon(icon, color: tone, size: 19),
           const SizedBox(height: Insets.md),
-          Text(value,
-              style: TextStyle(
-                fontFamily: DkmzvBrand.display,
-                fontSize: 26,
-                height: 1,
-                fontWeight: FontWeight.w700,
-                color: s.ink,
-              )),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: DkmzvBrand.display,
+              fontSize: 26,
+              height: 1,
+              fontWeight: FontWeight.w700,
+              color: s.ink,
+            ),
+          ),
           const SizedBox(height: Insets.xs),
-          Text(label,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: s.muted, fontSize: 12)),
+          Text(
+            label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: s.muted, fontSize: 12),
+          ),
         ],
       ),
     );
@@ -459,10 +554,14 @@ class SeasonBanner extends StatelessWidget {
     final moment = store.moment;
     final p = moment.palette;
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const ChurchYearScreen()),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.md,
+        Insets.md,
+        Insets.md,
+        Insets.md,
       ),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const ChurchYearScreen())),
       child: Row(
         children: [
           Container(
@@ -513,7 +612,12 @@ class SundayTimesCard extends StatelessWidget {
     final surfaces = Surfaces.of(context);
     final p = store.palette;
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(Insets.lg, Insets.lg, Insets.lg, Insets.lg),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.lg,
+        Insets.lg,
+        Insets.lg,
+        Insets.lg,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -609,7 +713,12 @@ class DateRailTile extends StatelessWidget {
         : DateFormat.MMM(store.localeCode == 'en' ? 'en' : 'sw').format(dt);
     return AppCard(
       onTap: onTap,
-      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.md,
+        Insets.md,
+        Insets.md,
+        Insets.md,
+      ),
       child: Row(
         children: [
           Container(
@@ -623,19 +732,25 @@ class DateRailTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(day,
-                    style: TextStyle(
-                        color: surfaces.ink,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        height: 1)),
+                Text(
+                  day,
+                  style: TextStyle(
+                    color: surfaces.ink,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    height: 1,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(mon.toUpperCase(),
-                    style: TextStyle(
-                        color: surfaces.muted,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 9.5,
-                        letterSpacing: 0.4)),
+                Text(
+                  mon.toUpperCase(),
+                  style: TextStyle(
+                    color: surfaces.muted,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.5,
+                    letterSpacing: 0.4,
+                  ),
+                ),
               ],
             ),
           ),
@@ -644,19 +759,24 @@ class DateRailTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: surfaces.ink,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        height: 1.25)),
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: surfaces.ink,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    height: 1.25,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: surfaces.muted, fontSize: 12.5),
+                ),
               ],
             ),
           ),
@@ -699,19 +819,24 @@ class ShortcutChip extends StatelessWidget {
                 border: Border.all(color: surfaces.hairline),
               ),
               padding: const EdgeInsets.symmetric(
-                  vertical: Insets.md, horizontal: Insets.sm),
+                vertical: Insets.md,
+                horizontal: Insets.sm,
+              ),
               child: Column(
                 children: [
                   Icon(icon, color: accent, size: 21),
                   const SizedBox(height: Insets.sm),
-                  Text(label,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: surfaces.ink,
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w500)),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: surfaces.ink,
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -739,8 +864,10 @@ class FootNote extends StatelessWidget {
           Icon(icon ?? Icons.info_outline, size: 14, color: s.muted),
           const SizedBox(width: Insets.sm),
           Expanded(
-            child: Text(text,
-                style: TextStyle(color: s.muted, fontSize: 12.5, height: 1.4)),
+            child: Text(
+              text,
+              style: TextStyle(color: s.muted, fontSize: 12.5, height: 1.4),
+            ),
           ),
         ],
       ),
@@ -757,13 +884,19 @@ void showEventSheet(BuildContext context, ChurchEvent e) {
       final surfaces = Surfaces.of(sheetContext);
       return Padding(
         padding: const EdgeInsets.fromLTRB(
-            Insets.gutter, 0, Insets.gutter, Insets.xxl),
+          Insets.gutter,
+          0,
+          Insets.gutter,
+          Insets.xxl,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(e.title(store.sw),
-                style: Theme.of(sheetContext).textTheme.headlineSmall),
+            Text(
+              e.title(store.sw),
+              style: Theme.of(sheetContext).textTheme.headlineSmall,
+            ),
             const SizedBox(height: Insets.md),
             Text(formatDateTime(e.start, store.localeCode)),
             Text(e.place(store.sw), style: TextStyle(color: surfaces.muted)),

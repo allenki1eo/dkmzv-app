@@ -47,7 +47,51 @@ String? _validId(String raw) {
 bool isYoutubeUrl(String raw) => youtubeVideoId(raw) != null;
 
 String youtubeEmbedUrl(String videoId) =>
-    'https://www.youtube-nocookie.com/embed/$videoId?playsinline=1&rel=0&modestbranding=1';
+    'https://www.youtube.com/embed/$videoId'
+    '?playsinline=1&rel=0&modestbranding=1&origin=$_embedOrigin';
+
+/// The origin the in-app player claims. YouTube refuses to configure the
+/// player when the embed is the top-level document with no referrer — that is
+/// the "Video player configuration error (153)" people hit in a WebView. The
+/// embed has to sit in an iframe on a page that has a real origin, so the
+/// player is wrapped in [youtubeEmbedHtml] and loaded with this as the base
+/// URL.
+const String _embedOrigin = 'https://www.youtube.com';
+
+/// Base URL the player HTML must be loaded with, so the WebView reports a
+/// real origin to YouTube instead of `about:blank`.
+const String youtubeEmbedBaseUrl = _embedOrigin;
+
+String _playerHtml(String src) =>
+    '''
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; }
+  .stage { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+  iframe { display: block; width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body>
+<div class="stage">
+<iframe src="$src"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+</div>
+</body>
+</html>
+''';
+
+/// A one-page wrapper that hosts the embed in an iframe.
+///
+/// Load it with `loadHtmlString(html, baseUrl: youtubeEmbedBaseUrl)`.
+String youtubeEmbedHtml(String videoId) =>
+    _playerHtml(youtubeEmbedUrl(videoId));
 
 String youtubeWatchUrl(String videoId) =>
     'https://www.youtube.com/watch?v=$videoId';
@@ -99,7 +143,15 @@ String normaliseChannel(String raw) =>
 String? youtubeChannelLiveEmbedUrl(String channel) {
   final id = youtubeChannelId(channel);
   if (id == null) return null;
-  return 'https://www.youtube.com/embed/live_stream?channel=$id&playsinline=1';
+  return 'https://www.youtube.com/embed/live_stream'
+      '?channel=$id&playsinline=1&rel=0&origin=$_embedOrigin';
+}
+
+/// The channel's live stream wrapped for the in-app player, or null when the
+/// office only pasted a handle.
+String? youtubeChannelLiveEmbedHtml(String channel) {
+  final url = youtubeChannelLiveEmbedUrl(channel);
+  return url == null ? null : _playerHtml(url);
 }
 
 /// The channel's live page, for opening in the YouTube app.

@@ -5,6 +5,7 @@ import '../data/store.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
+import '../widgets/tab_bar.dart';
 import '../widgets/parish.dart';
 import '../widgets/video.dart';
 import 'announcements_screen.dart';
@@ -45,7 +46,11 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            Insets.gutter, Insets.xs, Insets.gutter, Insets.xxl + Insets.sm),
+          Insets.gutter,
+          Insets.xs,
+          Insets.gutter,
+          GlassTabBar.scrollInset,
+        ),
         children: [
           if (ibada != null)
             Text(
@@ -70,39 +75,46 @@ class HomeScreen extends StatelessWidget {
           Row(
             children: [
               ShortcutChip(
-                  icon: Icons.menu_book_outlined,
-                  label: s.tabIbada,
-                  onTap: onOpenIbada),
+                icon: Icons.menu_book_outlined,
+                label: s.tabIbada,
+                onTap: onOpenIbada,
+              ),
               ShortcutChip(
-                  icon: Icons.play_circle_outline,
-                  label: s.sermons,
-                  onTap: onOpenSermons),
+                icon: Icons.play_circle_outline,
+                label: s.sermons,
+                onTap: onOpenSermons,
+              ),
               ShortcutChip(
-                  icon: Icons.volunteer_activism_outlined,
-                  label: s.giving,
-                  onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const GivingScreen()),
-                      )),
+                icon: Icons.volunteer_activism_outlined,
+                label: s.giving,
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const GivingScreen())),
+              ),
               ShortcutChip(
-                  icon: Icons.map_outlined,
-                  label: s.jumuiyaMap,
-                  onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => const JumuiyaMapScreen()),
-                      )),
+                icon: Icons.map_outlined,
+                label: s.jumuiyaMap,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const JumuiyaMapScreen()),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: Insets.lg),
-          SundayTimesCard(onOpenIbada: () {
-            if (ibada != null) store.openIbada(ibada.id);
-            onOpenIbada();
-          }),
+          SundayTimesCard(
+            onOpenIbada: () {
+              if (ibada != null) store.openIbada(ibada.id);
+              onOpenIbada();
+            },
+          ),
           if (upcoming.isNotEmpty) ...[
-            SectionLabel(s.upcoming,
-                action: s.seeAllEvents,
-                onAction: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const EventsScreen()),
-                    )),
+            SectionLabel(
+              s.upcoming,
+              action: s.seeAllEvents,
+              onAction: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const EventsScreen())),
+            ),
             for (final e in upcoming)
               Padding(
                 padding: const EdgeInsets.only(bottom: Insets.sm + 2),
@@ -120,9 +132,10 @@ class HomeScreen extends StatelessWidget {
             action: announcements.length > 2 ? s.seeAll : null,
             onAction: announcements.length > 2
                 ? () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (_) => const AnnouncementsScreen()),
-                    )
+                    MaterialPageRoute(
+                      builder: (_) => const AnnouncementsScreen(),
+                    ),
+                  )
                 : null,
           ),
           if (announcements.isEmpty)

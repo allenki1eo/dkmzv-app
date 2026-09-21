@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../data/models.dart';
 import '../data/store.dart';
 import '../theme/brand.dart';
+import '../theme/tokens.dart';
 import '../widgets/common.dart';
+import '../widgets/tab_bar.dart';
 import 'hymn_detail_screen.dart';
 
 class HymnsScreen extends StatefulWidget {
@@ -46,7 +48,12 @@ class _HymnsScreenState extends State<HymnsScreen> {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+              padding: const EdgeInsets.fromLTRB(
+                Insets.gutter,
+                0,
+                Insets.gutter,
+                GlassTabBar.scrollInset,
+              ),
               children: [
                 if (_q.text.isEmpty && store.favoriteHymns.isNotEmpty) ...[
                   SectionLabel(s.favorites),
@@ -56,10 +63,7 @@ class _HymnsScreenState extends State<HymnsScreen> {
                 if (_q.text.isEmpty && store.recentHymns.isNotEmpty) ...[
                   SectionLabel(s.recent),
                   for (final h in store.recentHymns)
-                    _HymnTile(
-                      hymn: h,
-                      favorite: store.isFavorite(h.id),
-                    ),
+                    _HymnTile(hymn: h, favorite: store.isFavorite(h.id)),
                 ],
                 SectionLabel(s.allHymns),
                 if (results.isEmpty) EmptyState(s.noHymns),
@@ -86,23 +90,30 @@ class _HymnTile extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: store.palette.cloth.withValues(alpha: 0.1),
-          child: Text(hymn.number,
-              style: TextStyle(
-                  color: store.palette.cloth,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800)),
+          child: Text(
+            hymn.number,
+            style: TextStyle(
+              color: store.palette.cloth,
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ),
         title: Text(hymn.title(store.sw)),
-        subtitle: Text(hymn.firstLineSw, maxLines: 1, overflow: TextOverflow.ellipsis),
+        subtitle: Text(
+          hymn.firstLineSw,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: Icon(
           favorite ? Icons.favorite : Icons.favorite_border,
           color: favorite ? DkmzvBrand.live : Surfaces.of(context).muted,
         ),
         onTap: () {
           store.openHymn(hymn.id);
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => HymnDetailScreen(hymn: hymn),
-          ));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => HymnDetailScreen(hymn: hymn)),
+          );
         },
       ),
     );

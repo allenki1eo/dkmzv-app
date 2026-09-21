@@ -6,6 +6,7 @@ import '../data/models.dart';
 import '../data/store.dart';
 import '../data/youtube.dart';
 import '../services/links.dart';
+import '../services/player.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
@@ -26,12 +27,7 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
   void initState() {
     super.initState();
     final id = youtubeVideoId(widget.sermon.mediaUrl);
-    if (id != null) {
-      _web = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setBackgroundColor(const Color(0xFF000000))
-        ..loadRequest(Uri.parse(youtubeEmbedUrl(id)));
-    }
+    if (id != null) _web = buildYoutubePlayer(videoId: id);
   }
 
   @override
@@ -51,9 +47,9 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
             onPressed: ser.mediaUrl.isEmpty
                 ? null
                 : () => shareText(
-                      '${ser.title(store.sw)}\n${ser.mediaUrl}',
-                      subject: ser.title(store.sw),
-                    ),
+                    '${ser.title(store.sw)}\n${ser.mediaUrl}',
+                    subject: ser.title(store.sw),
+                  ),
             icon: const Icon(Icons.share_outlined),
           ),
           const SizedBox(width: Insets.sm),
@@ -61,7 +57,11 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            Insets.gutter, Insets.sm, Insets.gutter, Insets.xxl),
+          Insets.gutter,
+          Insets.sm,
+          Insets.gutter,
+          Insets.xxl,
+        ),
         children: [
           if (_web != null)
             ClipRRect(
@@ -79,9 +79,14 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
                   Icon(Icons.link_off, color: surfaces.muted, size: 20),
                   const SizedBox(width: Insets.md),
                   Expanded(
-                    child: Text(s.youtubeNeedUrl,
-                        style: TextStyle(
-                            color: surfaces.muted, fontSize: 13, height: 1.45)),
+                    child: Text(
+                      s.youtubeNeedUrl,
+                      style: TextStyle(
+                        color: surfaces.muted,
+                        fontSize: 13,
+                        height: 1.45,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -94,8 +99,10 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
             ),
             const SizedBox(height: Insets.sm),
           ],
-          Text(ser.title(store.sw),
-              style: Theme.of(context).textTheme.headlineSmall),
+          Text(
+            ser.title(store.sw),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: Insets.xs),
           Text(
             [
@@ -107,9 +114,14 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
           ),
           if (ser.note(store.sw).isNotEmpty) ...[
             const SizedBox(height: Insets.md),
-            Text(ser.note(store.sw),
-                style: TextStyle(
-                    color: surfaces.muted, fontSize: 13.5, height: 1.5)),
+            Text(
+              ser.note(store.sw),
+              style: TextStyle(
+                color: surfaces.muted,
+                fontSize: 13.5,
+                height: 1.5,
+              ),
+            ),
           ],
           const SizedBox(height: Insets.xl),
           FilledButton.icon(
@@ -124,9 +136,9 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
             onPressed: ser.mediaUrl.isEmpty
                 ? null
                 : () => shareText(
-                      '${ser.title(store.sw)}\n${ser.mediaUrl}',
-                      subject: ser.title(store.sw),
-                    ),
+                    '${ser.title(store.sw)}\n${ser.mediaUrl}',
+                    subject: ser.title(store.sw),
+                  ),
             icon: const Icon(Icons.share_outlined, size: 19),
             label: Text(s.shareLink),
           ),

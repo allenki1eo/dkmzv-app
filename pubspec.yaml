@@ -20,6 +20,9 @@ dependencies:
   flutter_map: ^8.2.1
   latlong2: ^0.9.1
   webview_flutter: ^4.13.0
+  # Direct dependency so the player can set Android-only WebView options
+  # (media playback without a separate user gesture).
+  webview_flutter_android: ^4.10.0
   share_plus: ^11.1.0
 
 dev_dependencies:

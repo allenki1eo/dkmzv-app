@@ -5,6 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../data/store.dart';
 import '../data/youtube.dart';
 import '../services/links.dart';
+import '../services/player.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
@@ -26,13 +27,7 @@ class _ChannelLiveScreenState extends State<ChannelLiveScreen> {
   void initState() {
     super.initState();
     final channel = context.read<ChurchStore>().youtubeChannel;
-    final embed = youtubeChannelLiveEmbedUrl(channel);
-    if (embed != null) {
-      _web = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setBackgroundColor(const Color(0xFF000000))
-        ..loadRequest(Uri.parse(embed));
-    }
+    _web = buildYoutubePlayer(channel: channel);
   }
 
   @override
@@ -46,11 +41,16 @@ class _ChannelLiveScreenState extends State<ChannelLiveScreen> {
       appBar: AppBar(title: Text(s.channelLiveTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            Insets.gutter, Insets.sm, Insets.gutter, Insets.xxl),
+          Insets.gutter,
+          Insets.sm,
+          Insets.gutter,
+          Insets.xxl,
+        ),
         children: [
-          Text(s.channelLiveNote,
-              style:
-                  TextStyle(color: surfaces.muted, fontSize: 13, height: 1.45)),
+          Text(
+            s.channelLiveNote,
+            style: TextStyle(color: surfaces.muted, fontSize: 13, height: 1.45),
+          ),
           const SizedBox(height: Insets.lg),
           if (_web != null)
             AspectRatio(

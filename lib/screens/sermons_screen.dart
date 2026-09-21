@@ -6,6 +6,7 @@ import '../data/youtube.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
+import '../widgets/tab_bar.dart';
 import '../widgets/video.dart';
 import 'channel_live_screen.dart';
 
@@ -20,7 +21,8 @@ class SermonsScreen extends StatelessWidget {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
     final surfaces = Surfaces.of(context);
-    final items = [...store.data.sermons]..sort((a, b) {
+    final items = [...store.data.sermons]
+      ..sort((a, b) {
         if (a.isLive != b.isLive) return a.isLive ? -1 : 1;
         return b.date.compareTo(a.date);
       });
@@ -32,13 +34,19 @@ class SermonsScreen extends StatelessWidget {
       appBar: embedded
           ? AppBar(
               titleSpacing: Insets.gutter,
-              title: Text(s.sermons,
-                  style: Theme.of(context).textTheme.titleLarge),
+              title: Text(
+                s.sermons,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             )
           : AppBar(title: Text(s.sermons)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-            Insets.gutter, Insets.xs, Insets.gutter, Insets.xxl),
+          Insets.gutter,
+          Insets.xs,
+          Insets.gutter,
+          GlassTabBar.scrollInset,
+        ),
         children: [
           if (featured == null)
             EmptyState(s.noSermonYet, icon: Icons.ondemand_video_outlined)
@@ -67,7 +75,11 @@ class SermonsScreen extends StatelessWidget {
           const SizedBox(height: Insets.sm),
           Text(
             s.liveLead,
-            style: TextStyle(color: surfaces.muted, fontSize: 12.5, height: 1.45),
+            style: TextStyle(
+              color: surfaces.muted,
+              fontSize: 12.5,
+              height: 1.45,
+            ),
           ),
         ],
       ),

@@ -7,6 +7,7 @@ import 'package:dkmzv_app/data/youtube.dart';
 import 'package:dkmzv_app/theme/app_theme.dart';
 import 'package:dkmzv_app/theme/backgrounds.dart';
 import 'package:dkmzv_app/theme/brand.dart';
+import 'package:dkmzv_app/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -26,8 +27,9 @@ void main() {
     store = ChurchStore.memory(data);
   });
 
-  testWidgets('home shows announcements, Sunday times, and SW/EN toggle',
-      (tester) async {
+  testWidgets('home shows announcements, Sunday times, and SW/EN toggle', (
+    tester,
+  ) async {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
 
@@ -87,13 +89,16 @@ void main() {
     expect(find.byType(BackgroundCanvas), findsOneWidget);
   });
 
-  testWidgets('sadaka groups render in dark mode without layout errors',
-      (tester) async {
+  testWidgets('sadaka groups render in dark mode without layout errors', (
+    tester,
+  ) async {
     await store.setThemeMode('dark');
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
-    expect(Theme.of(tester.element(find.byType(NavigationBar))).brightness,
-        Brightness.dark);
+    expect(
+      Theme.of(tester.element(find.byType(GlassTabBar))).brightness,
+      Brightness.dark,
+    );
 
     await tester.scrollUntilVisible(
       find.text('Sadaka'),
@@ -119,7 +124,8 @@ void main() {
     expect(find.text('Chagua kiasi'), findsOneWidget);
     // Card stays disabled until the office pastes a Stripe Payment Link.
     final card = tester.widget<FilledButton>(
-        find.widgetWithText(FilledButton, 'Lipa kwa kadi'));
+      find.widgetWithText(FilledButton, 'Lipa kwa kadi'),
+    );
     expect(card.onPressed, isNull);
   });
 
@@ -127,10 +133,12 @@ void main() {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.descendant(
-      of: find.byType(NavigationBar),
-      matching: find.text('Nyimbo'),
-    ));
+    await tester.tap(
+      find.descendant(
+        of: find.byType(GlassTabBar),
+        matching: find.text('Nyimbo'),
+      ),
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'ngome');
@@ -170,10 +178,14 @@ void main() {
     final again = ChurchData.fromJson(data.toJson());
     expect(again.hymns.length, data.hymns.length);
     expect(again.latestService()?.themeSw, isNotEmpty);
-    expect(again.congregations.map((c) => c.id),
-        containsAll(['cong-ebenezer', 'cong-angaza', 'cong-makedonia']));
-    expect(again.congregations.where((c) => c.isMain).single.id,
-        'cong-ebenezer');
+    expect(
+      again.congregations.map((c) => c.id),
+      containsAll(['cong-ebenezer', 'cong-angaza', 'cong-makedonia']),
+    );
+    expect(
+      again.congregations.where((c) => c.isMain).single.id,
+      'cong-ebenezer',
+    );
     expect(again.jumuiyas, isNotEmpty);
     expect(again.sermons.any((s) => s.isLive), isTrue);
   });
@@ -184,18 +196,20 @@ void main() {
     await store.selectCongregation('cong-angaza');
     expect(store.selectedCongregation?.id, 'cong-angaza');
 
-    await store.saveMember(MemberRecord(
-      id: 'mem-asha',
-      fullName: 'Asha Juma',
-      congregationId: 'cong-angaza',
-      jumuiyaId: 'jum-angaza-chamaguha',
-      phone: '+255 700 000 099',
-      householdNote: 'Chamaguha',
-      shareHomePin: true,
-      homeLat: -3.6702,
-      homeLng: 33.4463,
-      registeredAt: DateTime.now().toIso8601String(),
-    ));
+    await store.saveMember(
+      MemberRecord(
+        id: 'mem-asha',
+        fullName: 'Asha Juma',
+        congregationId: 'cong-angaza',
+        jumuiyaId: 'jum-angaza-chamaguha',
+        phone: '+255 700 000 099',
+        householdNote: 'Chamaguha',
+        shareHomePin: true,
+        homeLat: -3.6702,
+        homeLng: 33.4463,
+        registeredAt: DateTime.now().toIso8601String(),
+      ),
+    );
     expect(store.currentMember?.fullName, 'Asha Juma');
     expect(store.data.homePins, isNotEmpty);
     expect(store.data.homePins.first.label, contains('Asha'));
@@ -227,11 +241,19 @@ void main() {
     expect(g.categoryById('bah-ujenzi')?.group, GivingGroups.bahasha);
 
     await store.addGivingNote(
-        amount: 20000, purposeId: 'bah-ujenzi', categoryId: 'bah-ujenzi',
-        method: 'bahasha', note: '');
+      amount: 20000,
+      purposeId: 'bah-ujenzi',
+      categoryId: 'bah-ujenzi',
+      method: 'bahasha',
+      note: '',
+    );
     await store.addGivingNote(
-        amount: 50000, purposeId: 'fungu-la-kumi', categoryId: 'fungu-la-kumi',
-        method: 'mpesa', note: '');
+      amount: 50000,
+      purposeId: 'fungu-la-kumi',
+      categoryId: 'fungu-la-kumi',
+      method: 'mpesa',
+      note: '',
+    );
 
     final totals = store.givingTotalsByGroup;
     expect(totals[GivingGroups.bahasha], 20000);
@@ -243,19 +265,21 @@ void main() {
     final jumuiya = store.data.jumuiyaById('jum-angaza-chamaguha')!;
     expect(jumuiya.radiusMeters, greaterThan(0));
 
-    await store.saveMember(MemberRecord(
-      id: 'mem-inside',
-      fullName: 'Neema Paul',
-      congregationId: 'cong-angaza',
-      jumuiyaId: jumuiya.id,
-      phone: '',
-      householdNote: '',
-      shareHomePin: true,
-      homeLat: jumuiya.latitude + 0.0008,
-      homeLng: jumuiya.longitude,
-      registeredAt: DateTime.now().toIso8601String(),
-      kaya: 'Kaya ya Paul',
-    ));
+    await store.saveMember(
+      MemberRecord(
+        id: 'mem-inside',
+        fullName: 'Neema Paul',
+        congregationId: 'cong-angaza',
+        jumuiyaId: jumuiya.id,
+        phone: '',
+        householdNote: '',
+        shareHomePin: true,
+        homeLat: jumuiya.latitude + 0.0008,
+        homeLng: jumuiya.longitude,
+        registeredAt: DateTime.now().toIso8601String(),
+        kaya: 'Kaya ya Paul',
+      ),
+    );
     expect(store.pinsInsideGeofence(jumuiya).length, 1);
 
     // A home two kilometres away falls outside the circle.
@@ -270,8 +294,13 @@ void main() {
     );
     expect(store.pinsInsideGeofence(jumuiya), isEmpty);
     expect(
-      store.jumuiyaAt(jumuiya.latitude, jumuiya.longitude,
-          congregationId: 'cong-angaza')?.id,
+      store
+          .jumuiyaAt(
+            jumuiya.latitude,
+            jumuiya.longitude,
+            congregationId: 'cong-angaza',
+          )
+          ?.id,
       jumuiya.id,
     );
     expect(store.jumuiyaAt(-3.0, 33.0), isNull);
@@ -286,8 +315,10 @@ void main() {
     expect(store.themeMode, ThemeMode.system);
 
     await store.setBackground('kitenge');
-    expect(AppBackground.byId(store.backgroundId).asset,
-        'assets/backgrounds/kitenge.webp');
+    expect(
+      AppBackground.byId(store.backgroundId).asset,
+      'assets/backgrounds/kitenge.webp',
+    );
     expect(AppBackground.byId('hakuna').id, 'none');
   });
 
@@ -305,29 +336,36 @@ void main() {
     // Every parish accent is out of the violet band of the colour wheel.
     for (final c in data.congregations) {
       final hue = HSLColor.fromColor(parseHexColor(c.accentHex)!).hue;
-      expect(hue > 255 && hue < 330, isFalse,
-          reason: '${c.id} still carries a purple accent');
+      expect(
+        hue > 255 && hue < 330,
+        isFalse,
+        reason: '${c.id} still carries a purple accent',
+      );
     }
 
     for (final brightness in Brightness.values) {
       final theme = AppTheme.build(
-          accent: parseHexColor(data.congregations.first.accentHex)!,
-          brightness: brightness);
+        accent: parseHexColor(data.congregations.first.accentHex)!,
+        brightness: brightness,
+      );
       // The one filled action weight is the neutral slate, not a hue.
       final expected = brightness == Brightness.dark
           ? Surfaces.dark.action
           : Surfaces.light.action;
       expect(
-        theme.filledButtonTheme.style?.backgroundColor
-            ?.resolve(<WidgetState>{}),
+        theme.filledButtonTheme.style?.backgroundColor?.resolve(
+          <WidgetState>{},
+        ),
         expected,
       );
       // Canvas is a true neutral: the channels sit within a few points of
       // each other, so no violet cast leaks into the background.
       final canvas = theme.scaffoldBackgroundColor;
       final channels = [canvas.r, canvas.g, canvas.b];
-      expect(channels.reduce(math.max) - channels.reduce(math.min),
-          lessThan(0.05));
+      expect(
+        channels.reduce(math.max) - channels.reduce(math.min),
+        lessThan(0.05),
+      );
     }
   });
 
@@ -348,33 +386,47 @@ void main() {
 
   test('the office can paste any shape of YouTube link', () {
     expect(youtubeVideoId('https://youtu.be/dQw4w9WgXcQ'), 'dQw4w9WgXcQ');
-    expect(youtubeVideoId('https://www.youtube.com/live/dQw4w9WgXcQ?si=x'),
-        'dQw4w9WgXcQ');
-    expect(youtubeVideoId('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
-        'dQw4w9WgXcQ');
+    expect(
+      youtubeVideoId('https://www.youtube.com/live/dQw4w9WgXcQ?si=x'),
+      'dQw4w9WgXcQ',
+    );
+    expect(
+      youtubeVideoId('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
+      'dQw4w9WgXcQ',
+    );
     expect(youtubeVideoId('https://vimeo.com/12345'), isNull);
-    expect(youtubeThumbUrl('dQw4w9WgXcQ'),
-        'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg');
+    expect(
+      youtubeThumbUrl('dQw4w9WgXcQ'),
+      'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+    );
   });
 
-  test('a channel id lets the live stream play without a weekly link',
-      () async {
-    const channel = 'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw';
-    expect(youtubeChannelId(channel), 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
-    expect(youtubeHandle('https://youtube.com/@dkmzv'), '@dkmzv');
-    expect(youtubeChannelLiveEmbedUrl(channel),
-        contains('embed/live_stream?channel=UC_x5XG1OV2P6uZZ5FSM9Ttw'));
-    // A handle alone cannot be embedded, but it can still be opened.
-    expect(youtubeChannelLiveEmbedUrl('@dkmzv'), isNull);
-    expect(youtubeChannelLiveUrl('@dkmzv'), 'https://www.youtube.com/@dkmzv/live');
+  test(
+    'a channel id lets the live stream play without a weekly link',
+    () async {
+      const channel =
+          'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw';
+      expect(youtubeChannelId(channel), 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
+      expect(youtubeHandle('https://youtube.com/@dkmzv'), '@dkmzv');
+      expect(
+        youtubeChannelLiveEmbedUrl(channel),
+        contains('embed/live_stream?channel=UC_x5XG1OV2P6uZZ5FSM9Ttw'),
+      );
+      // A handle alone cannot be embedded, but it can still be opened.
+      expect(youtubeChannelLiveEmbedUrl('@dkmzv'), isNull);
+      expect(
+        youtubeChannelLiveUrl('@dkmzv'),
+        'https://www.youtube.com/@dkmzv/live',
+      );
 
-    final store = ChurchStore.memory(await ChurchStore.loadSeed());
-    expect(store.youtubeChannel, isEmpty);
-    await store.setYoutubeChannel(channel);
-    expect(store.youtubeChannel, 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
-    await store.setYoutubeChannel('not a channel');
-    expect(store.youtubeChannel, isEmpty);
-  });
+      final store = ChurchStore.memory(await ChurchStore.loadSeed());
+      expect(store.youtubeChannel, isEmpty);
+      await store.setYoutubeChannel(channel);
+      expect(store.youtubeChannel, 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
+      await store.setYoutubeChannel('not a channel');
+      expect(store.youtubeChannel, isEmpty);
+    },
+  );
 
   test('home offers the live stream first, then the newest sermon', () async {
     final store = ChurchStore.memory(await ChurchStore.loadSeed());
