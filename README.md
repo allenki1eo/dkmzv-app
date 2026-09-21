@@ -8,7 +8,7 @@ Android-first · Kiswahili + English · Works on slow data · Offline hymns and 
 
 This is **not** church ERP, not a public member phone directory, and not a WhatsApp replacement.
 
-Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md) · v2: [`docs/PRODUCT_BRIEF_V2.md`](docs/PRODUCT_BRIEF_V2.md).
+Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md) · v2: [`docs/PRODUCT_BRIEF_V2.md`](docs/PRODUCT_BRIEF_V2.md) · v3: [`docs/PRODUCT_BRIEF_V3.md`](docs/PRODUCT_BRIEF_V3.md).
 
 ## What it does
 
@@ -18,16 +18,19 @@ Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md) · v2: [`do
 | **Ibada** | Weekly order of service (date, theme, readings, outline, optional link). Last opened stays on device. |
 | **Nyimbo** | 36 seed hymns, search, favorites, recently opened (all offline). |
 | **Matukio** | Calendar: worship, choir, UW, youth, confirmation, meetings. |
-| **Sadaka** | Configurable M-Pesa / Lipa / paybill instructions + optional **Nimetoa** note. No finance backend. |
+| **Sadaka** | Grouped offerings: **bahasha** (ujenzi, utumishi, imarisha usharika — marked *exempt*), **fungu la kumi**, **shukrani**, sadaka za ibada. M-Pesa steps + optional Stripe Payment Link per kind, plus a private **Nimetoa** note. No finance backend. |
 | **Mahubiri** | YouTube live + archive: watch in-app (when the URL is a video) and **share the link**. Office pastes the phone’s live URL. |
 | **Masharika** | Ebenezer (kanisa kuu), Angaza, Makedonia. |
-| **Ramani ya jumuiya** | OpenStreetMap. Tap to ping a home during jumuiya (household label only — no phone dump). |
-| **Sajili mwanachama** | Light registration on this phone for the office. Not a public directory. |
+| **Ramani ya jumuiya** | OpenStreetMap with **geofence circles** per jumuiya, homes-inside counts, and tap-to-ping during jumuiya (household label only — no phone dump). |
+| **Usajili wa waumini** | Jina, kaya, jumuiya, hadhi, ubatizo/kipaimara. Stays on this phone for the office. Not a public directory. |
+| **Mwonekano** | Light / dark / system, five optional wallpapers, and the parish accent colour. |
 | **Wasiliana** | OSM map, office hours, **Pastor + office only**. |
 | **Ombi la kichungaji** | Private prayer/visit form → admin inbox on this phone. |
-| **Msimamizi** | PIN-gated CRUD for all of the above. |
+| **Msimamizi** | Dashboard (stat tiles + **Tuna live sasa** switch) and PIN-gated CRUD for all of the above, including masharika, jumuiya geofences, offering kinds and Stripe links. |
 
-Members stay anonymous unless they fill the light registration form. There is no Firebase login. Content is **seed-first** (bundled JSON) and edited locally. v1 installs on a phone pick up Ebenezer / Angaza / Makedonia automatically.
+Members stay anonymous unless they fill the light registration form. There is no Firebase login. Content is **seed-first** (bundled JSON) and edited locally. Older installs migrate in place: v1 phones pick up Ebenezer / Angaza / Makedonia, v2 phones pick up the offering groups.
+
+Each usharika carries its own accent colour and motif (Ebenezer purple, Angaza gold, Makedonia blue) while vestments stay locked to the church year. Typography is bundled **Inter** + **Source Serif 4**, subset to Latin (about 320 KB), so nothing is fetched at runtime.
 
 ## Run (Android)
 
@@ -57,10 +60,12 @@ flutter analyze
 
 1. **Zaidi → Msimamizi**
 2. Demo PIN: `dkmzv` (change it after you try the app)
-3. Edit announcements, ibada, events, sermons (live flag + YouTube URL), hymns, M-Pesa numbers, Sunday times, role contacts, church copy, registrations, jumuiya pins, pastoral inbox
+3. Edit announcements, ibada, events, sermons (live flag + YouTube URL), hymns, M-Pesa numbers, offering kinds and Stripe links, Sunday times, role contacts, church copy, masharika (colour + motif), jumuiya geofence radius, registrations, home pins, pastoral inbox
 4. **Rudisha mbegu** restores `assets/seed/church.json`
 
 Giving paybill / till numbers in the seed are **samples** (`400200` / `000000`). Replace them in Admin before anyone actually sends money.
+
+Card payment is **Stripe Payment Links** only: create the link in the Stripe dashboard, paste the `https://buy.stripe.com/...` URL in **Msimamizi → Lipa kwa kadi** (or per offering kind), and the app opens it. No Stripe keys or SDK ship in the APK.
 
 Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`) — **not** real private numbers.
 
@@ -117,7 +122,7 @@ flutter build apk --release --split-per-abi
 # phones: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 ```
 
-Download: [v1-sideload release](https://github.com/allenki1eo/dkmzv-app/releases/tag/v1-sideload) → `dkmzv-app-arm64.apk` (typical 15–25 MB). Older 32-bit phones use the `armv7` artifact on [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml). Debug-signed for parish install, not Play.
+Download: [v3-sideload release](https://github.com/allenki1eo/dkmzv-app/releases/tag/v3-sideload) → `dkmzv-app-arm64.apk` (typical 15–25 MB). Older 32-bit phones use the `armv7` artifact on [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml). Debug-signed for parish install, not Play.
 
 ## Optional later: Firebase
 
