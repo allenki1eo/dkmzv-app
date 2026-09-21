@@ -5,9 +5,12 @@ import '../data/store.dart';
 import '../widgets/common.dart';
 import 'admin/admin_gate.dart';
 import 'church_year_screen.dart';
+import 'congregations_screen.dart';
 import 'contact_screen.dart';
 import 'giving_screen.dart';
+import 'jumuiya_map_screen.dart';
 import 'pastoral_screen.dart';
+import 'register_screen.dart';
 import 'sermons_screen.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -26,6 +29,12 @@ class MoreScreen extends StatelessWidget {
           const SizedBox(height: 8),
           _tile(context, Icons.church_outlined, s.churchYear,
               const ChurchYearScreen()),
+          _tile(context, Icons.account_balance, s.congregations,
+              const CongregationsScreen()),
+          _tile(context, Icons.map_outlined, s.jumuiyaMap,
+              const JumuiyaMapScreen()),
+          _tile(context, Icons.badge_outlined, s.register,
+              const RegisterScreen()),
           _tile(context, Icons.volunteer_activism, s.giving, const GivingScreen()),
           _tile(context, Icons.headphones, s.sermons, const SermonsScreen()),
           _tile(context, Icons.place_outlined, s.contact, const ContactScreen()),

@@ -4,8 +4,7 @@ class S {
   bool get isSw => code != 'en';
 
   String get appName => 'DKMZV';
-  String get churchShort =>
-      isSw ? 'KKKT DKMZV — Angaza' : 'ELCT DKMZV — Angaza';
+  String get churchShort => isSw ? 'KKKT DKMZV' : 'ELCT DKMZV';
   String get companion =>
       isSw ? 'Mwenza wa muumini' : 'Member companion';
 
@@ -117,9 +116,70 @@ class S {
   String get sermons => isSw ? 'Mahubiri' : 'Sermons';
   String get openMedia => isSw ? 'Fungua sauti / video' : 'Open audio / video';
   String get noSermons => isSw ? 'Hakuna mahubiri bado.' : 'No sermons yet.';
+  String get watchInApp => isSw ? 'Tazama hapa' : 'Watch here';
+  String get watchYoutube => isSw ? 'Fungua YouTube' : 'Open YouTube';
+  String get shareLink => isSw ? 'Shiriki kiungo' : 'Share link';
+  String get liveNow => isSw ? 'MOJA KWA MOJA' : 'LIVE';
+  String get liveLead => isSw
+      ? 'Mahubiri mengi yanatiririka YouTube kutoka simu. Tazama hapa au shiriki kiungo.'
+      : 'Most sermons stream live on YouTube from a phone. Watch here or share the link.';
+  String get youtubeNeedUrl => isSw
+      ? 'Kiungo hiki si video ya moja kwa moja — fungua YouTube nje, au ofisi ibandike kiungo cha watch / live.'
+      : 'This link is not a playable video yet — open YouTube outside, or the office can paste a watch / live URL.';
+
+  String get congregations => isSw ? 'Masharika' : 'Congregations';
+  String get congregationsLead => isSw
+      ? 'Kanisa kuu ni Ebenezer. Pia: Angaza na Makedonia.'
+      : 'The cathedral is Ebenezer. Also: Angaza and Makedonia.';
+  String get cathedral => isSw ? 'Kanisa kuu' : 'Cathedral';
+  String get sisterChurch => isSw ? 'Usharika mwenza' : 'Sister congregation';
+  String get approximatePin => isSw ? 'Pin la makadirio' : 'Approximate pin';
+  String get myCongregation => isSw ? 'Usharika wangu' : 'My congregation';
+  String get useThisChurch => isSw ? 'Tumia usharika huu' : 'Use this congregation';
+
+  String get jumuiya => 'Jumuiya';
+  String get jumuiyaMap => isSw ? 'Ramani ya jumuiya' : 'Jumuiya map';
+  String get jumuiyaLead => isSw
+      ? 'Ramani ya OpenStreetMap. Gusa kuweka pin la nyumba yako wakati wa jumuiya. Majina ya kaya tu — si namba za simu.'
+      : 'OpenStreetMap. Tap to drop your home pin during jumuiya. Household labels only — not phone numbers.';
+  String get osmAttribution => '© OpenStreetMap contributors';
+  String get dropHomePin => isSw ? 'Weka pin la nyumba' : 'Drop home pin';
+  String get pinDropped => isSw
+      ? 'Pin la nyumba limewekwa kwenye jumuiya.'
+      : 'Home pin saved on this jumuiya map.';
+  String get registerToPin => isSw
+      ? 'Sajili jina lako kwanza ili kuweka pin la nyumba.'
+      : 'Register your name first to drop a home pin.';
+  String get homePins => isSw ? 'Nyumba (jumuiya)' : 'Homes (jumuiya)';
+  String get churchPin => isSw ? 'Kanisa' : 'Church';
+  String get meetingPin => isSw ? 'Mkutano' : 'Meeting';
+  String get tapMapHint => isSw
+      ? 'Gusa ramani kuweka au kuhamisha pin la nyumba yako.'
+      : 'Tap the map to drop or move your home pin.';
+
+  String get register => isSw ? 'Sajili mwanachama' : 'Member registration';
+  String get registerLead => isSw
+      ? 'Usajili hafifu kwenye simu hii kwa ofisi. Si orodha ya umma ya simu za waumini.'
+      : 'A light registration on this phone for the office. Not a public member phone directory.';
+  String get fullName => isSw ? 'Jina kamili' : 'Full name';
+  String get household => isSw ? 'Kaya / maelezo' : 'Household / note';
+  String get shareMyHome => isSw
+      ? 'Onyesha nyumba yangu kwenye ramani ya jumuiya (bila namba ya simu)'
+      : 'Show my home on the jumuiya map (no phone number)';
+  String get registeredOk => isSw
+      ? 'Usajili umehifadhiwa kwenye simu hii.'
+      : 'Registration is saved on this phone.';
+  String get alreadyRegistered =>
+      isSw ? 'Umesajiliwa kwenye simu hii' : 'Registered on this phone';
+  String get membersAdmin => isSw ? 'Wanaojisajili' : 'Registrations';
+  String get noMembers =>
+      isSw ? 'Hakuna aliyejisajili bado.' : 'No registrations yet.';
+  String get phoneOfficeOnly => isSw
+      ? 'Simu (kwa ofisi kwenye simu hii tu)'
+      : 'Phone (office, this device only)';
 
   String get contact => isSw ? 'Wasiliana' : 'Contact';
-  String get map => isSw ? 'Ramani — Shinyanga' : 'Map — Shinyanga';
+  String get map => isSw ? 'Ramani — OpenStreetMap' : 'Map — OpenStreetMap';
   String get officeHours => isSw ? 'Saa za ofisi' : 'Office hours';
   String get roleContacts =>
       isSw ? 'Wasiliano vya wadhifa' : 'Role contacts';

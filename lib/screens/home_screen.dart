@@ -5,6 +5,7 @@ import '../data/store.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
 import 'contact_screen.dart';
+import 'congregations_screen.dart';
 import 'giving_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -25,7 +26,9 @@ class HomeScreen extends StatelessWidget {
     final s = sOf(context);
     final p = store.palette;
     final accent = DkmzvBrand.accent(p);
-    final church = store.data.church;
+    final congregation = store.selectedCongregation;
+    final churchName =
+        congregation?.name(store.sw) ?? store.data.church.name(store.sw);
     final ibada = store.featuredService;
     final announcements = store.data.sortedAnnouncements;
     final events = [...store.data.events]
@@ -45,7 +48,7 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
           Text(
-            church.name(store.sw),
+            churchName,
             style: const TextStyle(
               color: DkmzvBrand.muted,
               fontWeight: FontWeight.w600,
@@ -101,6 +104,23 @@ class HomeScreen extends StatelessWidget {
                       )),
             ],
           ),
+          const SizedBox(height: 10),
+          const LiveSermonBanner(),
+          if (store.data.congregations.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: [
+                for (final c in store.data.congregations)
+                  ChoiceChip(
+                    label: Text(c.name(store.sw)),
+                    selected: congregation?.id == c.id,
+                    onSelected: (_) => store.selectCongregation(c.id),
+                  ),
+              ],
+            ),
+          ],
           const SizedBox(height: 10),
           SundayTimesCard(onOpenIbada: () {
             if (ibada != null) store.openIbada(ibada.id);

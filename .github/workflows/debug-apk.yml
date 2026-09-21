@@ -68,8 +68,8 @@ jobs:
         if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1-sideload
-          name: DKMZV v1 sideload
+          tag_name: v2-sideload
+          name: DKMZV v2 sideload
           prerelease: true
           make_latest: false
           files: dist/dkmzv-app-arm64.apk
@@ -89,7 +89,7 @@ jobs:
         with:
           script: |
             const runUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const releaseUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/releases/tag/v1-sideload`;
+            const releaseUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/releases/tag/v2-sideload`;
             const body = [
               '**Smaller sideload APK** (release, arm64 only — not the 149 MB debug fat file).',
               '',
