@@ -80,7 +80,7 @@ class _Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: DkmzvBrand.purple,
+      backgroundColor: DkmzvBrand.ink,
       body: Center(
         child: Image(
           image: AssetImage(DkmzvBrand.splashAsset),

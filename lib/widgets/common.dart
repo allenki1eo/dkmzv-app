@@ -8,6 +8,7 @@ import '../l10n/strings.dart';
 import '../screens/church_year_screen.dart';
 import '../theme/brand.dart';
 import '../theme/liturgical.dart';
+import '../theme/tokens.dart';
 
 S sOf(BuildContext context) {
   final code = context.watch<ChurchStore>().localeCode;
@@ -16,7 +17,8 @@ S sOf(BuildContext context) {
 
 SeasonPalette pOf(BuildContext context) => context.watch<ChurchStore>().palette;
 
-/// Identity accent of the active usharika, lifted for dark mode.
+/// Identity accent of the active usharika, lifted for dark mode. Used for
+/// icons, active states and small badges — never to fill a card or a button.
 Color accentOf(BuildContext context) => accentForBrightness(
       context.watch<ChurchStore>().parishAccent,
       Theme.of(context).brightness,
@@ -40,23 +42,22 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
-    final accent = accentOf(context);
     return AppBar(
-      titleSpacing: 20,
+      titleSpacing: Insets.gutter,
       title: Row(
         children: [
           Container(
             width: 34,
             height: 34,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(Radii.sm),
               color: Colors.white,
-              border: Border.all(color: accent.withValues(alpha: 0.35)),
+              border: Border.all(color: s.hairline),
             ),
             clipBehavior: Clip.antiAlias,
             child: Image.asset(DkmzvBrand.logoAsset, fit: BoxFit.cover),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: Insets.sm + 2),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,15 +77,59 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Text(
                     subtitle!,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: s.muted, fontSize: 11.5, height: 1.25),
+                    style:
+                        TextStyle(color: s.muted, fontSize: 11.5, height: 1.25),
                   ),
               ],
             ),
           ),
         ],
       ),
-      actions: [...?actions, const SizedBox(width: 8)],
+      actions: [...?actions, const SizedBox(width: Insets.md)],
+    );
+  }
+}
+
+/// Quiet square icon button used in app bars — neutral, never accent-filled.
+class BarButton extends StatelessWidget {
+  const BarButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+    this.color,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String? tooltip;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Surfaces.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(left: Insets.sm),
+      child: Tooltip(
+        message: tooltip ?? '',
+        child: Material(
+          color: s.card,
+          borderRadius: BorderRadius.circular(Radii.sm),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(Radii.sm),
+            onTap: onPressed,
+            child: Ink(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Radii.sm),
+                border: Border.all(color: s.hairline),
+              ),
+              child: Icon(icon, size: 19, color: color ?? s.ink),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -95,42 +140,42 @@ class LocaleToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
-    final accent = accentOf(context);
+    final s = Surfaces.of(context);
     return Padding(
-      padding: const EdgeInsets.only(right: 4),
-      child: TextButton(
-        onPressed: store.toggleLocale,
-        style: TextButton.styleFrom(
-          foregroundColor: accent,
-          backgroundColor: accent.withValues(alpha: 0.1),
-          minimumSize: const Size(44, 34),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      padding: const EdgeInsets.only(left: Insets.sm),
+      child: Material(
+        color: s.card,
+        borderRadius: BorderRadius.circular(Radii.sm),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          onTap: store.toggleLocale,
+          child: Ink(
+            height: 36,
+            padding: const EdgeInsets.symmetric(horizontal: Insets.md),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Radii.sm),
+              border: Border.all(color: s.hairline),
+            ),
+            child: Center(
+              child: Text(
+                store.sw ? 'EN' : 'SW',
+                style: TextStyle(
+                  color: s.ink,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.5,
+                  letterSpacing: 0.4,
+                ),
+              ),
+            ),
+          ),
         ),
-        child: Text(store.sw ? 'EN' : 'SW',
-            style:
-                const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.6)),
       ),
     );
   }
 }
 
-class GoldRule extends StatelessWidget {
-  const GoldRule({super.key, this.width = 40});
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 3,
-      decoration: BoxDecoration(
-        color: DkmzvBrand.gold.withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
-  }
-}
-
+/// Section heading. Sentence case, generous space above, optional trailing
+/// action — the pattern every calm list app uses.
 class SectionLabel extends StatelessWidget {
   const SectionLabel(this.text, {super.key, this.action, this.onAction});
   final String text;
@@ -141,7 +186,8 @@ class SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, 24, action == null ? 2 : 0, 10),
+      padding: EdgeInsets.fromLTRB(
+          0, Insets.xl + 4, action == null ? 0 : 0, Insets.md),
       child: Row(
         children: [
           Expanded(
@@ -149,14 +195,129 @@ class SectionLabel extends StatelessWidget {
               text,
               style: TextStyle(
                 color: s.ink,
-                fontSize: 13,
+                fontSize: 17,
                 fontWeight: FontWeight.w600,
-                letterSpacing: 0.6,
+                letterSpacing: -0.3,
               ),
             ),
           ),
           if (action != null)
-            TextButton(onPressed: onAction, child: Text(action!)),
+            TextButton(
+              onPressed: onAction,
+              style: TextButton.styleFrom(
+                foregroundColor: s.muted,
+                padding: const EdgeInsets.symmetric(horizontal: Insets.sm),
+                minimumSize: const Size(0, 32),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(action!),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Plain white card with a hairline. No shadow anywhere in the app.
+class AppCard extends StatelessWidget {
+  const AppCard({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.padding = const EdgeInsets.all(Insets.lg),
+    this.borderColor,
+    this.color,
+  });
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final EdgeInsets padding;
+  final Color? borderColor;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Surfaces.of(context);
+    final shape = BorderRadius.circular(Radii.lg);
+    return Material(
+      color: color ?? s.card,
+      borderRadius: shape,
+      child: InkWell(
+        borderRadius: shape,
+        onTap: onTap,
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: shape,
+            border: Border.all(color: borderColor ?? s.hairline),
+          ),
+          child: Padding(padding: padding, child: child),
+        ),
+      ),
+    );
+  }
+}
+
+/// List row: rounded-square icon, title, subtitle, chevron.
+class TileRow extends StatelessWidget {
+  const TileRow({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    this.onTap,
+    this.trailing,
+    this.iconColor,
+  });
+
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final VoidCallback? onTap;
+  final Widget? trailing;
+  final Color? iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Surfaces.of(context);
+    final tone = iconColor ?? accentOf(context);
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
+      child: Row(
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: tone.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(Radii.sm),
+            ),
+            child: Icon(icon, color: tone, size: 19),
+          ),
+          const SizedBox(width: Insets.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: TextStyle(
+                        color: s.ink,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        height: 1.25)),
+                if (subtitle != null && subtitle!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(subtitle!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: s.muted, fontSize: 12.5, height: 1.35)),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: Insets.sm),
+          trailing ?? Icon(Icons.chevron_right, color: s.muted, size: 20),
         ],
       ),
     );
@@ -164,24 +325,30 @@ class SectionLabel extends StatelessWidget {
 }
 
 class EmptyState extends StatelessWidget {
-  const EmptyState(this.text, {super.key, this.icon});
+  const EmptyState(this.text, {super.key, this.icon, this.action});
   final String text;
   final IconData? icon;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+      padding: const EdgeInsets.symmetric(
+          vertical: Insets.xxl, horizontal: Insets.xl),
       child: Column(
         children: [
           if (icon != null) ...[
             Icon(icon, color: s.muted.withValues(alpha: 0.6), size: 30),
-            const SizedBox(height: 10),
+            const SizedBox(height: Insets.md),
           ],
           Text(text,
               textAlign: TextAlign.center,
               style: TextStyle(color: s.muted, height: 1.45)),
+          if (action != null) ...[
+            const SizedBox(height: Insets.lg),
+            action!,
+          ],
         ],
       ),
     );
@@ -190,7 +357,8 @@ class EmptyState extends StatelessWidget {
 
 /// Small status pill — live, exempt, cathedral, approximate.
 class Pill extends StatelessWidget {
-  const Pill(this.label, {super.key, this.color, this.filled = false, this.icon});
+  const Pill(this.label,
+      {super.key, this.color, this.filled = false, this.icon});
   final String label;
   final Color? color;
   final bool filled;
@@ -198,27 +366,29 @@ class Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final surfaces = Surfaces.of(context);
     final tone = color ?? accentOf(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: Insets.sm + 2, vertical: 4),
       decoration: BoxDecoration(
-        color: filled ? tone : tone.withValues(alpha: 0.13),
-        borderRadius: BorderRadius.circular(9),
+        color: filled ? tone : tone.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(Radii.pill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
             Icon(icon,
-                size: 12, color: filled ? Colors.white : tone),
-            const SizedBox(width: 4),
+                size: 12,
+                color: filled ? surfaces.card : tone),
+            const SizedBox(width: Insets.xs),
           ],
           Text(
             label,
             style: TextStyle(
               fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.3,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.2,
               color: filled ? Colors.white : tone,
             ),
           ),
@@ -249,44 +419,35 @@ class StatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
     final tone = color ?? accentOf(context);
-    return Material(
-      color: s.card,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: s.hairline),
-          ),
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: tone, size: 20),
-              const SizedBox(height: 10),
-              Text(value,
-                  style: TextStyle(
-                    fontFamily: DkmzvBrand.display,
-                    fontSize: 24,
-                    height: 1,
-                    fontWeight: FontWeight.w700,
-                    color: s.ink,
-                  )),
-              const SizedBox(height: 4),
-              Text(label,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: s.muted, fontSize: 12)),
-            ],
-          ),
-        ),
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(Insets.lg - 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: tone, size: 19),
+          const SizedBox(height: Insets.md),
+          Text(value,
+              style: TextStyle(
+                fontFamily: DkmzvBrand.display,
+                fontSize: 26,
+                height: 1,
+                fontWeight: FontWeight.w700,
+                color: s.ink,
+              )),
+          const SizedBox(height: Insets.xs),
+          Text(label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: s.muted, fontSize: 12)),
+        ],
       ),
     );
   }
 }
 
+/// The season strip. The vestment colour shows as a ribbon only — the church
+/// year is stated, not painted over the interface.
 class SeasonBanner extends StatelessWidget {
   const SeasonBanner({super.key});
 
@@ -297,64 +458,50 @@ class SeasonBanner extends StatelessWidget {
     final surfaces = Surfaces.of(context);
     final moment = store.moment;
     final p = moment.palette;
-    return Material(
-      color: surfaces.card,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const ChurchYearScreen()),
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: surfaces.hairline),
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const ChurchYearScreen()),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 4,
+            height: 34,
+            decoration: BoxDecoration(
+              color: p.cloth,
+              borderRadius: BorderRadius.circular(Radii.pill),
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
-            child: Row(
+          const SizedBox(width: Insets.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 10,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: p.cloth,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: p.metal, width: 1.1),
+                Text(
+                  moment.name(s),
+                  style: TextStyle(
+                    color: surfaces.ink,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        moment.name(s),
-                        style: TextStyle(
-                          color: surfaces.ink,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                      Text(
-                        moment.clothName(s),
-                        style: TextStyle(color: surfaces.muted, fontSize: 12),
-                      ),
-                    ],
-                  ),
+                Text(
+                  moment.clothName(s),
+                  style: TextStyle(color: surfaces.muted, fontSize: 12),
                 ),
-                Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
               ],
             ),
           ),
-        ),
+          Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
+        ],
       ),
     );
   }
 }
 
-/// The Sunday cloth card. Vestment colour stays locked to the church year.
+/// Sunday times. A plain card with the vestment as a ribbon down the side.
 class SundayTimesCard extends StatelessWidget {
   const SundayTimesCard({super.key, this.onOpenIbada});
   final VoidCallback? onOpenIbada;
@@ -363,69 +510,68 @@ class SundayTimesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
+    final surfaces = Surfaces.of(context);
     final p = store.palette;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [p.cloth, p.clothDeep],
-        ),
-      ),
-      padding: const EdgeInsets.fromLTRB(22, 20, 22, 20),
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(Insets.lg, Insets.lg, Insets.lg, Insets.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            s.sundayTimes.toUpperCase(),
-            style: TextStyle(
-              color: p.onCloth.withValues(alpha: 0.75),
-              fontWeight: FontWeight.w600,
-              fontSize: 11,
-              letterSpacing: 0.8,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: p.cloth,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: Insets.sm),
+              Text(
+                s.sundayTimes,
+                style: TextStyle(
+                  color: surfaces.ink,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: Insets.md),
           for (final slot in store.data.sundayTimes.take(3))
             Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: Insets.md),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 58,
+                    width: 54,
                     child: Text(
                       slot.time,
                       style: TextStyle(
-                        color: p.onCloth,
-                        fontWeight: FontWeight.w700,
+                        color: surfaces.ink,
+                        fontWeight: FontWeight.w600,
                         fontSize: 15,
+                        fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                     ),
                   ),
                   Expanded(
                     child: Text(
                       slot.title(store.sw),
-                      style: TextStyle(
-                        color: p.onCloth.withValues(alpha: 0.9),
-                        fontSize: 14.5,
-                      ),
+                      style: TextStyle(color: surfaces.muted, fontSize: 14.5),
                     ),
                   ),
                 ],
               ),
             ),
           if (onOpenIbada != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: Insets.xs),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
                 onPressed: onOpenIbada,
-                style: FilledButton.styleFrom(
-                  backgroundColor: p.onCloth,
-                  foregroundColor: p.cloth,
-                  padding: const EdgeInsets.symmetric(vertical: 13),
-                ),
                 child: Text(s.openIbada),
               ),
             ),
@@ -456,85 +602,72 @@ class DateRailTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final surfaces = Surfaces.of(context);
-    final color = accent ?? accentOf(context);
     final dt = DateTime.tryParse(startIso);
     final day = dt == null ? '—' : DateFormat('d').format(dt);
     final mon = dt == null
         ? ''
         : DateFormat.MMM(store.localeCode == 'en' ? 'en' : 'sw').format(dt);
-    return Material(
-      color: surfaces.card,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: surfaces.hairline),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 11, 10, 11),
-            child: Row(
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, Insets.md),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 48,
+            decoration: BoxDecoration(
+              color: surfaces.sunken,
+              borderRadius: BorderRadius.circular(Radii.sm),
+              border: Border.all(color: surfaces.hairline),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 48,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(day,
-                          style: TextStyle(
-                              color: color,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 19,
-                              height: 1)),
-                      const SizedBox(height: 2),
-                      Text(mon.toUpperCase(),
-                          style: TextStyle(
-                              color: color,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10,
-                              letterSpacing: 0.4)),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: surfaces.ink,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              height: 1.25)),
-                      const SizedBox(height: 3),
-                      Text(subtitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              TextStyle(color: surfaces.muted, fontSize: 12.5)),
-                    ],
-                  ),
-                ),
-                Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
+                Text(day,
+                    style: TextStyle(
+                        color: surfaces.ink,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        height: 1)),
+                const SizedBox(height: 2),
+                Text(mon.toUpperCase(),
+                    style: TextStyle(
+                        color: surfaces.muted,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 9.5,
+                        letterSpacing: 0.4)),
               ],
             ),
           ),
-        ),
+          const SizedBox(width: Insets.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: surfaces.ink,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        height: 1.25)),
+                const SizedBox(height: 2),
+                Text(subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
+        ],
       ),
     );
   }
 }
 
+/// Square quick action used in the home grid.
 class ShortcutChip extends StatelessWidget {
   const ShortcutChip({
     super.key,
@@ -552,32 +685,36 @@ class ShortcutChip extends StatelessWidget {
     final accent = accentOf(context);
     final surfaces = Surfaces.of(context);
     return Expanded(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(
-            children: [
-              Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.11),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(icon, color: accent, size: 21),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Insets.xs),
+        child: Material(
+          color: surfaces.card,
+          borderRadius: BorderRadius.circular(Radii.md),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(Radii.md),
+            onTap: onTap,
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Radii.md),
+                border: Border.all(color: surfaces.hairline),
               ),
-              const SizedBox(height: 7),
-              Text(label,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: surfaces.ink,
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w500)),
-            ],
+              padding: const EdgeInsets.symmetric(
+                  vertical: Insets.md, horizontal: Insets.sm),
+              child: Column(
+                children: [
+                  Icon(icon, color: accent, size: 21),
+                  const SizedBox(height: Insets.sm),
+                  Text(label,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: surfaces.ink,
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w500)),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -595,16 +732,15 @@ class FootNote extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = Surfaces.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: Insets.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon ?? Icons.info_outline, size: 14, color: s.muted),
-          const SizedBox(width: 8),
+          const SizedBox(width: Insets.sm),
           Expanded(
             child: Text(text,
-                style:
-                    TextStyle(color: s.muted, fontSize: 12.5, height: 1.4)),
+                style: TextStyle(color: s.muted, fontSize: 12.5, height: 1.4)),
           ),
         ],
       ),
@@ -617,24 +753,23 @@ void showEventSheet(BuildContext context, ChurchEvent e) {
   final s = S(store.localeCode);
   showModalBottomSheet(
     context: context,
-    showDragHandle: true,
     builder: (sheetContext) {
       final surfaces = Surfaces.of(sheetContext);
       return Padding(
-        padding: const EdgeInsets.fromLTRB(22, 0, 22, 32),
+        padding: const EdgeInsets.fromLTRB(
+            Insets.gutter, 0, Insets.gutter, Insets.xxl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(e.title(store.sw),
                 style: Theme.of(sheetContext).textTheme.headlineSmall),
-            const SizedBox(height: 10),
+            const SizedBox(height: Insets.md),
             Text(formatDateTime(e.start, store.localeCode)),
-            Text(e.place(store.sw),
-                style: TextStyle(color: surfaces.muted)),
-            const SizedBox(height: 12),
+            Text(e.place(store.sw), style: TextStyle(color: surfaces.muted)),
+            const SizedBox(height: Insets.md),
             Text(e.detail(store.sw)),
-            const SizedBox(height: 14),
+            const SizedBox(height: Insets.lg),
             Pill(s.cat(e.category)),
           ],
         ),

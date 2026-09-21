@@ -65,7 +65,7 @@ class IbadaScreen extends StatelessWidget {
                                 if (featured)
                                   Text(s.offlineCached,
                                       style: const TextStyle(
-                                          color: DkmzvBrand.green,
+                                          color: DkmzvBrand.clothGreen,
                                           fontSize: 12)),
                               ],
                             ),

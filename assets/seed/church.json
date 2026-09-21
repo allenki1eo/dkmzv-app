@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "settings": {
     "adminPin": "dkmzv",
     "fcmConfigured": false,
@@ -7,7 +7,8 @@
     "selectedCongregationId": "cong-ebenezer",
     "currentMemberId": "",
     "themeMode": "system",
-    "backgroundId": "none"
+    "backgroundId": "none",
+    "youtubeChannel": ""
   },
   "church": {
     "nameSw": "KKKT DKMZV — Usharika wa Ebenezer",
@@ -44,7 +45,7 @@
       "longitude": 33.427495,
       "noteSw": "Usharika mkuu wa KKKT DKMZV mjini Shinyanga.",
       "noteEn": "The main KKKT DKMZV congregation in Shinyanga town.",
-      "accentHex": "#2E0854",
+      "accentHex": "#0F5F52",
       "motif": "cathedral",
       "taglineSw": "Kanisa kuu la dayosisi",
       "taglineEn": "Diocesan cathedral"
@@ -63,7 +64,7 @@
       "longitude": 33.446236,
       "noteSw": "Ramani: Kanisa la Angaza, Chamaguha (OpenStreetMap node N5316355224).",
       "noteEn": "Map: Angaza church, Chamaguha (OpenStreetMap node N5316355224).",
-      "accentHex": "#8A5A00",
+      "accentHex": "#8A5A12",
       "motif": "sunrise",
       "taglineSw": "Nuru katika Chamaguha",
       "taglineEn": "Light in Chamaguha"
@@ -82,7 +83,7 @@
       "longitude": 33.41659,
       "noteSw": "Pin ni makadirio ya mtaa wa Lubaga — ofisi inaweza kurekebisha kwenye Msimamizi.",
       "noteEn": "Pin is an approximate Lubaga neighbourhood — the office can correct it in Admin.",
-      "accentHex": "#123A5C",
+      "accentHex": "#1B4F7A",
       "motif": "village",
       "taglineSw": "Wito wa Makedonia, Lubaga",
       "taglineEn": "The Macedonian call, Lubaga"
@@ -99,7 +100,7 @@
       "latitude": -3.669681,
       "longitude": 33.427495,
       "radiusMeters": 420,
-      "colorHex": "#2E0854",
+      "colorHex": "#0F5F52",
       "leaderRole": "Mwenyekiti wa jumuiya"
     },
     {
@@ -112,7 +113,7 @@
       "latitude": -3.6689,
       "longitude": 33.4225,
       "radiusMeters": 520,
-      "colorHex": "#6C3FA0",
+      "colorHex": "#1B4F7A",
       "leaderRole": "Mwenyekiti wa jumuiya"
     },
     {
@@ -125,7 +126,7 @@
       "latitude": -3.670113,
       "longitude": 33.446236,
       "radiusMeters": 480,
-      "colorHex": "#8A5A00",
+      "colorHex": "#8A5A12",
       "leaderRole": "Mwenyekiti wa jumuiya"
     },
     {
@@ -138,7 +139,7 @@
       "latitude": -3.6725,
       "longitude": 33.4488,
       "radiusMeters": 450,
-      "colorHex": "#B07C1B",
+      "colorHex": "#3F6B2B",
       "leaderRole": "Mwenyekiti wa jumuiya"
     },
     {
@@ -151,7 +152,7 @@
       "latitude": -3.66167,
       "longitude": 33.41659,
       "radiusMeters": 600,
-      "colorHex": "#123A5C",
+      "colorHex": "#8B1E2D",
       "leaderRole": "Mwenyekiti wa jumuiya"
     }
   ],

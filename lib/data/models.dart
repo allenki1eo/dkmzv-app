@@ -34,6 +34,7 @@ class ChurchSettings {
     this.currentMemberId,
     this.themeMode = 'system',
     this.backgroundId = 'none',
+    this.youtubeChannel = '',
   });
 
   String adminPin;
@@ -46,6 +47,10 @@ class ChurchSettings {
   String themeMode;
   String backgroundId;
 
+  /// Parish channel as a `UC…` id or an `@handle`. With a channel id the live
+  /// stream plays in-app without anyone pasting this Sunday's video link.
+  String youtubeChannel;
+
   factory ChurchSettings.fromJson(Map<String, dynamic> j) {
     final member = _s(j['currentMemberId']);
     return ChurchSettings(
@@ -56,6 +61,7 @@ class ChurchSettings {
       currentMemberId: member.isEmpty ? null : member,
       themeMode: _s(j['themeMode'], 'system'),
       backgroundId: _s(j['backgroundId'], 'none'),
+      youtubeChannel: _s(j['youtubeChannel']),
     );
   }
 
@@ -67,6 +73,7 @@ class ChurchSettings {
         'currentMemberId': currentMemberId ?? '',
         'themeMode': themeMode,
         'backgroundId': backgroundId,
+        'youtubeChannel': youtubeChannel,
       };
 }
 
@@ -176,7 +183,7 @@ class Congregation {
     required this.longitude,
     required this.noteSw,
     required this.noteEn,
-    this.accentHex = '#2E0854',
+    this.accentHex = '#0F5F52',
     this.motif = 'church',
     this.taglineSw = '',
     this.taglineEn = '',
@@ -225,7 +232,7 @@ class Congregation {
         longitude: _d(j['longitude']),
         noteSw: _s(j['noteSw']),
         noteEn: _s(j['noteEn']),
-        accentHex: _s(j['accentHex'], '#2E0854'),
+        accentHex: _s(j['accentHex'], '#0F5F52'),
         motif: _s(j['motif'], 'church'),
         taglineSw: _s(j['taglineSw']),
         taglineEn: _s(j['taglineEn']),

@@ -23,7 +23,7 @@ IconData motifIcon(String motif) {
 }
 
 Color congregationColor(Congregation c) =>
-    parseHexColor(c.accentHex) ?? DkmzvBrand.purple;
+    parseHexColor(c.accentHex) ?? DkmzvBrand.ink;
 
 /// Tap the parish name anywhere to move between Ebenezer, Angaza, Makedonia.
 class ParishButton extends StatelessWidget {

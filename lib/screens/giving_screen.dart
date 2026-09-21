@@ -29,10 +29,10 @@ class GivingScreen extends StatelessWidget {
           for (final group in GivingGroups.ordered)
             if (g.inGroup(group).isNotEmpty)
               _GroupBlock(group: group, categories: g.inGroup(group)),
-          SectionLabel(s.payByMpesa.toUpperCase()),
+          SectionLabel(s.payByMpesa),
           _MpesaCard(giving: g),
           if (store.data.givingNotes.isNotEmpty) ...[
-            SectionLabel(s.myGiving.toUpperCase()),
+            SectionLabel(s.myGiving),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -112,16 +112,16 @@ class _GroupBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(2, 18, 2, 10),
+          padding: const EdgeInsets.fromLTRB(0, 26, 0, 12),
           child: Row(
             children: [
               Text(
-                _groupName(s, group).toUpperCase(),
+                _groupName(s, group),
                 style: TextStyle(
                   color: surfaces.ink,
-                  fontSize: 13,
+                  fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.6,
+                  letterSpacing: -0.3,
                 ),
               ),
               const SizedBox(width: 8),

@@ -58,8 +58,6 @@ class HymnDetailScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic),
           ),
           const SizedBox(height: 14),
-          const Center(child: GoldRule()),
-          const SizedBox(height: 14),
           Text(s.offlineCached,
               textAlign: TextAlign.center,
               style: TextStyle(color: p.cloth, fontSize: 13)),

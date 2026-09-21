@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/common.dart';
-import 'events_screen.dart';
 import 'home_screen.dart';
 import 'hymns_screen.dart';
 import 'ibada_screen.dart';
 import 'more_screen.dart';
+import 'sermons_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -22,13 +22,12 @@ class _AppShellState extends State<AppShell> {
     final s = sOf(context);
     final pages = [
       HomeScreen(
-        onOpenIbada: () => setState(() => _index = 1),
-        onOpenHymns: () => setState(() => _index = 2),
-        onOpenEvents: () => setState(() => _index = 3),
+        onOpenIbada: () => setState(() => _index = 2),
+        onOpenSermons: () => setState(() => _index = 1),
       ),
+      const SermonsScreen(embedded: true),
       const IbadaScreen(),
       const HymnsScreen(),
-      const EventsScreen(),
       const MoreScreen(),
     ];
     return Scaffold(
@@ -38,9 +37,13 @@ class _AppShellState extends State<AppShell> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
           NavigationDestination(
-              icon: const Icon(Icons.campaign_outlined),
-              selectedIcon: const Icon(Icons.campaign),
+              icon: const Icon(Icons.home_outlined),
+              selectedIcon: const Icon(Icons.home),
               label: s.tabHome),
+          NavigationDestination(
+              icon: const Icon(Icons.play_circle_outline),
+              selectedIcon: const Icon(Icons.play_circle_fill),
+              label: s.sermons),
           NavigationDestination(
               icon: const Icon(Icons.menu_book_outlined),
               selectedIcon: const Icon(Icons.menu_book),
@@ -49,10 +52,6 @@ class _AppShellState extends State<AppShell> {
               icon: const Icon(Icons.music_note_outlined),
               selectedIcon: const Icon(Icons.music_note),
               label: s.tabHymns),
-          NavigationDestination(
-              icon: const Icon(Icons.calendar_month_outlined),
-              selectedIcon: const Icon(Icons.calendar_month),
-              label: s.tabEvents),
           NavigationDestination(
               icon: const Icon(Icons.more_horiz),
               selectedIcon: const Icon(Icons.more_horiz),

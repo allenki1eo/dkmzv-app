@@ -51,3 +51,62 @@ String youtubeEmbedUrl(String videoId) =>
 
 String youtubeWatchUrl(String videoId) =>
     'https://www.youtube.com/watch?v=$videoId';
+
+/// Poster frame for a video. Served by YouTube itself, so nothing is stored in
+/// the APK and nothing is fetched until a list actually shows the sermon.
+String youtubeThumbUrl(String videoId, {bool large = true}) =>
+    'https://i.ytimg.com/vi/$videoId/${large ? 'hqdefault' : 'mqdefault'}.jpg';
+
+/// Channel id (`UC…`) out of a channel URL, or the bare id if that is what was
+/// pasted. Handles (`@dkmzv`) are *not* channel ids — see [youtubeHandle].
+String? youtubeChannelId(String raw) {
+  final value = raw.trim();
+  if (value.isEmpty) return null;
+  if (RegExp(r'^UC[\w-]{22}$').hasMatch(value)) return value;
+  final uri = Uri.tryParse(value);
+  if (uri == null) return null;
+  final segs = uri.pathSegments;
+  for (var i = 0; i < segs.length; i++) {
+    if (segs[i] == 'channel' && i + 1 < segs.length) {
+      final id = segs[i + 1].split(RegExp(r'[?&/#]')).first;
+      if (RegExp(r'^UC[\w-]{22}$').hasMatch(id)) return id;
+    }
+  }
+  return null;
+}
+
+/// `@handle` out of a channel URL or a typed handle.
+String? youtubeHandle(String raw) {
+  final value = raw.trim();
+  if (value.isEmpty) return null;
+  if (RegExp(r'^@[\w.-]{3,30}$').hasMatch(value)) return value;
+  final uri = Uri.tryParse(value);
+  if (uri == null) return null;
+  for (final seg in uri.pathSegments) {
+    if (seg.startsWith('@') && RegExp(r'^@[\w.-]{3,30}$').hasMatch(seg)) {
+      return seg;
+    }
+  }
+  return null;
+}
+
+/// Whatever the office pasted, reduced to the bit we can act on.
+String normaliseChannel(String raw) =>
+    youtubeChannelId(raw) ?? youtubeHandle(raw) ?? '';
+
+/// Plays whatever the channel is streaming right now, without anybody pasting
+/// this Sunday's video id. Only works with a `UC…` channel id.
+String? youtubeChannelLiveEmbedUrl(String channel) {
+  final id = youtubeChannelId(channel);
+  if (id == null) return null;
+  return 'https://www.youtube.com/embed/live_stream?channel=$id&playsinline=1';
+}
+
+/// The channel's live page, for opening in the YouTube app.
+String? youtubeChannelLiveUrl(String channel) {
+  final handle = youtubeHandle(channel);
+  if (handle != null) return 'https://www.youtube.com/$handle/live';
+  final id = youtubeChannelId(channel);
+  if (id != null) return 'https://www.youtube.com/channel/$id/live';
+  return null;
+}

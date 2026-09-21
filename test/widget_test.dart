@@ -1,7 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:dkmzv_app/app.dart';
 import 'package:dkmzv_app/data/models.dart';
 import 'package:dkmzv_app/data/store.dart';
+import 'package:dkmzv_app/data/youtube.dart';
+import 'package:dkmzv_app/theme/app_theme.dart';
 import 'package:dkmzv_app/theme/backgrounds.dart';
+import 'package:dkmzv_app/theme/brand.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,16 +33,16 @@ void main() {
 
     expect(find.text('Usharika wa Ebenezer'), findsWidgets);
     await tester.scrollUntilVisible(
-      find.text('SAA ZA JUMAPILI'),
+      find.text('Saa za Jumapili'),
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    expect(find.text('SAA ZA JUMAPILI'), findsOneWidget);
+    expect(find.text('Saa za Jumapili'), findsOneWidget);
     expect(find.textContaining('Ibada kuu'), findsWidgets);
 
-    await tester.tap(find.widgetWithText(TextButton, 'EN'));
+    await tester.tap(find.text('EN'));
     await tester.pumpAndSettle();
-    expect(find.text('SUNDAY TIMES'), findsOneWidget);
+    expect(find.text('Sunday times'), findsOneWidget);
 
     await tester.scrollUntilVisible(
       find.textContaining('Welcome to Sunday worship'),
@@ -59,6 +64,8 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).last,
     );
+    await tester.ensureVisible(find.text('Mwonekano'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Mwonekano'));
     await tester.pumpAndSettle();
 
@@ -88,17 +95,22 @@ void main() {
     expect(Theme.of(tester.element(find.byType(NavigationBar))).brightness,
         Brightness.dark);
 
+    await tester.scrollUntilVisible(
+      find.text('Sadaka'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('Sadaka'));
     await tester.pumpAndSettle();
-    expect(find.text('SADAKA ZA BAHASHA'), findsOneWidget);
+    expect(find.text('Sadaka za bahasha'), findsOneWidget);
     expect(find.text('Exempt'), findsWidgets);
     await tester.scrollUntilVisible(
-      find.text('SHUKRANI'),
+      find.text('Shukrani'),
       250,
       scrollable: find.byType(Scrollable).first,
     );
-    expect(find.text('FUNGU LA KUMI'), findsOneWidget);
-    expect(find.text('SHUKRANI'), findsOneWidget);
+    expect(find.text('Fungu la kumi'), findsWidgets);
+    expect(find.text('Shukrani'), findsOneWidget);
 
     await tester.ensureVisible(find.text('Ujenzi'));
     await tester.pumpAndSettle();
@@ -284,8 +296,94 @@ void main() {
     final ebenezer = store.parishAccent;
     await store.selectCongregation('cong-angaza');
     expect(store.parishAccent, isNot(ebenezer));
-    expect(parseHexColor('#2E0854'), const Color(0xFF2E0854));
+    expect(parseHexColor('#0F5F52'), const Color(0xFF0F5F52));
     expect(parseHexColor('oops'), isNull);
+  });
+
+  test('no chrome colour is purple any more', () async {
+    final data = await ChurchStore.loadSeed();
+    // Every parish accent is out of the violet band of the colour wheel.
+    for (final c in data.congregations) {
+      final hue = HSLColor.fromColor(parseHexColor(c.accentHex)!).hue;
+      expect(hue > 255 && hue < 330, isFalse,
+          reason: '${c.id} still carries a purple accent');
+    }
+
+    for (final brightness in Brightness.values) {
+      final theme = AppTheme.build(
+          accent: parseHexColor(data.congregations.first.accentHex)!,
+          brightness: brightness);
+      // The one filled action weight is the neutral slate, not a hue.
+      final expected = brightness == Brightness.dark
+          ? Surfaces.dark.action
+          : Surfaces.light.action;
+      expect(
+        theme.filledButtonTheme.style?.backgroundColor
+            ?.resolve(<WidgetState>{}),
+        expected,
+      );
+      // Canvas is a true neutral: the channels sit within a few points of
+      // each other, so no violet cast leaks into the background.
+      final canvas = theme.scaffoldBackgroundColor;
+      final channels = [canvas.r, canvas.g, canvas.b];
+      expect(channels.reduce(math.max) - channels.reduce(math.min),
+          lessThan(0.05));
+    }
+  });
+
+  test('a v3 phone keeps its data but loses the purple', () async {
+    final seed = await ChurchStore.loadSeed();
+    final old = ChurchData.fromJson(seed.toJson());
+    old.version = 3;
+    old.congregations.first.accentHex = '#2E0854';
+    old.congregations.last.accentHex = '#0B7285'; // an office choice
+    old.jumuiyas.first.colorHex = '#6C3FA0';
+
+    final migrated = await ChurchStore.migrateV2(old);
+    expect(migrated.version, dataVersion);
+    expect(migrated.congregations.first.accentHex, '#0F5F52');
+    expect(migrated.congregations.last.accentHex, '#0B7285');
+    expect(migrated.jumuiyas.first.colorHex, isNot('#6C3FA0'));
+  });
+
+  test('the office can paste any shape of YouTube link', () {
+    expect(youtubeVideoId('https://youtu.be/dQw4w9WgXcQ'), 'dQw4w9WgXcQ');
+    expect(youtubeVideoId('https://www.youtube.com/live/dQw4w9WgXcQ?si=x'),
+        'dQw4w9WgXcQ');
+    expect(youtubeVideoId('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
+        'dQw4w9WgXcQ');
+    expect(youtubeVideoId('https://vimeo.com/12345'), isNull);
+    expect(youtubeThumbUrl('dQw4w9WgXcQ'),
+        'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg');
+  });
+
+  test('a channel id lets the live stream play without a weekly link',
+      () async {
+    const channel = 'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw';
+    expect(youtubeChannelId(channel), 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
+    expect(youtubeHandle('https://youtube.com/@dkmzv'), '@dkmzv');
+    expect(youtubeChannelLiveEmbedUrl(channel),
+        contains('embed/live_stream?channel=UC_x5XG1OV2P6uZZ5FSM9Ttw'));
+    // A handle alone cannot be embedded, but it can still be opened.
+    expect(youtubeChannelLiveEmbedUrl('@dkmzv'), isNull);
+    expect(youtubeChannelLiveUrl('@dkmzv'), 'https://www.youtube.com/@dkmzv/live');
+
+    final store = ChurchStore.memory(await ChurchStore.loadSeed());
+    expect(store.youtubeChannel, isEmpty);
+    await store.setYoutubeChannel(channel);
+    expect(store.youtubeChannel, 'UC_x5XG1OV2P6uZZ5FSM9Ttw');
+    await store.setYoutubeChannel('not a channel');
+    expect(store.youtubeChannel, isEmpty);
+  });
+
+  test('home offers the live stream first, then the newest sermon', () async {
+    final store = ChurchStore.memory(await ChurchStore.loadSeed());
+    expect(store.watchNow?.isLive, isTrue);
+
+    final live = store.liveSermon!;
+    await store.setLiveSermon(live.id, false);
+    expect(store.watchNow?.isLive, isFalse);
+    expect(store.watchNow?.mediaUrl, isNotEmpty);
   });
 
   testWidgets('congregations, live mahubiri, and registration', (tester) async {

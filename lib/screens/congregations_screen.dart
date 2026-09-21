@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/store.dart';
-import '../services/links.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
 import '../widgets/parish.dart';
 import 'jumuiya_map_screen.dart';
-import 'sermon_player_screen.dart';
 
 class CongregationsScreen extends StatelessWidget {
   const CongregationsScreen({super.key});
@@ -127,81 +125,6 @@ class CongregationsScreen extends StatelessWidget {
               );
             }),
         ],
-      ),
-    );
-  }
-}
-
-/// Live sermon strip on Home: watch in-app, or share the YouTube link.
-class LiveSermonBanner extends StatelessWidget {
-  const LiveSermonBanner({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final store = context.watch<ChurchStore>();
-    final live = store.liveSermon;
-    if (live == null) return const SizedBox.shrink();
-    final s = sOf(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: DkmzvBrand.red.withValues(alpha: 0.08),
-          border: Border.all(color: DkmzvBrand.red.withValues(alpha: 0.35)),
-        ),
-        padding: const EdgeInsets.fromLTRB(16, 13, 10, 13),
-        child: Row(
-          children: [
-            const Icon(Icons.podcasts, color: DkmzvBrand.red, size: 22),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Pill(s.liveNow, color: DkmzvBrand.red, filled: true),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(live.title(store.sw),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleSmall),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      FilledButton.tonalIcon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => SermonPlayerScreen(sermon: live)),
-                        ),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 8),
-                        ),
-                        icon: const Icon(Icons.play_arrow, size: 18),
-                        label: Text(s.watchInApp),
-                      ),
-                      const SizedBox(width: 6),
-                      IconButton(
-                        tooltip: s.shareLink,
-                        onPressed: () => shareText(
-                          '${live.title(store.sw)}\n${live.mediaUrl}',
-                          subject: live.title(store.sw),
-                        ),
-                        icon: const Icon(Icons.share_outlined, size: 20),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

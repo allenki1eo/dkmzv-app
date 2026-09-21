@@ -8,7 +8,7 @@ class S {
   String get companion =>
       isSw ? 'Mwenza wa muumini' : 'Member companion';
 
-  String get tabHome => isSw ? 'Tangazo' : 'Home';
+  String get tabHome => isSw ? 'Nyumbani' : 'Home';
   String get tabIbada => 'Ibada';
   String get tabHymns => isSw ? 'Nyimbo' : 'Hymns';
   String get tabEvents => isSw ? 'Matukio' : 'Events';
@@ -127,6 +127,33 @@ class S {
   String get youtubeNeedUrl => isSw
       ? 'Kiungo hiki si video ya moja kwa moja — fungua YouTube nje, au ofisi ibandike kiungo cha watch / live.'
       : 'This link is not a playable video yet — open YouTube outside, or the office can paste a watch / live URL.';
+  String get latestSermon => isSw ? 'Hubiri la mwisho' : 'Latest sermon';
+  String get watchLive => isSw ? 'Tazama moja kwa moja' : 'Watch live';
+  String get allSermons => isSw ? 'Mahubiri yote' : 'All sermons';
+  String get noSermonYet => isSw
+      ? 'Ofisi bado haijabandika kiungo cha YouTube.'
+      : 'The office has not pasted a YouTube link yet.';
+
+  // Kiungo cha YouTube — office side
+  String get youtubeStudio => isSw ? 'YouTube ya usharika' : 'Parish YouTube';
+  String get pasteYoutube => isSw ? 'Bandika kiungo cha YouTube' : 'Paste a YouTube link';
+  String get pasteYoutubeHint => isSw
+      ? 'Nakili kiungo kutoka YouTube (Share) kisha ubandike hapa. Linakubali watch, youtu.be, live na shorts.'
+      : 'Copy the link from YouTube (Share) and paste it here. Watch, youtu.be, live and shorts links all work.';
+  String get linkLooksGood => isSw ? 'Kiungo ni sahihi' : 'Link looks good';
+  String get linkNotYoutube => isSw
+      ? 'Hiki si kiungo cha video ya YouTube.'
+      : 'That is not a YouTube video link.';
+  String get publishAsSermon => isSw ? 'Weka kwenye Mahubiri' : 'Publish to Mahubiri';
+  String get startLiveNow => isSw ? 'Anzisha live sasa' : 'Start live now';
+  String get channelLabel => isSw ? 'Kituo cha YouTube' : 'YouTube channel';
+  String get channelHint => isSw
+      ? 'Bandika kiungo cha kituo (youtube.com/@usharika au /channel/UC…). Kikiwa na UC…, live inachezwa ndani ya programu bila kubandika kiungo kila Jumapili.'
+      : 'Paste the channel URL (youtube.com/@parish or /channel/UC…). With a UC… id the live stream plays in-app without pasting a link every Sunday.';
+  String get channelLiveTitle => isSw ? 'Live ya kituo' : 'Channel live';
+  String get channelLiveNote => isSw
+      ? 'Inacheza chochote kinachotiririka sasa kwenye kituo cha usharika.'
+      : 'Plays whatever the parish channel is streaming right now.';
 
   String get congregations => isSw ? 'Masharika' : 'Congregations';
   String get congregationsLead => isSw

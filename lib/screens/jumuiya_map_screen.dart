@@ -50,10 +50,9 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
     final fromData = parseHexColor(j.colorHex);
     if (fromData != null) return fromData;
     const fallback = [
-      DkmzvBrand.purple,
+      DkmzvBrand.clothGreen,
       DkmzvBrand.gold,
-      DkmzvBrand.green,
-      DkmzvBrand.red,
+      DkmzvBrand.clothRed,
       DkmzvBrand.sage,
     ];
     return fallback[index % fallback.length];
@@ -181,7 +180,7 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                           _marker(
                             LatLng(cong.latitude, cong.longitude),
                             Icons.church,
-                            parseHexColor(cong.accentHex) ?? DkmzvBrand.purple,
+                            parseHexColor(cong.accentHex) ?? DkmzvBrand.ink,
                             s.churchPin,
                           ),
                         for (final j in visible)
@@ -195,7 +194,7 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                           _marker(
                             LatLng(pin.latitude, pin.longitude),
                             Icons.home,
-                            colors[pin.jumuiyaId] ?? DkmzvBrand.green,
+                            colors[pin.jumuiyaId] ?? DkmzvBrand.clothGreen,
                             pin.label,
                             small: true,
                           ),
@@ -231,7 +230,7 @@ class _JumuiyaMapScreenState extends State<JumuiyaMapScreen> {
                       jumuiya: selected,
                       inside: inside,
                       outside: outside,
-                      color: colors[selected.id] ?? DkmzvBrand.purple,
+                      color: colors[selected.id] ?? DkmzvBrand.ink,
                     ),
                   ),
               ],
@@ -374,11 +373,11 @@ class _GeofenceCard extends StatelessWidget {
           Row(
             children: [
               Pill('${s.homesInside}: $inside',
-                  color: DkmzvBrand.green, icon: Icons.home_outlined),
+                  color: DkmzvBrand.clothGreen, icon: Icons.home_outlined),
               const SizedBox(width: 8),
               if (outside > 0)
                 Pill('${s.homesOutside}: $outside',
-                    color: DkmzvBrand.red, icon: Icons.near_me_disabled),
+                    color: DkmzvBrand.clothRed, icon: Icons.near_me_disabled),
             ],
           ),
           if (jumuiya.meetingNote(store.sw).isNotEmpty) ...[

@@ -88,9 +88,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (store.currentMember != null) ...[
               const SizedBox(height: 12),
               Pill(s.alreadyRegistered,
-                  color: DkmzvBrand.green, icon: Icons.verified_user_outlined),
+                  color: DkmzvBrand.clothGreen, icon: Icons.verified_user_outlined),
             ],
-            SectionLabel(s.fullName.toUpperCase()),
+            SectionLabel(s.fullName),
             TextFormField(
               controller: _name,
               textCapitalization: TextCapitalization.words,
@@ -141,7 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
-            SectionLabel(s.jumuiya.toUpperCase()),
+            SectionLabel(s.jumuiya),
             DropdownButtonFormField<String>(
               key: ValueKey('cong-$_congregationId'),
               initialValue: congregations.any((c) => c.id == _congregationId)
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ? null
                   : (v) => setState(() => _jumuiyaId = v),
             ),
-            SectionLabel(s.details.toUpperCase()),
+            SectionLabel(s.details),
             TextFormField(
               controller: _phone,
               keyboardType: TextInputType.phone,
@@ -226,11 +226,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 children: [
                   const Icon(Icons.check_circle,
-                      color: DkmzvBrand.green, size: 18),
+                      color: DkmzvBrand.clothGreen, size: 18),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(s.registeredOk,
-                        style: const TextStyle(color: DkmzvBrand.green)),
+                        style: const TextStyle(color: DkmzvBrand.clothGreen)),
                   ),
                 ],
               ),

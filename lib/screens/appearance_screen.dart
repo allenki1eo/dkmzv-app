@@ -24,7 +24,7 @@ class AppearanceScreen extends StatelessWidget {
         children: [
           Text(s.appearanceHint,
               style: TextStyle(color: surfaces.muted, height: 1.45)),
-          SectionLabel(s.themeMode.toUpperCase()),
+          SectionLabel(s.themeMode),
           SegmentedButton<String>(
             segments: [
               ButtonSegment(
@@ -51,7 +51,7 @@ class AppearanceScreen extends StatelessWidget {
             value: Theme.of(context).brightness == Brightness.dark,
             onChanged: (v) => store.setThemeMode(v ? 'dark' : 'light'),
           ),
-          SectionLabel(s.background.toUpperCase()),
+          SectionLabel(s.background),
           Text(s.backgroundHint,
               style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
           const SizedBox(height: 12),
@@ -71,7 +71,7 @@ class AppearanceScreen extends StatelessWidget {
                 ),
             ],
           ),
-          SectionLabel(s.parishLook.toUpperCase()),
+          SectionLabel(s.parishLook),
           Text(s.parishLookHint,
               style: TextStyle(color: surfaces.muted, fontSize: 12.5)),
           const SizedBox(height: 12),
@@ -94,7 +94,7 @@ class AppearanceScreen extends StatelessWidget {
                 onTap: () => store.selectCongregation(c.id),
               ),
             ),
-          SectionLabel(s.language.toUpperCase()),
+          SectionLabel(s.language),
           Card(
             child: ListTile(
               leading: Icon(Icons.translate, color: accentOf(context)),

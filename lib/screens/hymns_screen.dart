@@ -96,7 +96,7 @@ class _HymnTile extends StatelessWidget {
         subtitle: Text(hymn.firstLineSw, maxLines: 1, overflow: TextOverflow.ellipsis),
         trailing: Icon(
           favorite ? Icons.favorite : Icons.favorite_border,
-          color: favorite ? DkmzvBrand.red : Surfaces.of(context).muted,
+          color: favorite ? DkmzvBrand.live : Surfaces.of(context).muted,
         ),
         onTap: () {
           store.openHymn(hymn.id);

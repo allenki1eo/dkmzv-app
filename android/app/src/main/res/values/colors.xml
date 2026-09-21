@@ -3,8 +3,8 @@
     <!-- Adaptive launcher plate — official KKKT emblem needs a white square. -->
     <color name="ic_launcher_background">#FFFFFF</color>
     <!-- Splash field only. Do not use this as the adaptive plate. -->
-    <color name="dkmzv_splash_field">#2E0854</color>
-    <color name="dkmzv_gold">#D4AF37</color>
+    <color name="dkmzv_splash_field">#0F1419</color>
+    <color name="dkmzv_gold">#B08A2E</color>
     <color name="dkmzv_cream">#FDF5E6</color>
     <color name="dkmzv_sage">#A2AD91</color>
 </resources>

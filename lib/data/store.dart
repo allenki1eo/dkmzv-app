@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 
 import 'hymn_search.dart';
 import 'models.dart';
+import 'youtube.dart';
 import '../theme/brand.dart';
 import '../theme/liturgical.dart';
 
@@ -33,7 +34,7 @@ double metersBetween(double lat1, double lng1, double lat2, double lng2) {
 }
 
 const seedAsset = 'assets/seed/church.json';
-const dataVersion = 3;
+const dataVersion = 4;
 const _dataKey = 'church_data_v1';
 const _localeKey = 'locale_code';
 const _favKey = 'favorite_hymn_ids';
@@ -92,8 +93,18 @@ class ChurchStore extends ChangeNotifier {
     return ChurchData.fromJson(jsonDecode(seed) as Map<String, dynamic>);
   }
 
-  /// Older installs miss congregations (v1) or offering groups (v2).
-  /// Fill only what is empty so office edits survive.
+  /// Accents that shipped before the purple-free palette. Phones carrying
+  /// them get the new colours; anything the office chose itself is left alone.
+  static const _retiredAccents = {
+    '#2E0854',
+    '#8A5A00',
+    '#123A5C',
+    '#6C3FA0',
+  };
+
+  /// Older installs miss congregations (v1), offering groups (v2) or the
+  /// neutral palette (v3). Fill only what is empty or retired so office edits
+  /// survive.
   static Future<ChurchData> migrateV2(ChurchData data) async {
     if (data.version >= dataVersion &&
         data.congregations.isNotEmpty &&
@@ -116,9 +127,16 @@ class ChurchStore extends ChangeNotifier {
     }
     for (final c in data.congregations) {
       final fromSeed = seed.congregationById(c.id);
-      if (c.accentHex.isEmpty && fromSeed != null) {
+      if (fromSeed == null) continue;
+      if (c.accentHex.isEmpty ||
+          _retiredAccents.contains(c.accentHex.toUpperCase())) {
         c.accentHex = fromSeed.accentHex;
       }
+    }
+    for (final j in data.jumuiyas) {
+      if (!_retiredAccents.contains(j.colorHex.toUpperCase())) continue;
+      final fromSeed = seed.jumuiyaById(j.id);
+      j.colorHex = fromSeed?.colorHex ?? '';
     }
     data.version = dataVersion;
     _ensureSelectedCongregation(data);
@@ -377,7 +395,7 @@ class ChurchStore extends ChangeNotifier {
   /// Identity colour of the active usharika (vestments stay liturgical).
   Color get parishAccent {
     final hex = selectedCongregation?.accentHex ?? '';
-    return parseHexColor(hex) ?? DkmzvBrand.purple;
+    return parseHexColor(hex) ?? DkmzvBrand.ink;
   }
 
   Congregation? get selectedCongregation {
@@ -402,6 +420,24 @@ class ChurchStore extends ChangeNotifier {
     final live = data.sermons.where((s) => s.isLive).toList()
       ..sort((a, b) => b.date.compareTo(a.date));
     return live.isEmpty ? null : live.first;
+  }
+
+  /// What the home screen offers to play: the live stream if the office
+  /// flipped the switch, otherwise the newest sermon that has a link.
+  Sermon? get watchNow {
+    final live = liveSermon;
+    if (live != null) return live;
+    final playable = data.sermons.where((s) => s.mediaUrl.isNotEmpty).toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
+    return playable.isEmpty ? null : playable.first;
+  }
+
+  /// Parish channel (`UC…` id or `@handle`), used for channel-level live.
+  String get youtubeChannel => data.settings.youtubeChannel;
+
+  Future<void> setYoutubeChannel(String raw) async {
+    data.settings.youtubeChannel = normaliseChannel(raw);
+    await persist();
   }
 
   List<Jumuiya> jumuiyasFor(String congregationId) =>

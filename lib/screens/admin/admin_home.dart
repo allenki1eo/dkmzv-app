@@ -9,6 +9,7 @@ import '../../widgets/common.dart';
 import '../../widgets/parish.dart';
 import 'admin_editors.dart';
 import 'admin_parish.dart';
+import 'admin_youtube.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
@@ -29,6 +30,14 @@ class AdminHome extends StatelessWidget {
         children: [
           Text(congregation?.name(store.sw) ?? s.churchShort,
               style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 14),
+          TileRow(
+            icon: Icons.smart_display_outlined,
+            title: s.youtubeStudio,
+            subtitle: s.pasteYoutube,
+            iconColor: DkmzvBrand.live,
+            onTap: () => _open(context, const AdminYoutube()),
+          ),
           const SizedBox(height: 14),
           GridView.count(
             crossAxisCount: 3,
@@ -55,7 +64,7 @@ class AdminHome extends StatelessWidget {
                 value: '${store.data.homePins.length}',
                 label: s.homePins,
                 icon: Icons.home_outlined,
-                color: DkmzvBrand.green,
+                color: DkmzvBrand.clothGreen,
                 onTap: () => _open(context, const AdminHomePins()),
               ),
               StatTile(
@@ -74,14 +83,14 @@ class AdminHome extends StatelessWidget {
                 value: '$unread',
                 label: s.inbox,
                 icon: Icons.mark_email_unread_outlined,
-                color: unread > 0 ? DkmzvBrand.red : null,
+                color: unread > 0 ? DkmzvBrand.live : null,
                 onTap: () => _open(context, const AdminInbox()),
               ),
             ],
           ),
           const SizedBox(height: 18),
           const _GoLiveCard(),
-          SectionLabel(s.contentSection.toUpperCase()),
+          SectionLabel(s.contentSection),
           _nav(context, Icons.campaign_outlined, s.announcements,
               store.data.announcements.length, () => const AdminAnnouncements()),
           _nav(context, Icons.menu_book_outlined, s.tabIbada,
@@ -94,7 +103,7 @@ class AdminHome extends StatelessWidget {
               store.data.hymns.length, () => const AdminHymns()),
           _nav(context, Icons.schedule_outlined, s.sundayAdmin,
               store.data.sundayTimes.length, () => const AdminSundays()),
-          SectionLabel(s.peopleSection.toUpperCase()),
+          SectionLabel(s.peopleSection),
           _nav(context, Icons.people_outline, s.registeredMembers,
               store.data.members.length, () => const AdminMembers()),
           _nav(context, Icons.account_balance_outlined, s.congregations,
@@ -107,7 +116,7 @@ class AdminHome extends StatelessWidget {
               store.data.contacts.length, () => const AdminContacts()),
           _nav(context, Icons.mark_email_unread_outlined, s.inbox, unread,
               () => const AdminInbox(), highlight: unread > 0),
-          SectionLabel(s.moneySection.toUpperCase()),
+          SectionLabel(s.moneySection),
           _nav(context, Icons.volunteer_activism_outlined, s.givingGroups,
               store.data.giving.categories.length,
               () => const AdminGivingCategories()),
@@ -116,7 +125,7 @@ class AdminHome extends StatelessWidget {
               () => const AdminPayments()),
           _nav(context, Icons.phone_android, s.givingAdmin, 1,
               () => const AdminGiving()),
-          SectionLabel(s.settingsSection.toUpperCase()),
+          SectionLabel(s.settingsSection),
           _nav(context, Icons.church_outlined, s.churchAdmin, 1,
               () => const AdminChurch()),
           Card(
@@ -128,7 +137,7 @@ class AdminHome extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.restore, color: DkmzvBrand.red),
+              leading: const Icon(Icons.restore, color: DkmzvBrand.live),
               title: Text(s.resetSeed),
               onTap: () async {
                 final ok = await showDialog<bool>(
@@ -165,14 +174,14 @@ class AdminHome extends StatelessWidget {
     final accent = accentOf(context);
     return Card(
       child: ListTile(
-        leading: Icon(icon, color: highlight ? DkmzvBrand.red : accent),
+        leading: Icon(icon, color: highlight ? DkmzvBrand.live : accent),
         title: Text(title),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('$count',
                 style: TextStyle(
-                    color: highlight ? DkmzvBrand.red : surfaces.muted,
+                    color: highlight ? DkmzvBrand.live : surfaces.muted,
                     fontWeight: FontWeight.w700)),
             const SizedBox(width: 6),
             Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
@@ -230,10 +239,10 @@ class _GoLiveCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
             color: target.isLive
-                ? DkmzvBrand.red.withValues(alpha: 0.5)
+                ? DkmzvBrand.live.withValues(alpha: 0.5)
                 : surfaces.hairline),
         color: target.isLive
-            ? DkmzvBrand.red.withValues(alpha: 0.07)
+            ? DkmzvBrand.live.withValues(alpha: 0.07)
             : surfaces.card,
       ),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
@@ -246,7 +255,7 @@ class _GoLiveCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(s.adminToday.toUpperCase(),
+                    Text(s.adminToday,
                         style: TextStyle(
                             color: surfaces.muted,
                             fontSize: 11,
@@ -271,7 +280,7 @@ class _GoLiveCard extends StatelessWidget {
           Row(
             children: [
               if (target.isLive) ...[
-                Pill(s.liveNow, color: DkmzvBrand.red, filled: true),
+                Pill(s.liveNow, color: DkmzvBrand.live, filled: true),
                 const SizedBox(width: 8),
               ],
               if (!playable) Pill(s.openMedia, color: DkmzvBrand.gold),

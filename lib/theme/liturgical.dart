@@ -45,15 +45,15 @@ class SeasonPalette {
 
   static const purple = SeasonPalette(
     vestment: Vestment.purple,
-    cloth: DkmzvBrand.purple,
-    clothDeep: DkmzvBrand.purpleDeep,
+    cloth: DkmzvBrand.clothPurple,
+    clothDeep: DkmzvBrand.clothPurpleDeep,
     onCloth: Color(0xFFFDF5E6),
     lightBar: false,
   );
 
   static const green = SeasonPalette(
     vestment: Vestment.green,
-    cloth: Color(0xFF1E4D36),
+    cloth: DkmzvBrand.clothGreen,
     clothDeep: Color(0xFF123324),
     onCloth: Color(0xFFFDF5E6),
     lightBar: false,
@@ -61,15 +61,15 @@ class SeasonPalette {
 
   static const white = SeasonPalette(
     vestment: Vestment.white,
-    cloth: Color(0xFFF4E6C1),
-    clothDeep: Color(0xFFE6D3A0),
-    onCloth: DkmzvBrand.purple,
+    cloth: Color(0xFFE8D6A8),
+    clothDeep: Color(0xFFD9C088),
+    onCloth: DkmzvBrand.ink,
     lightBar: true,
   );
 
   static const red = SeasonPalette(
     vestment: Vestment.red,
-    cloth: Color(0xFF8B1E2D),
+    cloth: DkmzvBrand.clothRed,
     clothDeep: Color(0xFF5C101C),
     onCloth: Color(0xFFFDF5E6),
     lightBar: false,

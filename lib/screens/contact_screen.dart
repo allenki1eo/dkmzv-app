@@ -54,8 +54,8 @@ class ContactScreen extends StatelessWidget {
               style: TextStyle(color: Surfaces.of(context).muted)),
           SectionLabel(s.roleContacts),
           Text(s.notDirectory,
-              style: const TextStyle(
-                  color: DkmzvBrand.purple, fontWeight: FontWeight.w600)),
+              style: TextStyle(
+                  color: accentOf(context), fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           for (final role in store.data.contacts)
             Card(
@@ -66,7 +66,7 @@ class ContactScreen extends StatelessWidget {
                   children: [
                     Text(role.role(store.sw),
                         style: const TextStyle(
-                            color: DkmzvBrand.green,
+                            color: DkmzvBrand.clothGreen,
                             fontWeight: FontWeight.w700)),
                     Text(role.name(store.sw),
                         style: Theme.of(context).textTheme.titleMedium),

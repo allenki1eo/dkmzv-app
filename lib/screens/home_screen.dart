@@ -3,36 +3,35 @@ import 'package:provider/provider.dart';
 
 import '../data/store.dart';
 import '../theme/brand.dart';
+import '../theme/tokens.dart';
 import '../widgets/common.dart';
 import '../widgets/parish.dart';
+import '../widgets/video.dart';
 import 'announcements_screen.dart';
-import 'congregations_screen.dart';
+import 'events_screen.dart';
 import 'giving_screen.dart';
 import 'jumuiya_map_screen.dart';
-import 'sermons_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     required this.onOpenIbada,
-    required this.onOpenHymns,
-    required this.onOpenEvents,
+    required this.onOpenSermons,
   });
 
   final VoidCallback onOpenIbada;
-  final VoidCallback onOpenHymns;
-  final VoidCallback onOpenEvents;
+  final VoidCallback onOpenSermons;
 
   @override
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
     final surfaces = Surfaces.of(context);
-    final accent = accentOf(context);
     final congregation = store.selectedCongregation;
     final churchName =
         congregation?.name(store.sw) ?? store.data.church.name(store.sw);
     final ibada = store.featuredService;
+    final watch = store.watchNow;
     final announcements = store.data.sortedAnnouncements;
     final events = [...store.data.events]
       ..sort((a, b) => a.start.compareTo(b.start));
@@ -45,24 +44,29 @@ class HomeScreen extends StatelessWidget {
         actions: const [ParishButton(), LocaleToggle()],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
+        padding: const EdgeInsets.fromLTRB(
+            Insets.gutter, Insets.xs, Insets.gutter, Insets.xxl + Insets.sm),
         children: [
+          if (ibada != null)
+            Text(
+              formatDate(ibada.date, store.localeCode),
+              style: TextStyle(
+                color: surfaces.muted,
+                fontSize: 12.5,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.2,
+              ),
+            ),
+          const SizedBox(height: Insets.sm),
           Text(
             ibada?.theme(store.sw) ?? s.companion,
             style: Theme.of(context).textTheme.displaySmall,
           ),
-          if (ibada != null) ...[
-            const SizedBox(height: 10),
-            Text(
-              '${formatDate(ibada.date, store.localeCode)} · ${ibada.sermonTitle(store.sw)}',
-              style: TextStyle(color: surfaces.muted, fontSize: 14.5, height: 1.4),
-            ),
-          ],
-          const SizedBox(height: 18),
+          const SizedBox(height: Insets.lg + 2),
           const SeasonBanner(),
-          const SizedBox(height: 12),
-          const LiveSermonBanner(),
-          const SizedBox(height: 6),
+          const SizedBox(height: Insets.md),
+          if (watch != null) WatchCard(sermon: watch),
+          const SizedBox(height: Insets.md),
           Row(
             children: [
               ShortcutChip(
@@ -72,9 +76,7 @@ class HomeScreen extends StatelessWidget {
               ShortcutChip(
                   icon: Icons.play_circle_outline,
                   label: s.sermons,
-                  onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SermonsScreen()),
-                      )),
+                  onTap: onOpenSermons),
               ShortcutChip(
                   icon: Icons.volunteer_activism_outlined,
                   label: s.giving,
@@ -90,29 +92,31 @@ class HomeScreen extends StatelessWidget {
                       )),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: Insets.lg),
           SundayTimesCard(onOpenIbada: () {
             if (ibada != null) store.openIbada(ibada.id);
             onOpenIbada();
           }),
           if (upcoming.isNotEmpty) ...[
-            SectionLabel(s.upcoming.toUpperCase(),
-                action: s.seeAllEvents, onAction: onOpenEvents),
-            for (var i = 0; i < upcoming.length; i++)
+            SectionLabel(s.upcoming,
+                action: s.seeAllEvents,
+                onAction: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const EventsScreen()),
+                    )),
+            for (final e in upcoming)
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: Insets.sm + 2),
                 child: DateRailTile(
-                  startIso: upcoming[i].start,
-                  title: upcoming[i].title(store.sw),
+                  startIso: e.start,
+                  title: e.title(store.sw),
                   subtitle:
-                      '${formatDateTime(upcoming[i].start, store.localeCode)} · ${upcoming[i].place(store.sw)}',
-                  accent: i.isOdd ? DkmzvBrand.gold : accent,
-                  onTap: () => showEventSheet(context, upcoming[i]),
+                      '${formatDateTime(e.start, store.localeCode)} · ${e.place(store.sw)}',
+                  onTap: () => showEventSheet(context, e),
                 ),
               ),
           ],
           SectionLabel(
-            s.announcements.toUpperCase(),
+            s.announcements,
             action: announcements.length > 2 ? s.seeAll : null,
             onAction: announcements.length > 2
                 ? () => Navigator.of(context).push(
@@ -125,7 +129,7 @@ class HomeScreen extends StatelessWidget {
             EmptyState(s.announcements, icon: Icons.campaign_outlined),
           for (final a in announcements.take(2))
             AnnouncementCard(announcement: a),
-          const SizedBox(height: 10),
+          const SizedBox(height: Insets.md),
           FootNote(s.offlineNote, icon: Icons.offline_pin_outlined),
         ],
       ),

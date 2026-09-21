@@ -155,11 +155,12 @@ class AdminCongregations extends StatelessWidget {
                     spacing: 8,
                     children: [
                       for (final hex in const [
-                        '#2E0854',
-                        '#8A5A00',
-                        '#123A5C',
-                        '#1E4D36',
+                        '#0F5F52',
+                        '#1B4F7A',
+                        '#8A5A12',
+                        '#3F6B2B',
                         '#8B1E2D',
+                        '#4A6572',
                       ])
                         GestureDetector(
                           onTap: () => accent.value = hex,
@@ -171,8 +172,8 @@ class AdminCongregations extends StatelessWidget {
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: value == hex
-                                    ? DkmzvBrand.gold
-                                    : Colors.transparent,
+                                    ? Surfaces.of(context).ink
+                                    : Surfaces.of(context).hairline,
                                 width: 3,
                               ),
                             ),
@@ -268,7 +269,7 @@ class AdminJumuiyas extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
         children: [
           for (final c in store.data.congregations) ...[
-            SectionLabel(c.name(store.sw).toUpperCase()),
+            SectionLabel(c.name(store.sw)),
             for (final j in store.jumuiyasFor(c.id))
               Card(
                 child: ListTile(
@@ -452,7 +453,7 @@ class AdminGivingCategories extends StatelessWidget {
           FootNote(s.exemptNote, icon: Icons.mail_outline),
           for (final group in GivingGroups.ordered) ...[
             if (g.inGroup(group).isNotEmpty)
-              SectionLabel(_groupLabel(s, group).toUpperCase()),
+              SectionLabel(_groupLabel(s, group)),
             for (final c in g.inGroup(group))
               Card(
                 child: ListTile(
