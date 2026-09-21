@@ -34,7 +34,7 @@ class MoreScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
         children: [
           const SeasonBanner(),
-          SectionLabel(s.tabHome.toUpperCase()),
+          SectionLabel(s.contentSection.toUpperCase()),
           _tile(context, Icons.play_circle_outline, s.sermons,
               const SermonsScreen()),
           _tile(context, Icons.volunteer_activism_outlined, s.giving,
