@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/store.dart';
+import '../theme/tokens.dart';
 import '../widgets/common.dart';
-import 'admin/admin_gate.dart';
+import '../widgets/tab_bar.dart';
+import 'appearance_screen.dart';
 import 'church_year_screen.dart';
 import 'contact_screen.dart';
+import 'events_screen.dart';
 import 'giving_screen.dart';
+import 'ibada_screen.dart';
+import 'jumuiya_map_screen.dart';
 import 'pastoral_screen.dart';
-import 'sermons_screen.dart';
+import 'profile_screen.dart';
+import 'register_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -17,46 +23,101 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
+    final congregation = store.selectedCongregation;
     return Scaffold(
-      appBar: BrandAppBar(title: s.moreTitle),
+      appBar: BrandAppBar(
+        title: s.moreTitle,
+        subtitle: congregation?.name(store.sw),
+        actions: const [LocaleToggle()],
+      ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+        padding: const EdgeInsets.fromLTRB(
+          Insets.gutter,
+          Insets.xs,
+          Insets.gutter,
+          GlassTabBar.scrollInset,
+        ),
         children: [
           const SeasonBanner(),
-          const SizedBox(height: 8),
-          _tile(context, Icons.church_outlined, s.churchYear,
-              const ChurchYearScreen()),
-          _tile(context, Icons.volunteer_activism, s.giving, const GivingScreen()),
-          _tile(context, Icons.headphones, s.sermons, const SermonsScreen()),
-          _tile(context, Icons.place_outlined, s.contact, const ContactScreen()),
-          _tile(context, Icons.volunteer_activism_outlined, s.pastoral,
-              const PastoralScreen()),
-          const Divider(),
-          ListTile(
-            leading: Icon(Icons.translate, color: store.palette.cloth),
-            title: Text(s.language),
-            subtitle: Text(store.sw ? s.swahili : s.english),
-            trailing: TextButton(
-              onPressed: store.toggleLocale,
-              child: Text(store.sw ? 'EN' : 'SW'),
-            ),
+          SectionLabel(s.contentSection),
+          _tile(
+            context,
+            Icons.menu_book_outlined,
+            s.tabIbada,
+            const IbadaScreen(),
           ),
-          _tile(context, Icons.admin_panel_settings_outlined, s.admin,
-              const AdminGate()),
+          _tile(
+            context,
+            Icons.calendar_month_outlined,
+            s.tabEvents,
+            const EventsScreen(),
+          ),
+          _tile(
+            context,
+            Icons.volunteer_activism_outlined,
+            s.giving,
+            const GivingScreen(),
+          ),
+          _tile(
+            context,
+            Icons.church_outlined,
+            s.churchYear,
+            const ChurchYearScreen(),
+          ),
+          SectionLabel(s.peopleSection),
+          _tile(
+            context,
+            Icons.person_outline_rounded,
+            s.myProfile,
+            const ProfileScreen(),
+          ),
+          _tile(
+            context,
+            Icons.map_outlined,
+            s.jumuiyaMap,
+            const JumuiyaMapScreen(),
+          ),
+          _tile(
+            context,
+            Icons.badge_outlined,
+            s.registerTitle,
+            const RegisterScreen(),
+          ),
+          _tile(
+            context,
+            Icons.handshake_outlined,
+            s.pastoral,
+            const PastoralScreen(),
+          ),
+          _tile(
+            context,
+            Icons.place_outlined,
+            s.contact,
+            const ContactScreen(),
+          ),
+          SectionLabel(s.settingsSection),
+          _tile(
+            context,
+            Icons.palette_outlined,
+            s.appearance,
+            const AppearanceScreen(),
+          ),
+          const SizedBox(height: 12),
+          FootNote(s.whatsappComplement, icon: Icons.chat_bubble_outline),
+          FootNote(s.offlineNote, icon: Icons.offline_pin_outlined),
         ],
       ),
     );
   }
 
   Widget _tile(BuildContext context, IconData icon, String label, Widget page) {
-    return Card(
-      child: ListTile(
-        leading: Icon(icon, color: context.read<ChurchStore>().palette.cloth),
-        title: Text(label),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => page),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Insets.sm),
+      child: TileRow(
+        icon: icon,
+        title: label,
+        onTap: () =>
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => page)),
       ),
     );
   }

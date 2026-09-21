@@ -28,12 +28,14 @@ class ChurchYearScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
-          Text(s.lockedToSeason,
-              style: TextStyle(
-                color: p.cloth,
-                fontWeight: FontWeight.w600,
-                height: 1.4,
-              )),
+          Text(
+            s.lockedToSeason,
+            style: TextStyle(
+              color: p.cloth,
+              fontWeight: FontWeight.w600,
+              height: 1.4,
+            ),
+          ),
           const SizedBox(height: 12),
           Text(
             '${calendar.name(s)} · ${calendar.clothName(s)}',
@@ -47,7 +49,8 @@ class ChurchYearScreen extends StatelessWidget {
               vestment: row.$1,
               title: row.$2,
               body: row.$3,
-              selected: store.palette.vestment == row.$1 &&
+              selected:
+                  store.palette.vestment == row.$1 &&
                   store.vestmentPreview != null,
               onTap: () => store.setVestmentPreview(row.$1.name),
             ),
@@ -59,16 +62,36 @@ class ChurchYearScreen extends StatelessWidget {
           SectionLabel(s.churchYear),
           _fact(s.seasonAdvent, s.meaningAdvent, SeasonPalette.purple.cloth),
           _fact(s.seasonLent, s.meaningLent, SeasonPalette.purple.cloth),
-          _fact(s.seasonChristmas, s.meaningChristmas, SeasonPalette.white.clothDeep),
+          _fact(
+            s.seasonChristmas,
+            s.meaningChristmas,
+            SeasonPalette.white.clothDeep,
+          ),
           _fact(s.seasonEaster, s.meaningEaster, SeasonPalette.white.clothDeep),
           _fact(s.seasonEpiphany, s.meaningEpiphany, SeasonPalette.green.cloth),
           _fact(s.seasonOrdinary, s.meaningOrdinary, SeasonPalette.green.cloth),
           _fact(s.seasonPalm, s.meaningPalm, SeasonPalette.red.cloth),
           _fact(s.seasonPentecost, s.meaningPentecost, SeasonPalette.red.cloth),
-          _fact(s.seasonGoodFriday, s.meaningGoodFriday, SeasonPalette.red.cloth),
-          _fact(s.seasonReformation, s.meaningReformation, SeasonPalette.red.cloth),
-          _fact(s.seasonTrinity, s.meaningTrinity, SeasonPalette.white.clothDeep),
-          _fact(s.seasonAllSaints, s.meaningAllSaints, SeasonPalette.white.clothDeep),
+          _fact(
+            s.seasonGoodFriday,
+            s.meaningGoodFriday,
+            SeasonPalette.red.cloth,
+          ),
+          _fact(
+            s.seasonReformation,
+            s.meaningReformation,
+            SeasonPalette.red.cloth,
+          ),
+          _fact(
+            s.seasonTrinity,
+            s.meaningTrinity,
+            SeasonPalette.white.clothDeep,
+          ),
+          _fact(
+            s.seasonAllSaints,
+            s.meaningAllSaints,
+            SeasonPalette.white.clothDeep,
+          ),
         ],
       ),
     );
@@ -94,7 +117,10 @@ class ChurchYearScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
                 Text(body, style: const TextStyle(height: 1.35)),
               ],
             ),

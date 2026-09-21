@@ -5,6 +5,7 @@ import '../data/store.dart';
 import '../services/links.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
+import 'jumuiya_map_screen.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -24,16 +25,26 @@ class ContactScreen extends StatelessWidget {
             child: Image.asset(DkmzvBrand.logoAsset, width: 120, height: 120),
           ),
           const SizedBox(height: 8),
-          Text(c.name(store.sw),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            c.name(store.sw),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           Text(c.diocese(store.sw), textAlign: TextAlign.center),
           const SizedBox(height: 8),
           Text(c.address(store.sw), textAlign: TextAlign.center),
           const SizedBox(height: 12),
           FilledButton.icon(
-            onPressed: () => openExternal(context, c.mapUrl, s),
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const JumuiyaMapScreen())),
             icon: const Icon(Icons.map_outlined),
+            label: Text(s.jumuiyaMap),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => openExternal(context, c.mapUrl, s),
+            icon: const Icon(Icons.open_in_new),
             label: Text(s.map),
           ),
           SectionLabel(s.officeHours),
@@ -41,12 +52,18 @@ class ContactScreen extends StatelessWidget {
           SectionLabel(s.about),
           Text(c.about(store.sw)),
           const SizedBox(height: 8),
-          Text(c.whatsapp(store.sw),
-              style: const TextStyle(color: DkmzvBrand.muted)),
+          Text(
+            c.whatsapp(store.sw),
+            style: TextStyle(color: Surfaces.of(context).muted),
+          ),
           SectionLabel(s.roleContacts),
-          Text(s.notDirectory,
-              style: const TextStyle(
-                  color: DkmzvBrand.purple, fontWeight: FontWeight.w600)),
+          Text(
+            s.notDirectory,
+            style: TextStyle(
+              color: accentOf(context),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 8),
           for (final role in store.data.contacts)
             Card(
@@ -55,18 +72,27 @@ class ContactScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(role.role(store.sw),
-                        style: const TextStyle(
-                            color: DkmzvBrand.green,
-                            fontWeight: FontWeight.w700)),
-                    Text(role.name(store.sw),
-                        style: Theme.of(context).textTheme.titleMedium),
+                    Text(
+                      role.role(store.sw),
+                      style: const TextStyle(
+                        color: DkmzvBrand.clothGreen,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      role.name(store.sw),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                     Text(role.phone),
                     if (role.email.isNotEmpty) Text(role.email),
                     const SizedBox(height: 6),
-                    Text(role.note(store.sw),
-                        style: const TextStyle(
-                            color: DkmzvBrand.muted, fontSize: 13)),
+                    Text(
+                      role.note(store.sw),
+                      style: TextStyle(
+                        color: Surfaces.of(context).muted,
+                        fontSize: 13,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -78,7 +104,10 @@ class ContactScreen extends StatelessWidget {
                         if (role.email.isNotEmpty)
                           TextButton.icon(
                             onPressed: () => openExternal(
-                                context, 'mailto:${role.email}', s),
+                              context,
+                              'mailto:${role.email}',
+                              s,
+                            ),
                             icon: const Icon(Icons.email_outlined),
                             label: Text(s.email),
                           ),

@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/store.dart';
-import '../theme/brand.dart';
 import '../widgets/common.dart';
 
-const _cats = ['all', 'worship', 'choir', 'uw', 'youth', 'confirmation', 'meeting'];
+const _cats = [
+  'all',
+  'worship',
+  'choir',
+  'uw',
+  'youth',
+  'confirmation',
+  'meeting',
+];
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -21,17 +28,12 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
-    final accent = DkmzvBrand.accent(store.palette);
+    final accent = accentOf(context);
     final items = [...store.data.events]
       ..sort((a, b) => a.start.compareTo(b.start));
-    final filtered =
-        _cat == 'all' ? items : items.where((e) => e.category == _cat).toList();
-    const rails = [
-      DkmzvBrand.purple,
-      DkmzvBrand.gold,
-      DkmzvBrand.sage,
-      DkmzvBrand.red,
-    ];
+    final filtered = _cat == 'all'
+        ? items
+        : items.where((e) => e.category == _cat).toList();
 
     return Scaffold(
       appBar: BrandAppBar(title: s.tabEvents),
@@ -70,7 +72,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           title: e.title(store.sw),
                           subtitle:
                               '${formatDateTime(e.start, store.localeCode)} · ${e.place(store.sw)}',
-                          accent: i == 0 ? accent : rails[i % rails.length],
+                          accent: accent,
                           onTap: () => showEventSheet(context, e),
                         ),
                       );

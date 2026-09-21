@@ -5,7 +5,9 @@ import '../data/models.dart';
 import '../data/store.dart';
 import '../services/links.dart';
 import '../theme/brand.dart';
+import '../theme/tokens.dart';
 import '../widgets/common.dart';
+import '../widgets/tab_bar.dart';
 import 'hymn_detail_screen.dart';
 
 class IbadaScreen extends StatelessWidget {
@@ -23,7 +25,12 @@ class IbadaScreen extends StatelessWidget {
       body: services.isEmpty
           ? Center(child: Text(s.noService))
           : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+              padding: const EdgeInsets.fromLTRB(
+                Insets.gutter,
+                Insets.md,
+                Insets.gutter,
+                GlassTabBar.scrollInset,
+              ),
               itemCount: services.length,
               itemBuilder: (_, i) {
                 final item = services[i];
@@ -33,9 +40,11 @@ class IbadaScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                       store.openIbada(item.id);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => IbadaDetailScreen(service: item),
-                      ));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => IbadaDetailScreen(service: item),
+                        ),
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16),
@@ -54,18 +63,28 @@ class IbadaScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(formatDate(item.date, store.localeCode),
-                                    style: const TextStyle(
-                                        color: DkmzvBrand.muted, fontSize: 12)),
-                                Text(item.theme(store.sw),
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium),
+                                Text(
+                                  formatDate(item.date, store.localeCode),
+                                  style: TextStyle(
+                                    color: Surfaces.of(context).muted,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  item.theme(store.sw),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium,
+                                ),
                                 Text(item.sermonTitle(store.sw)),
                                 if (featured)
-                                  Text(s.offlineCached,
-                                      style: const TextStyle(
-                                          color: DkmzvBrand.green,
-                                          fontSize: 12)),
+                                  Text(
+                                    s.offlineCached,
+                                    style: const TextStyle(
+                                      color: DkmzvBrand.clothGreen,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -94,20 +113,29 @@ class IbadaDetailScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
-          Text(formatDate(service.date, store.localeCode),
-              style: TextStyle(color: store.palette.cloth, fontWeight: FontWeight.w600)),
-          Text(service.theme(store.sw),
-              style: Theme.of(context).textTheme.headlineSmall),
+          Text(
+            formatDate(service.date, store.localeCode),
+            style: TextStyle(
+              color: store.palette.cloth,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(
+            service.theme(store.sw),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 4),
-          Text(service.sermonTitle(store.sw),
-              style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            service.sermonTitle(store.sw),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           Text('${s.preacher}: ${service.preacher(store.sw)}'),
           const SizedBox(height: 8),
           Chip(
             avatar: CircleAvatar(
-                backgroundColor: liturgical(service.liturgicalColor)),
-            label: Text(
-                '${s.liturgicalColor}: ${service.liturgicalColor}'),
+              backgroundColor: liturgical(service.liturgicalColor),
+            ),
+            label: Text('${s.liturgicalColor}: ${service.liturgicalColor}'),
           ),
           SectionLabel(s.readings),
           for (final r in service.readings)
@@ -115,9 +143,13 @@ class IbadaDetailScreen extends StatelessWidget {
               dense: true,
               contentPadding: EdgeInsets.zero,
               title: Text(r.label(store.sw)),
-              subtitle: Text(r.ref,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: store.palette.cloth)),
+              subtitle: Text(
+                r.ref,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: store.palette.cloth,
+                ),
+              ),
             ),
           SectionLabel(s.outline),
           for (var i = 0; i < service.outline(store.sw).length; i++)
@@ -127,8 +159,10 @@ class IbadaDetailScreen extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 12,
                 backgroundColor: store.palette.cloth,
-                child: Text('${i + 1}',
-                    style: TextStyle(color: store.palette.onCloth, fontSize: 12)),
+                child: Text(
+                  '${i + 1}',
+                  style: TextStyle(color: store.palette.onCloth, fontSize: 12),
+                ),
               ),
               title: Text(service.outline(store.sw)[i]),
             ),
@@ -138,15 +172,19 @@ class IbadaDetailScreen extends StatelessWidget {
               if (store.data.hymnById(id) case final hymn?)
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Text(hymn.number,
-                      style: const TextStyle(fontWeight: FontWeight.w800)),
+                  leading: Text(
+                    hymn.number,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
                   title: Text(hymn.title(store.sw)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     store.openHymn(hymn.id);
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => HymnDetailScreen(hymn: hymn),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => HymnDetailScreen(hymn: hymn),
+                      ),
+                    );
                   },
                 ),
           ],
@@ -155,8 +193,7 @@ class IbadaDetailScreen extends StatelessWidget {
           if (service.bulletinUrl.isNotEmpty) ...[
             const SizedBox(height: 8),
             FilledButton.icon(
-              onPressed: () =>
-                  openExternal(context, service.bulletinUrl, s),
+              onPressed: () => openExternal(context, service.bulletinUrl, s),
               icon: const Icon(Icons.open_in_new),
               label: Text(s.openLink),
             ),

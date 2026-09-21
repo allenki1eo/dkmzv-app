@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'data/store.dart';
 import 'l10n/strings.dart';
 import 'screens/shell.dart';
+import 'theme/app_theme.dart';
+import 'theme/backgrounds.dart';
 import 'theme/brand.dart';
 
 class DkmzvApp extends StatefulWidget {
@@ -37,10 +39,24 @@ class _DkmzvAppState extends State<DkmzvApp> {
         builder: (_, store, _) {
           final s = S(store.localeCode);
           final locale = store.sw ? const Locale('sw') : const Locale('en');
+          // One accent for the whole app. Per-usharika colours were an
+          // office setting; the phone is now the member's, not the office's.
+          const accent = DkmzvBrand.accent;
+          final background = AppBackground.byId(store.backgroundId);
           return MaterialApp(
             title: s.appName,
             debugShowCheckedModeBanner: false,
-            theme: DkmzvBrand.theme(store.palette),
+            theme: AppTheme.build(
+              accent: accent,
+              brightness: Brightness.light,
+              translucent: background.asset != null,
+            ),
+            darkTheme: AppTheme.build(
+              accent: accent,
+              brightness: Brightness.dark,
+              translucent: background.asset != null,
+            ),
+            themeMode: store.themeMode,
             locale: locale,
             supportedLocales: const [Locale('sw'), Locale('en')],
             localizationsDelegates: const [
@@ -48,6 +64,10 @@ class _DkmzvAppState extends State<DkmzvApp> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            builder: (context, child) => BackgroundCanvas(
+              background: background,
+              child: child ?? const SizedBox.shrink(),
+            ),
             home: _showSplash ? const _Splash() : const AppShell(),
           );
         },
@@ -62,7 +82,7 @@ class _Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: DkmzvBrand.purple,
+      backgroundColor: DkmzvBrand.ink,
       body: Center(
         child: Image(
           image: AssetImage(DkmzvBrand.splashAsset),
