@@ -27,24 +27,23 @@ void main() {
     store = ChurchStore.memory(data);
   });
 
-  testWidgets('home shows announcements, Sunday times, and SW/EN toggle', (
+  testWidgets('home greets the member and carries the announcements', (
     tester,
   ) async {
     await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
     await tester.pumpAndSettle();
 
+    // The usharika being followed is named under the greeting.
     expect(find.text('Usharika wa Ebenezer'), findsWidgets);
-    await tester.scrollUntilVisible(
-      find.text('Saa za Jumapili'),
-      200,
-      scrollable: find.byType(Scrollable).first,
-    );
-    expect(find.text('Saa za Jumapili'), findsOneWidget);
-    expect(find.textContaining('Ibada kuu'), findsWidgets);
+
+    // Nobody has registered on this phone yet, so the envelope panel invites
+    // them to, rather than showing an empty bahasha.
+    expect(find.text('Hujajisajili bado'), findsOneWidget);
+    expect(find.text('Sajili mwanachama'), findsWidgets);
 
     await tester.tap(find.text('EN'));
     await tester.pumpAndSettle();
-    expect(find.text('Sunday times'), findsOneWidget);
+    expect(find.text('Not registered yet'), findsOneWidget);
 
     await tester.scrollUntilVisible(
       find.textContaining('Welcome to Sunday worship'),
@@ -53,6 +52,54 @@ void main() {
     );
     expect(find.textContaining('Grace that is enough'), findsWidgets);
     expect(find.textContaining('Welcome to Sunday worship'), findsOneWidget);
+  });
+
+  testWidgets('a registered member sees their bahasha on the home panel', (
+    tester,
+  ) async {
+    await store.saveMember(
+      MemberRecord(
+        id: 'mem-neema',
+        fullName: 'Neema Joseph',
+        congregationId: 'cong-ebenezer',
+        jumuiyaId: '',
+        phone: '',
+        householdNote: '',
+        shareHomePin: false,
+        registeredAt: DateTime.now().toIso8601String(),
+        bahashaNo: 'EB-0142',
+      ),
+    );
+    await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bahasha yangu'.toUpperCase()), findsOneWidget);
+    expect(find.text('EB-0142'), findsOneWidget);
+    expect(find.text('Toa sadaka'), findsWidgets);
+    // The greeting carries their first name, not the generic welcome.
+    expect(find.textContaining('Neema'), findsWidgets);
+  });
+
+  testWidgets('the shell carries four tabs and one raised give button', (
+    tester,
+  ) async {
+    await tester.pumpWidget(DkmzvApp(store: store, skipSplash: true));
+    await tester.pumpAndSettle();
+
+    final bar = find.byType(GlassTabBar);
+    expect(bar, findsOneWidget);
+    for (final label in ['Nyumbani', 'Mahubiri', 'Nyimbo', 'Zaidi']) {
+      expect(
+        find.descendant(of: bar, matching: find.text(label)),
+        findsOneWidget,
+        reason: '\$label should be a destination',
+      );
+    }
+
+    // Giving is the raised action, not a tab, and it opens Sadaka.
+    await tester.tap(find.byTooltip('Toa sadaka'));
+    await tester.pumpAndSettle();
+    expect(find.text('Sadaka za bahasha'), findsOneWidget);
   });
 
   testWidgets('dark mode and background live in Mwonekano', (tester) async {
@@ -105,6 +152,8 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).first,
     );
+    await tester.ensureVisible(find.text('Sadaka'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Sadaka'));
     await tester.pumpAndSettle();
     expect(find.text('Sadaka za bahasha'), findsOneWidget);

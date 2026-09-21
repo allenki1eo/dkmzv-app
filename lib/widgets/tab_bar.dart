@@ -20,8 +20,21 @@ class TabItem {
   final String label;
 }
 
+/// The round amber button that sits in the middle of the bar.
+class CenterAction {
+  const CenterAction({
+    required this.icon,
+    required this.onTap,
+    required this.tooltip,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+  final String tooltip;
+}
+
 /// The shell's bottom bar: a frosted slab that floats clear of the screen
-/// edge instead of sitting flush against it.
+/// edge, with the one action a member reaches for raised in the middle of it.
 ///
 /// It blurs whatever scrolls under it, so a chosen wallpaper still reads
 /// through, and the selected destination is marked by a soft plate that
@@ -32,18 +45,25 @@ class GlassTabBar extends StatelessWidget {
     required this.items,
     required this.selectedIndex,
     required this.onSelect,
+    this.center,
   });
 
   final List<TabItem> items;
   final int selectedIndex;
   final ValueChanged<int> onSelect;
 
+  /// Optional raised button between the middle pair of destinations.
+  final CenterAction? center;
+
   /// Height of the bar itself, without the safe-area inset beneath it.
-  static const double barHeight = 60;
+  static const double barHeight = 62;
+
+  /// Diameter of the raised centre button.
+  static const double fabSize = 54;
 
   /// What a scroll view should leave at its bottom so the last row can clear
   /// the floating bar.
-  static const double scrollInset = 92;
+  static const double scrollInset = 116;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +71,68 @@ class GlassTabBar extends StatelessWidget {
     final accent = accentOf(context);
     final dark = Theme.of(context).brightness == Brightness.dark;
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
+    final half = (items.length / 2).ceil();
+
+    final bar = ClipRRect(
+      borderRadius: BorderRadius.circular(Radii.xl),
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        child: Container(
+          height: barHeight,
+          decoration: BoxDecoration(
+            color: s.card.withValues(alpha: dark ? 0.78 : 0.88),
+            borderRadius: BorderRadius.circular(Radii.xl),
+            border: Border.all(color: s.hairline),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // With a centre button the destinations share the width either
+              // side of a gap wide enough for it.
+              final gap = center == null ? 0.0 : fabSize + Insets.md;
+              final slot = (constraints.maxWidth - gap) / items.length;
+              final selected = selectedIndex.clamp(0, items.length - 1);
+              final plateLeft = selected < half
+                  ? slot * selected
+                  : slot * selected + gap;
+
+              return Stack(
+                children: [
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 240),
+                    curve: Curves.easeOutCubic,
+                    left: plateLeft + (slot - 50) / 2,
+                    top: 7,
+                    width: 50,
+                    height: barHeight - 14,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: accent.withValues(alpha: dark ? 0.20 : 0.10),
+                        borderRadius: BorderRadius.circular(Radii.md),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      for (var i = 0; i < items.length; i++) ...[
+                        if (center != null && i == half) SizedBox(width: gap),
+                        SizedBox(
+                          width: slot,
+                          child: _Tab(
+                            item: items[i],
+                            selected: i == selected,
+                            onTap: () => onSelect(i),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -59,54 +141,44 @@ class GlassTabBar extends StatelessWidget {
         Insets.md,
         bottomSafe > 0 ? bottomSafe * 0.5 + Insets.sm : Insets.md,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(Radii.xl),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-          child: Container(
-            height: barHeight,
-            decoration: BoxDecoration(
-              color: s.card.withValues(alpha: dark ? 0.76 : 0.85),
-              borderRadius: BorderRadius.circular(Radii.xl),
-              border: Border.all(color: s.hairline),
+      child: center == null
+          ? bar
+          : Stack(
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
+              children: [
+                bar,
+                Positioned(
+                  top: -fabSize * 0.32,
+                  child: _CenterButton(action: center!),
+                ),
+              ],
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final slot = constraints.maxWidth / items.length;
-                const plate = 50.0;
-                return Stack(
-                  children: [
-                    AnimatedPositioned(
-                      duration: const Duration(milliseconds: 240),
-                      curve: Curves.easeOutCubic,
-                      left: slot * selectedIndex + (slot - plate) / 2,
-                      top: 6,
-                      width: plate,
-                      height: barHeight - 12,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: accent.withValues(alpha: dark ? 0.20 : 0.10),
-                          borderRadius: BorderRadius.circular(Radii.md),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        for (var i = 0; i < items.length; i++)
-                          Expanded(
-                            child: _Tab(
-                              item: items[i],
-                              selected: i == selectedIndex,
-                              onTap: () => onSelect(i),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
+    );
+  }
+}
+
+class _CenterButton extends StatelessWidget {
+  const _CenterButton({required this.action});
+  final CenterAction action;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Surfaces.of(context);
+    return Tooltip(
+      message: action.tooltip,
+      child: Pressable(
+        onTap: action.onTap,
+        scale: 0.9,
+        child: Container(
+          width: GlassTabBar.fabSize,
+          height: GlassTabBar.fabSize,
+          decoration: BoxDecoration(
+            color: s.amber,
+            shape: BoxShape.circle,
+            border: Border.all(color: s.canvas, width: 4),
           ),
+          child: Icon(action.icon, size: 25, color: s.onAmber),
         ),
       ),
     );

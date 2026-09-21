@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../data/models.dart';
 import '../data/store.dart';
 import '../data/youtube.dart';
 import '../services/links.dart';
-import '../services/player.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
 import '../widgets/video.dart';
+import '../widgets/youtube_box.dart';
 
 class SermonPlayerScreen extends StatefulWidget {
   const SermonPlayerScreen({super.key, required this.sermon});
@@ -21,15 +20,6 @@ class SermonPlayerScreen extends StatefulWidget {
 }
 
 class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
-  WebViewController? _web;
-
-  @override
-  void initState() {
-    super.initState();
-    final id = youtubeVideoId(widget.sermon.mediaUrl);
-    if (id != null) _web = buildYoutubePlayer(videoId: id);
-  }
-
   @override
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
@@ -63,14 +53,8 @@ class _SermonPlayerScreenState extends State<SermonPlayerScreen> {
           Insets.xxl,
         ),
         children: [
-          if (_web != null)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(Radii.md),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: WebViewWidget(controller: _web!),
-              ),
-            )
+          if (youtubeVideoId(ser.mediaUrl) != null)
+            SermonPlayerBox(mediaUrl: ser.mediaUrl, live: ser.isLive)
           else
             AppCard(
               padding: const EdgeInsets.all(Insets.lg),

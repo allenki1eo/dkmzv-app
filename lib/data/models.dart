@@ -386,6 +386,7 @@ class MemberRecord {
     this.baptized = false,
     this.confirmed = false,
     this.birthYear = '',
+    this.bahashaNo = '',
   });
 
   String id;
@@ -410,6 +411,10 @@ class MemberRecord {
   bool confirmed;
   String birthYear;
 
+  /// Envelope number the office issued. This is how a mwumini's offering is
+  /// recognised in the books, so it is the one figure they need to hand.
+  String bahashaNo;
+
   factory MemberRecord.fromJson(Map<String, dynamic> j) {
     final lat = j['homeLat'];
     final lng = j['homeLng'];
@@ -430,6 +435,7 @@ class MemberRecord {
       baptized: _b(j['baptized']),
       confirmed: _b(j['confirmed']),
       birthYear: _s(j['birthYear']),
+      bahashaNo: _s(j['bahashaNo']),
     );
   }
 
@@ -450,6 +456,7 @@ class MemberRecord {
         'baptized': baptized,
         'confirmed': confirmed,
         'birthYear': birthYear,
+        'bahashaNo': bahashaNo,
       };
 }
 

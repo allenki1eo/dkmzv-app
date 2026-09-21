@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 /// larger than a ribbon or a swatch.
 class DkmzvBrand {
   // Neutral stack — light.
-  static const canvas = Color(0xFFF5F6F8);
+  static const canvas = Color(0xFFF5F4F2);
   static const card = Color(0xFFFFFFFF);
   static const ink = Color(0xFF0F1419);
   static const muted = Color(0xFF5A6472);
@@ -29,6 +29,32 @@ class DkmzvBrand {
 
   /// Status. Live is the one hue allowed to shout, and only on a small badge.
   static const live = Color(0xFFC0392B);
+
+  // --- The member-facing layer ---------------------------------------------
+  //
+  // Deep panels carry the things a mwumini checks at a glance (their bahasha,
+  // this Sunday, how the year is going). Amber is the one warm colour, used
+  // for the single action that matters on a screen. Peach is its quiet tile
+  // form, for schedule cards that should feel softer than white.
+
+  /// Dark panel behind headline numbers. Teal-ink, not black.
+  static const panel = Color(0xFF1D3B47);
+  static const panelDeep = Color(0xFF142C36);
+  static const onPanel = Color(0xFFF3F7F8);
+
+  /// The warm action colour.
+  static const amber = Color(0xFFF0A04B);
+  static const amberDeep = Color(0xFFDE8B34);
+  static const onAmber = Color(0xFF3A2410);
+
+  /// Soft tile tint, paired with [amber].
+  static const peach = Color(0xFFFBE6D2);
+  static const peachDeep = Color(0xFFF6D6B8);
+  static const onPeach = Color(0xFF4A3520);
+
+  /// Dark-theme variants of the same two.
+  static const darkPanel = Color(0xFF16232A);
+  static const darkPeach = Color(0xFF2E2620);
 
   // Vestments of the church year. Not UI chrome.
   static const clothPurple = Color(0xFF4B2E68);
@@ -71,6 +97,28 @@ class Surfaces {
 
   /// A hair above the canvas — used for wells and unselected segments.
   Color get sunken => Color.alphaBlend(ink.withValues(alpha: 0.04), canvas);
+
+  /// Dark panel for headline figures. Same colour in both themes, because it
+  /// is meant to read as a solid object on the page either way.
+  Color get panel =>
+      canvas.computeLuminance() < 0.2 ? DkmzvBrand.darkPanel : DkmzvBrand.panel;
+
+  Color get panelDeep => canvas.computeLuminance() < 0.2
+      ? DkmzvBrand.darkPanel
+      : DkmzvBrand.panelDeep;
+
+  Color get onPanel => DkmzvBrand.onPanel;
+
+  /// The one warm action colour.
+  Color get amber => DkmzvBrand.amber;
+  Color get onAmber => DkmzvBrand.onAmber;
+
+  /// Soft tile tint. Goes dim rather than bright in the dark theme.
+  Color get peach =>
+      canvas.computeLuminance() < 0.2 ? DkmzvBrand.darkPeach : DkmzvBrand.peach;
+
+  Color get onPeach =>
+      canvas.computeLuminance() < 0.2 ? ink : DkmzvBrand.onPeach;
 
   static const light = Surfaces._(
     ink: DkmzvBrand.ink,

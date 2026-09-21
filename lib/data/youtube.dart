@@ -62,8 +62,26 @@ const String _embedOrigin = 'https://www.youtube.com';
 /// real origin to YouTube instead of `about:blank`.
 const String youtubeEmbedBaseUrl = _embedOrigin;
 
-String _playerHtml(String src) =>
-    '''
+/// Name of the JavaScript channel the player talks back on.
+///
+/// Messages are `ready`, `error:<code>` or `state:<n>`.
+const String youtubePlayerChannel = 'PlayerBridge';
+
+/// Builds the one-page host that carries the player.
+///
+/// The player is created through YouTube's IFrame API rather than a bare
+/// `<iframe src=…>`. That buys two things a plain embed cannot give: the API
+/// says *why* a video will not play, and it says when one is ready. The app
+/// uses both to drop to the poster and an "open in YouTube" button instead of
+/// leaving the member staring at YouTube's own error text.
+String _playerHtml({String? videoId, String? channelId}) {
+  // A single video is named directly; a channel's live stream is requested
+  // as a one-entry playlist, which is how the IFrame API exposes it.
+  final source = videoId == null ? '' : "videoId: '$videoId',";
+  final extraVars = videoId == null
+      ? "listType: 'live_stream', list: '$channelId',"
+      : '';
+  return '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,26 +90,52 @@ String _playerHtml(String src) =>
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; }
-  .stage { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+  #stage { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
   iframe { display: block; width: 100%; height: 100%; border: 0; }
 </style>
 </head>
 <body>
-<div class="stage">
-<iframe src="$src"
-        frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
-</div>
+<div id="stage"><div id="player"></div></div>
+<script>
+  function send(msg) {
+    try { $youtubePlayerChannel.postMessage(msg); } catch (e) {}
+  }
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      $source
+      playerVars: {
+        $extraVars
+        playsinline: 1,
+        rel: 0,
+        modestbranding: 1,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: function () { send('ready'); },
+        onError: function (e) { send('error:' + e.data); },
+        onStateChange: function (e) { send('state:' + e.data); }
+      }
+    });
+  }
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  tag.onerror = function () { send('error:script'); };
+  document.body.appendChild(tag);
+</script>
 </body>
 </html>
 ''';
+}
 
-/// A one-page wrapper that hosts the embed in an iframe.
+/// The page that hosts a single video.
 ///
-/// Load it with `loadHtmlString(html, baseUrl: youtubeEmbedBaseUrl)`.
-String youtubeEmbedHtml(String videoId) =>
-    _playerHtml(youtubeEmbedUrl(videoId));
+/// Load it with `loadHtmlString(html, baseUrl: youtubeEmbedBaseUrl)` — the
+/// base URL is what gives the document a real origin. Without it YouTube
+/// answers "Video player configuration error (153)".
+String youtubeEmbedHtml(String videoId) => _playerHtml(videoId: videoId);
 
 String youtubeWatchUrl(String videoId) =>
     'https://www.youtube.com/watch?v=$videoId';
@@ -150,8 +194,8 @@ String? youtubeChannelLiveEmbedUrl(String channel) {
 /// The channel's live stream wrapped for the in-app player, or null when the
 /// office only pasted a handle.
 String? youtubeChannelLiveEmbedHtml(String channel) {
-  final url = youtubeChannelLiveEmbedUrl(channel);
-  return url == null ? null : _playerHtml(url);
+  final id = youtubeChannelId(channel);
+  return id == null ? null : _playerHtml(channelId: id);
 }
 
 /// The channel's live page, for opening in the YouTube app.

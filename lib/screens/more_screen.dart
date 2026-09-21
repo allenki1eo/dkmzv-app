@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/store.dart';
-import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
 import '../widgets/tab_bar.dart';
@@ -14,8 +13,10 @@ import 'congregations_screen.dart';
 import 'contact_screen.dart';
 import 'events_screen.dart';
 import 'giving_screen.dart';
+import 'ibada_screen.dart';
 import 'jumuiya_map_screen.dart';
 import 'pastoral_screen.dart';
+import 'profile_screen.dart';
 import 'register_screen.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -44,6 +45,12 @@ class MoreScreen extends StatelessWidget {
           SectionLabel(s.contentSection),
           _tile(
             context,
+            Icons.menu_book_outlined,
+            s.tabIbada,
+            const IbadaScreen(),
+          ),
+          _tile(
+            context,
             Icons.calendar_month_outlined,
             s.tabEvents,
             const EventsScreen(),
@@ -61,6 +68,12 @@ class MoreScreen extends StatelessWidget {
             const ChurchYearScreen(),
           ),
           SectionLabel(s.peopleSection),
+          _tile(
+            context,
+            Icons.person_outline_rounded,
+            s.myProfile,
+            const ProfileScreen(),
+          ),
           _tile(
             context,
             Icons.account_balance_outlined,
@@ -113,12 +126,11 @@ class MoreScreen extends StatelessWidget {
   }
 
   Widget _tile(BuildContext context, IconData icon, String label, Widget page) {
-    final surfaces = Surfaces.of(context);
-    return Card(
-      child: ListTile(
-        leading: Icon(icon, color: accentOf(context)),
-        title: Text(label),
-        trailing: Icon(Icons.chevron_right, color: surfaces.muted, size: 20),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Insets.sm),
+      child: TileRow(
+        icon: icon,
+        title: label,
         onTap: () =>
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => page)),
       ),

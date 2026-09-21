@@ -28,29 +28,29 @@ void main() {
     expect(youtubeEmbedUrl('8XUYZoguhEQ'), contains('youtube.com/embed/'));
   });
 
-  test('the embed is wrapped in an iframe on a real origin', () {
+  test('the player is built through the IFrame API on a real origin', () {
     // Loading the embed as the top-level document is what makes YouTube
-    // answer "Video player configuration error (153)". The player must be an
-    // iframe inside a page served from a genuine origin.
+    // answer "Video player configuration error (153)". The player must be
+    // created inside a page served from a genuine origin, and it must be able
+    // to report failure so the app can fall back to the poster.
     final html = youtubeEmbedHtml('8XUYZoguhEQ');
-    expect(html, contains('<iframe'));
-    expect(html, contains('https://www.youtube.com/embed/8XUYZoguhEQ'));
-    expect(html, contains('origin=https://www.youtube.com'));
-    expect(html, contains('playsinline=1'));
-    expect(html, contains('allowfullscreen'));
+    expect(html, contains("videoId: '8XUYZoguhEQ'"));
+    expect(html, contains('youtube.com/iframe_api'));
+    expect(html, contains('origin: window.location.origin'));
+    expect(html, contains('playsinline: 1'));
+    expect(html, contains('onError'));
+    expect(html, contains(youtubePlayerChannel));
     expect(youtubeEmbedBaseUrl, 'https://www.youtube.com');
   });
 
-  test('the channel live stream is wrapped the same way', () {
+  test('the channel live stream is built the same way', () {
     const channel = 'https://www.youtube.com/channel/UC_x5XG1OV2P6uZZ5FSM9Ttw';
     final html = youtubeChannelLiveEmbedHtml(channel);
     expect(html, isNotNull);
-    expect(html, contains('<iframe'));
-    expect(
-      html,
-      contains('embed/live_stream?channel=UC_x5XG1OV2P6uZZ5FSM9Ttw'),
-    );
-    expect(html, contains('origin=https://www.youtube.com'));
+    expect(html, contains("listType: 'live_stream'"));
+    expect(html, contains("list: 'UC_x5XG1OV2P6uZZ5FSM9Ttw'"));
+    expect(html, contains('origin: window.location.origin'));
+    expect(html, contains('onError'));
 
     // A bare handle still has no embeddable stream, so callers fall back to
     // opening YouTube rather than showing an empty player.

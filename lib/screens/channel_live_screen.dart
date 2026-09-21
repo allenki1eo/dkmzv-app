@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../data/store.dart';
 import '../data/youtube.dart';
 import '../services/links.dart';
-import '../services/player.dart';
+import '../widgets/youtube_box.dart';
 import '../theme/brand.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
@@ -21,15 +20,6 @@ class ChannelLiveScreen extends StatefulWidget {
 }
 
 class _ChannelLiveScreenState extends State<ChannelLiveScreen> {
-  WebViewController? _web;
-
-  @override
-  void initState() {
-    super.initState();
-    final channel = context.read<ChurchStore>().youtubeChannel;
-    _web = buildYoutubePlayer(channel: channel);
-  }
-
   @override
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
@@ -52,13 +42,11 @@ class _ChannelLiveScreenState extends State<ChannelLiveScreen> {
             style: TextStyle(color: surfaces.muted, fontSize: 13, height: 1.45),
           ),
           const SizedBox(height: Insets.lg),
-          if (_web != null)
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(Radii.md),
-                child: WebViewWidget(controller: _web!),
-              ),
+          if (youtubeChannelLiveEmbedHtml(store.youtubeChannel) != null)
+            YoutubeBox(
+              channel: store.youtubeChannel,
+              openUrl: watchUrl ?? '',
+              live: true,
             )
           else
             EmptyState(s.youtubeNeedUrl, icon: Icons.link_off),

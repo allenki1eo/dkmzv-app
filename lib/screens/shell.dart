@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../widgets/common.dart';
 import '../widgets/tab_bar.dart';
+import 'giving_screen.dart';
 import 'home_screen.dart';
 import 'hymns_screen.dart';
 import 'ibada_screen.dart';
@@ -30,11 +31,14 @@ class _AppShellState extends State<AppShell> {
     final s = sOf(context);
     final pages = [
       HomeScreen(
-        onOpenIbada: () => _select(2),
+        // Ibada is a place you go to read one order of service, not somewhere
+        // you live, so it opens as a page rather than holding a tab.
+        onOpenIbada: () =>
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const IbadaScreen())),
         onOpenSermons: () => _select(1),
       ),
       const SermonsScreen(embedded: true),
-      const IbadaScreen(),
       const HymnsScreen(),
       const MoreScreen(),
     ];
@@ -46,6 +50,14 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: GlassTabBar(
         selectedIndex: _index,
         onSelect: _select,
+        // Giving is the thing a mwumini comes back to do, so it gets the one
+        // raised button rather than a tab like any other.
+        center: CenterAction(
+          icon: Icons.volunteer_activism_rounded,
+          tooltip: s.giveNow,
+          onTap: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const GivingScreen())),
+        ),
         items: [
           TabItem(
             icon: Icons.home_outlined,
@@ -56,11 +68,6 @@ class _AppShellState extends State<AppShell> {
             icon: Icons.play_circle_outline,
             activeIcon: Icons.play_circle_fill_rounded,
             label: s.sermons,
-          ),
-          TabItem(
-            icon: Icons.menu_book_outlined,
-            activeIcon: Icons.menu_book_rounded,
-            label: s.tabIbada,
           ),
           TabItem(
             icon: Icons.music_note_outlined,
