@@ -10,11 +10,11 @@ import 'appearance_screen.dart';
 import 'church_year_screen.dart';
 import 'congregations_screen.dart';
 import 'contact_screen.dart';
+import 'events_screen.dart';
 import 'giving_screen.dart';
 import 'jumuiya_map_screen.dart';
 import 'pastoral_screen.dart';
 import 'register_screen.dart';
-import 'sermons_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -35,8 +35,8 @@ class MoreScreen extends StatelessWidget {
         children: [
           const SeasonBanner(),
           SectionLabel(s.contentSection),
-          _tile(context, Icons.play_circle_outline, s.sermons,
-              const SermonsScreen()),
+          _tile(context, Icons.calendar_month_outlined, s.tabEvents,
+              const EventsScreen()),
           _tile(context, Icons.volunteer_activism_outlined, s.giving,
               const GivingScreen()),
           _tile(context, Icons.church_outlined, s.churchYear,

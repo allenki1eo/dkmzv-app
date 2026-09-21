@@ -9,10 +9,9 @@ Extract a new pack over `brand/`, then copy into the Flutter/Android tree using 
 | Token | Hex | Use |
 | --- | --- | --- |
 | White | `#FFFFFF` | Adaptive launcher **background** (official emblem plate) |
-| Deep purple | `#2E0854` | Splash field + in-app Advent/Lent cloth — **not** the adaptive plate |
-| Gold | `#D4AF37` | Cross / accents |
-| Cream | `#FDF5E6` | Surfaces / wordmark |
-| Sage | `#A2AD91` | Subtitle / secondary accents |
+| Ink / splash | `#0F1419` | Splash field + in-app chrome. **Not** a hue. |
+| Advent / Lent cloth | `#4B2E68` | Vestment ribbon only |
+| Gold | `#B08A2E` | Metal of the church year |
 
 Do **not** rely on `brand/ic_launcher_background_swatch.png` for the adaptive plate — use the solid colour `#FFFFFF`.
 
@@ -41,7 +40,7 @@ Registered in `pubspec.yaml` under `flutter:` → `assets:`.
 
 ## Splash (equivalent of flutter_native_splash)
 
-- Android: `drawable/launch_background.xml` (+ `drawable-v21`) = purple field `#2E0854` + `@drawable/dkmzv_splash` (white card + official emblem)
+- Android: `drawable/launch_background.xml` (+ `drawable-v21`) = near-black field `#0F1419` + `@drawable/dkmzv_splash` (white card + official emblem)
 - Flutter boot: `DkmzvBrand.splashAsset` → `assets/brand/dkmzv-splash.png` (`lib/app.dart`, `lib/theme/brand.dart`)
 
 ## Archive

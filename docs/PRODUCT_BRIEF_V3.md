@@ -12,14 +12,15 @@ bilingual tagline.
 
 | Usharika | Accent | Motif | Tagline (SW) |
 | --- | --- | --- | --- |
-| Ebenezer (kanisa kuu) | `#2E0854` deep purple | cathedral | Kanisa kuu la dayosisi |
-| Angaza (Chamaguha) | `#8A5A00` deep gold | sunrise | Nuru katika Chamaguha |
-| Makedonia (Lubaga) | `#123A5C` deep blue | cross | Wito wa Makedonia, Lubaga |
+| Ebenezer (kanisa kuu) | `#0F5F52` teal | cathedral | Kanisa kuu la dayosisi |
+| Angaza (Chamaguha) | `#8A5A12` amber | sunrise | Nuru katika Chamaguha |
+| Makedonia (Lubaga) | `#1B4F7A` blue | village | Wito wa Makedonia, Lubaga |
 
-The accent drives app chrome (buttons, chips, icons, nav bar, map pins). It does
-**not** touch the vestments: the Sunday cloth card, the season strip and the
-church-year screen stay locked to the liturgical calendar. The office edits
-colour and motif in **Msimamizi → Masharika**.
+The accent is punctuation — icons, selected states, small badges. It does
+**not** fill a card, a button or the navigation bar, and it does **not** touch
+the vestments: the season ribbon and the church-year screen stay locked to the
+liturgical calendar. Chrome itself is a neutral slate (`#0F1419` ink on
+`#F5F6F8` canvas). Full rules: `docs/DESIGN_SYSTEM.md`.
 
 Switching parish is one tap from the app bar on Home, Zaidi, the map and Admin.
 
@@ -91,10 +92,19 @@ household label only.
 ## 7. Msimamizi worth opening
 
 The admin home is now a dashboard: six stat tiles (waumini, jumuiya, nyumba,
-matangazo, mahubiri, inbox), a **Tuna live sasa** card that flips today's YouTube
-stream live and shares its link, and grouped sections — Maudhui, Watu na
-jumuiya, Sadaka na malipo, Mipangilio. New editors: Masharika, Jumuiya (with the
-geofence slider), Aina za sadaka, Lipa kwa kadi.
+matangazo, mahubiri, inbox), a **YouTube ya usharika** desk at the top — paste
+any watch / youtu.be / live / shorts link, see the poster, publish it to
+Mahubiri or flip it live, and optionally set the parish channel (`UC…`) once so
+the live stream plays without a weekly paste — plus grouped sections (Maudhui,
+Watu na jumuiya, Sadaka na malipo, Mipangilio). New editors: Masharika, Jumuiya
+(with the geofence slider), Aina za sadaka, Lipa kwa kadi.
+
+## 8. Where Sunday's message lives
+
+Mahubiri is a first-class tab. Home shows a **watch card** (live stream if the
+office flipped the switch, otherwise the newest sermon). Tapping it plays the
+YouTube embed in-app via `webview_flutter`; sharing sends the original link.
+Poster frames come from `i.ytimg.com` and degrade to a placeholder offline.
 
 ## What did not change
 
@@ -104,6 +114,8 @@ directory, and not a WhatsApp replacement.
 
 ## Data migration
 
-`ChurchData.version` is `3`. `ChurchStore.migrateV2` fills only what is missing —
-congregations and jumuiyas for v1 installs, offering categories and payment
-config for v2 installs — so office edits made on a phone survive the upgrade.
+`ChurchData.version` is `4`. `ChurchStore.migrateV2` fills only what is missing
+or retired — congregations and jumuiyas for v1 installs, offering categories and
+payment config for v2, the purple-free accents for v3 — so office edits made on
+a phone survive the upgrade. An accent the office chose itself is never
+overwritten.
