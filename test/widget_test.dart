@@ -38,8 +38,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Sunday times'), findsOneWidget);
 
-    await tester.drag(find.byType(ListView).first, const Offset(0, -2400));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.textContaining('Welcome to Sunday worship'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.textContaining('Grace that is enough'), findsWidgets);
     expect(find.textContaining('Welcome to Sunday worship'), findsOneWidget);
   });
@@ -156,7 +159,7 @@ void main() {
     expect(find.text('Usharika wa Makedonia'), findsWidgets);
     expect(find.textContaining('Kanisa kuu'), findsWidgets);
 
-    await tester.pageBack();
+    Navigator.of(tester.element(find.text('Usharika wa Angaza').first)).pop();
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       find.text('Sajili mwanachama'),
