@@ -8,26 +8,26 @@ Android-first · Kiswahili + English · Works on slow data · Offline hymns and 
 
 This is **not** church ERP, not a public member phone directory, and not a WhatsApp replacement.
 
-Product spec: [`docs/PRODUCT_BRIEF_V1.md`](docs/PRODUCT_BRIEF_V1.md) · v2: [`docs/PRODUCT_BRIEF_V2.md`](docs/PRODUCT_BRIEF_V2.md).
+Product spec: [`docs/PRODUCT_BRIEF_V3.md`](docs/PRODUCT_BRIEF_V3.md) · architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · design: [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
 
 ## What it does
 
 | Tab / screen | Purpose |
 | --- | --- |
-| **Tangazo / Home** | Announcements + pinned Sunday times. Choose Ebenezer / Angaza / Makedonia. Live mahubiri banner when a stream is marked live. FCM is stubbed until keys exist. |
+| **Nyumbani** | One serif headline, season ribbon, **watch card** for Sunday's sermon, four shortcuts, Sunday times, two upcoming events, two announcements. |
+| **Mahubiri** | YouTube live + archive: poster thumbnails, watch in-app, share the link. Channel-level live if the office has pasted a `UC…` id. |
 | **Ibada** | Weekly order of service (date, theme, readings, outline, optional link). Last opened stays on device. |
 | **Nyimbo** | 36 seed hymns, search, favorites, recently opened (all offline). |
-| **Matukio** | Calendar: worship, choir, UW, youth, confirmation, meetings. |
-| **Sadaka** | Configurable M-Pesa / Lipa / paybill instructions + optional **Nimetoa** note. No finance backend. |
-| **Mahubiri** | YouTube live + archive: watch in-app (when the URL is a video) and **share the link**. Office pastes the phone’s live URL. |
-| **Masharika** | Ebenezer (kanisa kuu), Angaza, Makedonia. |
-| **Ramani ya jumuiya** | OpenStreetMap. Tap to ping a home during jumuiya (household label only — no phone dump). |
-| **Sajili mwanachama** | Light registration on this phone for the office. Not a public directory. |
-| **Wasiliana** | OSM map, office hours, **Pastor + office only**. |
-| **Ombi la kichungaji** | Private prayer/visit form → admin inbox on this phone. |
-| **Msimamizi** | PIN-gated CRUD for all of the above. |
+| **Zaidi** | Matukio, Sadaka, masharika, ramani, usajili, pastoral, contact, Mwonekano, Msimamizi. |
+| **Sadaka** | Grouped offerings: **bahasha** (ujenzi, utumishi, imarisha usharika — marked *exempt*), **fungu la kumi**, **shukrani**, sadaka za ibada. M-Pesa + optional Stripe Payment Link per kind. |
+| **Ramani ya jumuiya** | OpenStreetMap with **geofence circles** per jumuiya, homes-inside counts, and tap-to-ping (household label only). |
+| **Usajili wa waumini** | Jina, kaya, jumuiya, hadhi, ubatizo/kipaimara. Stays on this phone. Not a public directory. |
+| **Mwonekano** | Light / dark / system, five optional wallpapers, parish accent. |
+| **Msimamizi** | Dashboard + **YouTube ya usharika** desk (paste a watch/live link, publish or go live) and PIN-gated CRUD. |
 
-Members stay anonymous unless they fill the light registration form. There is no Firebase login. Content is **seed-first** (bundled JSON) and edited locally. v1 installs on a phone pick up Ebenezer / Angaza / Makedonia automatically.
+Members stay anonymous unless they fill the light registration form. There is no Firebase login. Content is **seed-first** (bundled JSON) and edited locally. Older installs migrate in place: v1 phones pick up Ebenezer / Angaza / Makedonia, v2 phones pick up the offering groups, v3 phones lose the purple chrome.
+
+The chrome is a **neutral slate**. Each usharika carries a quiet accent used as punctuation (Ebenezer teal, Angaza amber, Makedonia blue) while vestments stay locked to the church year. Typography is bundled **Inter** + **Source Serif 4**, subset to Latin (about 320 KB).
 
 ## Run (Android)
 
@@ -36,7 +36,7 @@ flutter pub get
 flutter run
 ```
 
-On a device or emulator. First install uses the official KKKT DKMZV emblem on a **white** adaptive plate (`#FFFFFF`). Purple `#2E0854` is the splash field only.
+On a device or emulator. First install uses the official KKKT DKMZV emblem on a **white** adaptive plate (`#FFFFFF`). The splash field is the same near-black as the in-app ink (`#0F1419`).
 
 Web (for a quick desktop look — Android remains the product):
 
@@ -57,10 +57,12 @@ flutter analyze
 
 1. **Zaidi → Msimamizi**
 2. Demo PIN: `dkmzv` (change it after you try the app)
-3. Edit announcements, ibada, events, sermons (live flag + YouTube URL), hymns, M-Pesa numbers, Sunday times, role contacts, church copy, registrations, jumuiya pins, pastoral inbox
+3. **YouTube ya usharika** is the first tile: paste a watch / youtu.be / live / shorts link, see the poster, publish it to Mahubiri or flip it live. Optionally paste the parish channel (`UC…` or `@handle`) once so live plays without a weekly link. Everything else (announcements, ibada, events, hymns, M-Pesa, offering kinds, Stripe links, Sunday times, masharika, jumuiya geofences, registrations, home pins, pastoral inbox) is in the grouped lists below.
 4. **Rudisha mbegu** restores `assets/seed/church.json`
 
 Giving paybill / till numbers in the seed are **samples** (`400200` / `000000`). Replace them in Admin before anyone actually sends money.
+
+Card payment is **Stripe Payment Links** only: create the link in the Stripe dashboard, paste the `https://buy.stripe.com/...` URL in **Msimamizi → Lipa kwa kadi** (or per offering kind), and the app opens it. No Stripe keys or SDK ship in the APK.
 
 Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`) — **not** real private numbers.
 
@@ -79,17 +81,22 @@ Role phones in the seed are placeholders (`+255 700 000 001`, `+255 700 000 002`
 
 ### Palette
 
-| Token | Hex | Church year |
-| --- | --- | --- |
-| Deep purple | `#2E0854` | Advent + Lent vestment; **splash field only** (not the adaptive plate) |
-| White | `#FFFFFF` | Adaptive launcher background (official emblem plate) |
-| Forest green | `#1E4D36` | Time after Pentecost / Epiphany |
-| Sage | `#A2AD91` | Secondary green |
-| White / gold cloth | `#F4E6C1` + `#D4AF37` | Christmas, Easter, Trinity, All Saints |
-| Red | `#8B1E2D` | Pentecost, Palm Sunday, Good Friday, Reformation |
-| Cream | `#FDF5E6` | Parchment surfaces |
+Chrome is achromatic. Hue is reserved for the usharika accent (punctuation) and for vestments (a ribbon). Full rules: [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
 
-Gold is the **metal** (cross, rules) in every season. See [`docs/LITURGICAL_YEAR.md`](docs/LITURGICAL_YEAR.md).
+| Token | Hex | Role |
+| --- | --- | --- |
+| Ink / splash | `#0F1419` | Near-black chrome, splash field |
+| Canvas | `#F5F6F8` | Page background |
+| White | `#FFFFFF` | Cards + adaptive launcher plate |
+| Ebenezer accent | `#0F5F52` | Teal punctuation (kanisa kuu) |
+| Angaza accent | `#8A5A12` | Amber punctuation (Chamaguha) |
+| Makedonia accent | `#1B4F7A` | Blue punctuation (Lubaga) |
+| Advent / Lent cloth | `#4B2E68` | Vestment ribbon only |
+| Ordinary-time green | `#1E4D36` | Vestment ribbon |
+| Festival cream / gold | `#E8D6A8` + `#B08A2E` | Christmas, Easter, Trinity, All Saints |
+| Red | `#8B1E2D` | Pentecost, Palm, Good Friday, Reformation |
+
+Gold is the **metal** in every season. See [`docs/LITURGICAL_YEAR.md`](docs/LITURGICAL_YEAR.md).
 
 ### Exact copy paths
 
@@ -117,7 +124,7 @@ flutter build apk --release --split-per-abi
 # phones: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 ```
 
-Download: [v1-sideload release](https://github.com/allenki1eo/dkmzv-app/releases/tag/v1-sideload) → `dkmzv-app-arm64.apk` (typical 15–25 MB). Older 32-bit phones use the `armv7` artifact on [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml). Debug-signed for parish install, not Play.
+Download: [v3-sideload release](https://github.com/allenki1eo/dkmzv-app/releases/tag/v3-sideload) → `dkmzv-app-arm64.apk` (typical 15–25 MB). Older 32-bit phones use the `armv7` artifact on [Actions](https://github.com/allenki1eo/dkmzv-app/actions/workflows/debug-apk.yml). Debug-signed for parish install, not Play.
 
 ## Optional later: Firebase
 

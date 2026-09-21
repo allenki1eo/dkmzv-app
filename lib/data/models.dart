@@ -32,6 +32,9 @@ class ChurchSettings {
     required this.defaultLocale,
     this.selectedCongregationId = '',
     this.currentMemberId,
+    this.themeMode = 'system',
+    this.backgroundId = 'none',
+    this.youtubeChannel = '',
   });
 
   String adminPin;
@@ -39,6 +42,14 @@ class ChurchSettings {
   String defaultLocale;
   String selectedCongregationId;
   String? currentMemberId;
+
+  /// `system` | `light` | `dark`
+  String themeMode;
+  String backgroundId;
+
+  /// Parish channel as a `UC…` id or an `@handle`. With a channel id the live
+  /// stream plays in-app without anyone pasting this Sunday's video link.
+  String youtubeChannel;
 
   factory ChurchSettings.fromJson(Map<String, dynamic> j) {
     final member = _s(j['currentMemberId']);
@@ -48,6 +59,9 @@ class ChurchSettings {
       defaultLocale: _s(j['defaultLocale'], 'sw'),
       selectedCongregationId: _s(j['selectedCongregationId']),
       currentMemberId: member.isEmpty ? null : member,
+      themeMode: _s(j['themeMode'], 'system'),
+      backgroundId: _s(j['backgroundId'], 'none'),
+      youtubeChannel: _s(j['youtubeChannel']),
     );
   }
 
@@ -57,6 +71,9 @@ class ChurchSettings {
         'defaultLocale': defaultLocale,
         'selectedCongregationId': selectedCongregationId,
         'currentMemberId': currentMemberId ?? '',
+        'themeMode': themeMode,
+        'backgroundId': backgroundId,
+        'youtubeChannel': youtubeChannel,
       };
 }
 
@@ -166,6 +183,10 @@ class Congregation {
     required this.longitude,
     required this.noteSw,
     required this.noteEn,
+    this.accentHex = '#0F5F52',
+    this.motif = 'church',
+    this.taglineSw = '',
+    this.taglineEn = '',
   });
 
   String id;
@@ -182,10 +203,17 @@ class Congregation {
   String noteSw;
   String noteEn;
 
+  /// Identity colour for this usharika's chrome (vestments stay liturgical).
+  String accentHex;
+  String motif;
+  String taglineSw;
+  String taglineEn;
+
   String name(bool sw) => sw ? nameSw : nameEn;
   String role(bool sw) => sw ? roleSw : roleEn;
   String address(bool sw) => sw ? addressSw : addressEn;
   String note(bool sw) => sw ? noteSw : noteEn;
+  String tagline(bool sw) => sw ? taglineSw : taglineEn;
 
   String get osmUrl =>
       'https://www.openstreetmap.org/?mlat=$latitude&mlon=$longitude#map=16/$latitude/$longitude';
@@ -204,6 +232,10 @@ class Congregation {
         longitude: _d(j['longitude']),
         noteSw: _s(j['noteSw']),
         noteEn: _s(j['noteEn']),
+        accentHex: _s(j['accentHex'], '#0F5F52'),
+        motif: _s(j['motif'], 'church'),
+        taglineSw: _s(j['taglineSw']),
+        taglineEn: _s(j['taglineEn']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -220,6 +252,10 @@ class Congregation {
         'longitude': longitude,
         'noteSw': noteSw,
         'noteEn': noteEn,
+        'accentHex': accentHex,
+        'motif': motif,
+        'taglineSw': taglineSw,
+        'taglineEn': taglineEn,
       };
 }
 
@@ -233,6 +269,9 @@ class Jumuiya {
     required this.meetingNoteEn,
     required this.latitude,
     required this.longitude,
+    this.radiusMeters = 450,
+    this.colorHex = '',
+    this.leaderRole = '',
   });
 
   String id;
@@ -243,6 +282,11 @@ class Jumuiya {
   String meetingNoteEn;
   double latitude;
   double longitude;
+
+  /// Geofence the office draws around a jumuiya so homes can be grouped.
+  double radiusMeters;
+  String colorHex;
+  String leaderRole;
 
   String name(bool sw) => sw ? nameSw : nameEn;
   String meetingNote(bool sw) => sw ? meetingNoteSw : meetingNoteEn;
@@ -256,6 +300,9 @@ class Jumuiya {
         meetingNoteEn: _s(j['meetingNoteEn']),
         latitude: _d(j['latitude']),
         longitude: _d(j['longitude']),
+        radiusMeters: _d(j['radiusMeters'], 450),
+        colorHex: _s(j['colorHex']),
+        leaderRole: _s(j['leaderRole']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -267,6 +314,9 @@ class Jumuiya {
         'meetingNoteEn': meetingNoteEn,
         'latitude': latitude,
         'longitude': longitude,
+        'radiusMeters': radiusMeters,
+        'colorHex': colorHex,
+        'leaderRole': leaderRole,
       };
 }
 
@@ -330,6 +380,12 @@ class MemberRecord {
     this.homeLat,
     this.homeLng,
     required this.registeredAt,
+    this.kaya = '',
+    this.gender = '',
+    this.status = 'mwanachama',
+    this.baptized = false,
+    this.confirmed = false,
+    this.birthYear = '',
   });
 
   String id;
@@ -343,6 +399,16 @@ class MemberRecord {
   double? homeLat;
   double? homeLng;
   String registeredAt;
+
+  /// Household the waumini belongs to (kaya).
+  String kaya;
+  /// `me` (mwanamume) | `ke` (mwanamke) | empty
+  String gender;
+  /// `mwanachama` | `kijana` | `mtoto` | `mgeni`
+  String status;
+  bool baptized;
+  bool confirmed;
+  String birthYear;
 
   factory MemberRecord.fromJson(Map<String, dynamic> j) {
     final lat = j['homeLat'];
@@ -358,6 +424,12 @@ class MemberRecord {
       homeLat: lat == null || '$lat'.isEmpty ? null : _d(lat),
       homeLng: lng == null || '$lng'.isEmpty ? null : _d(lng),
       registeredAt: _s(j['registeredAt']),
+      kaya: _s(j['kaya']),
+      gender: _s(j['gender']),
+      status: _s(j['status'], 'mwanachama'),
+      baptized: _b(j['baptized']),
+      confirmed: _b(j['confirmed']),
+      birthYear: _s(j['birthYear']),
     );
   }
 
@@ -372,6 +444,12 @@ class MemberRecord {
         'homeLat': homeLat,
         'homeLng': homeLng,
         'registeredAt': registeredAt,
+        'kaya': kaya,
+        'gender': gender,
+        'status': status,
+        'baptized': baptized,
+        'confirmed': confirmed,
+        'birthYear': birthYear,
       };
 }
 
@@ -635,6 +713,105 @@ class GivingPurpose {
   Map<String, dynamic> toJson() => {'id': id, 'sw': sw, 'en': en};
 }
 
+/// Offering kinds KKKT keeps apart in the books.
+class GivingGroups {
+  static const bahasha = 'bahasha';
+  static const fungu = 'fungu';
+  static const shukrani = 'shukrani';
+  static const sadaka = 'sadaka';
+
+  static const ordered = [bahasha, fungu, shukrani, sadaka];
+}
+
+class GivingCategory {
+  GivingCategory({
+    required this.id,
+    required this.group,
+    required this.sw,
+    required this.en,
+    this.exempt = false,
+    this.stripeUrl = '',
+    this.noteSw = '',
+    this.noteEn = '',
+    this.amounts = const [],
+  });
+
+  String id;
+  String group;
+  String sw;
+  String en;
+
+  /// Bahasha envelopes (ujenzi, utumishi, imarisha usharika…) are marked
+  /// exempt: they are not counted with fungu la kumi or shukrani.
+  bool exempt;
+  String stripeUrl;
+  String noteSw;
+  String noteEn;
+  List<int> amounts;
+
+  String label(bool isSw) => isSw ? sw : en;
+  String note(bool isSw) => isSw ? noteSw : noteEn;
+
+  factory GivingCategory.fromJson(Map<String, dynamic> j) => GivingCategory(
+        id: _s(j['id']),
+        group: _s(j['group'], GivingGroups.sadaka),
+        sw: _s(j['sw']),
+        en: _s(j['en']),
+        exempt: _b(j['exempt']),
+        stripeUrl: _s(j['stripeUrl']),
+        noteSw: _s(j['noteSw']),
+        noteEn: _s(j['noteEn']),
+        amounts: (j['amounts'] as List? ?? []).map((e) => _i(e)).toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'group': group,
+        'sw': sw,
+        'en': en,
+        'exempt': exempt,
+        'stripeUrl': stripeUrl,
+        'noteSw': noteSw,
+        'noteEn': noteEn,
+        'amounts': amounts,
+      };
+}
+
+/// Card / Stripe details. Stripe Payment Links need no SDK or secret key.
+class PaymentConfig {
+  PaymentConfig({
+    this.stripeEnabled = false,
+    this.stripeAccountName = '',
+    this.defaultStripeUrl = '',
+    this.stripeNoteSw = '',
+    this.stripeNoteEn = '',
+  });
+
+  bool stripeEnabled;
+  String stripeAccountName;
+  String defaultStripeUrl;
+  String stripeNoteSw;
+  String stripeNoteEn;
+
+  String stripeNote(bool sw) => sw ? stripeNoteSw : stripeNoteEn;
+
+  factory PaymentConfig.fromJson(Map<String, dynamic> j) => PaymentConfig(
+        stripeEnabled: _b(j['stripeEnabled']),
+        stripeAccountName: _s(j['stripeAccountName']),
+        defaultStripeUrl: _s(j['defaultStripeUrl']),
+        stripeNoteSw: _s(j['stripeNoteSw']),
+        stripeNoteEn: _s(j['stripeNoteEn']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'stripeEnabled': stripeEnabled,
+        'stripeAccountName': stripeAccountName,
+        'defaultStripeUrl': defaultStripeUrl,
+        'stripeNoteSw': stripeNoteSw,
+        'stripeNoteEn': stripeNoteEn,
+      };
+}
+
 class GivingConfig {
   GivingConfig({
     required this.paybill,
@@ -647,7 +824,10 @@ class GivingConfig {
     required this.stepsEn,
     required this.tips,
     required this.purposes,
-  });
+    List<GivingCategory>? categories,
+    PaymentConfig? payments,
+  })  : categories = categories ?? [],
+        payments = payments ?? PaymentConfig();
 
   String paybill;
   String account;
@@ -659,9 +839,21 @@ class GivingConfig {
   List<String> stepsEn;
   List<int> tips;
   List<GivingPurpose> purposes;
+  List<GivingCategory> categories;
+  PaymentConfig payments;
 
   String lipaNote(bool sw) => sw ? lipaNoteSw : lipaNoteEn;
   List<String> steps(bool sw) => sw ? stepsSw : stepsEn;
+
+  List<GivingCategory> inGroup(String group) =>
+      categories.where((c) => c.group == group).toList();
+
+  GivingCategory? categoryById(String id) {
+    for (final c in categories) {
+      if (c.id == id) return c;
+    }
+    return null;
+  }
 
   factory GivingConfig.fromJson(Map<String, dynamic> j) => GivingConfig(
         paybill: _s(j['paybill']),
@@ -677,6 +869,12 @@ class GivingConfig {
             .map((e) =>
                 GivingPurpose.fromJson(Map<String, dynamic>.from(e as Map)))
             .toList(),
+        categories: (j['categories'] as List? ?? [])
+            .map((e) =>
+                GivingCategory.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        payments: PaymentConfig.fromJson(
+            Map<String, dynamic>.from(j['payments'] as Map? ?? {})),
       );
 
   Map<String, dynamic> toJson() => {
@@ -690,6 +888,8 @@ class GivingConfig {
         'stepsEn': stepsEn,
         'tips': tips,
         'purposes': purposes.map((e) => e.toJson()).toList(),
+        'categories': categories.map((e) => e.toJson()).toList(),
+        'payments': payments.toJson(),
       };
 }
 
@@ -700,6 +900,8 @@ class GivingNote {
     required this.amount,
     required this.purposeId,
     required this.note,
+    this.categoryId = '',
+    this.method = 'mpesa',
   });
 
   String id;
@@ -707,6 +909,9 @@ class GivingNote {
   int amount;
   String purposeId;
   String note;
+  String categoryId;
+  /// `mpesa` | `stripe` | `bahasha` | `taslimu`
+  String method;
 
   factory GivingNote.fromJson(Map<String, dynamic> j) => GivingNote(
         id: _s(j['id']),
@@ -714,6 +919,8 @@ class GivingNote {
         amount: _i(j['amount']),
         purposeId: _s(j['purposeId']),
         note: _s(j['note']),
+        categoryId: _s(j['categoryId']),
+        method: _s(j['method'], 'mpesa'),
       );
 
   Map<String, dynamic> toJson() => {
@@ -722,6 +929,8 @@ class GivingNote {
         'amount': amount,
         'purposeId': purposeId,
         'note': note,
+        'categoryId': categoryId,
+        'method': method,
       };
 }
 

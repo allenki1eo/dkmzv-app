@@ -4,8 +4,8 @@
 
 ## Notes
 - Launcher/mipmap use the official logo on a **white** square plate (best readability).
-- Adaptive background: `#FFFFFF` (not purple) so the silver/red mark stays true.
-- Splash: purple `#2E0854` field with white card holding the official logo.
+- Adaptive background: `#FFFFFF` (not a hue) so the silver/red mark stays true.
+- Splash: near-black `#0F1419` field with a white card holding the official logo.
 - Fine curved Swahili text will soften below ~96px; still the church’s real mark as requested.
 
 ## Files

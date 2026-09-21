@@ -8,7 +8,7 @@ class S {
   String get companion =>
       isSw ? 'Mwenza wa muumini' : 'Member companion';
 
-  String get tabHome => isSw ? 'Tangazo' : 'Home';
+  String get tabHome => isSw ? 'Nyumbani' : 'Home';
   String get tabIbada => 'Ibada';
   String get tabHymns => isSw ? 'Nyimbo' : 'Hymns';
   String get tabEvents => isSw ? 'Matukio' : 'Events';
@@ -29,6 +29,7 @@ class S {
       isSw ? 'Ibada ya wiki hii' : 'This week’s service';
   String get openIbada => isSw ? 'Fungua ibada' : 'Open order of service';
   String get seeAllEvents => isSw ? 'Matukio yote' : 'All events';
+  String get seeAll => isSw ? 'Yote' : 'See all';
   String get roleCardLead => isSw
       ? 'Pastor na ofisi tu — si orodha ya waumini.'
       : 'Pastor and office only — not a member directory.';
@@ -126,6 +127,33 @@ class S {
   String get youtubeNeedUrl => isSw
       ? 'Kiungo hiki si video ya moja kwa moja — fungua YouTube nje, au ofisi ibandike kiungo cha watch / live.'
       : 'This link is not a playable video yet — open YouTube outside, or the office can paste a watch / live URL.';
+  String get latestSermon => isSw ? 'Hubiri la mwisho' : 'Latest sermon';
+  String get watchLive => isSw ? 'Tazama moja kwa moja' : 'Watch live';
+  String get allSermons => isSw ? 'Mahubiri yote' : 'All sermons';
+  String get noSermonYet => isSw
+      ? 'Ofisi bado haijabandika kiungo cha YouTube.'
+      : 'The office has not pasted a YouTube link yet.';
+
+  // Kiungo cha YouTube — office side
+  String get youtubeStudio => isSw ? 'YouTube ya usharika' : 'Parish YouTube';
+  String get pasteYoutube => isSw ? 'Bandika kiungo cha YouTube' : 'Paste a YouTube link';
+  String get pasteYoutubeHint => isSw
+      ? 'Nakili kiungo kutoka YouTube (Share) kisha ubandike hapa. Linakubali watch, youtu.be, live na shorts.'
+      : 'Copy the link from YouTube (Share) and paste it here. Watch, youtu.be, live and shorts links all work.';
+  String get linkLooksGood => isSw ? 'Kiungo ni sahihi' : 'Link looks good';
+  String get linkNotYoutube => isSw
+      ? 'Hiki si kiungo cha video ya YouTube.'
+      : 'That is not a YouTube video link.';
+  String get publishAsSermon => isSw ? 'Weka kwenye Mahubiri' : 'Publish to Mahubiri';
+  String get startLiveNow => isSw ? 'Anzisha live sasa' : 'Start live now';
+  String get channelLabel => isSw ? 'Kituo cha YouTube' : 'YouTube channel';
+  String get channelHint => isSw
+      ? 'Bandika kiungo cha kituo (youtube.com/@usharika au /channel/UC…). Kikiwa na UC…, live inachezwa ndani ya programu bila kubandika kiungo kila Jumapili.'
+      : 'Paste the channel URL (youtube.com/@parish or /channel/UC…). With a UC… id the live stream plays in-app without pasting a link every Sunday.';
+  String get channelLiveTitle => isSw ? 'Live ya kituo' : 'Channel live';
+  String get channelLiveNote => isSw
+      ? 'Inacheza chochote kinachotiririka sasa kwenye kituo cha usharika.'
+      : 'Plays whatever the parish channel is streaming right now.';
 
   String get congregations => isSw ? 'Masharika' : 'Congregations';
   String get congregationsLead => isSw
@@ -338,6 +366,100 @@ class S {
   String get whyRed => isSw
       ? 'Nyekundu — Pentekoste, Matawi, Ijumaa Kuu, Marekebisho, kipaimara: Roho na damu.'
       : 'Red — Pentecost, Palm Sunday, Good Friday, Reformation, confirmation: Spirit and blood.';
+
+  // Mwonekano — appearance
+  String get appearance => isSw ? 'Mwonekano' : 'Appearance';
+  String get appearanceHint => isSw
+      ? 'Chagua mwanga au giza, na picha ya nyuma unayoipenda.'
+      : 'Pick light or dark, and the background you like.';
+  String get themeMode => isSw ? 'Mwanga na giza' : 'Light and dark';
+  String get themeSystem => isSw ? 'Ya simu' : 'System';
+  String get themeLight => isSw ? 'Mwanga' : 'Light';
+  String get themeDark => isSw ? 'Giza' : 'Dark';
+  String get darkModeSwitch => isSw ? 'Hali ya giza' : 'Dark mode';
+  String get background => isSw ? 'Picha ya nyuma' : 'Background';
+  String get backgroundHint => isSw
+      ? 'Picha zimewekwa hafifu ili maandishi yaendelee kusomeka.'
+      : 'Backgrounds stay faint so the text keeps reading well.';
+  String get parishLook => isSw ? 'Rangi ya usharika' : 'Parish colour';
+  String get parishLookHint => isSw
+      ? 'Kila usharika una rangi yake. Nguo za ibada hubaki za msimu wa kanisa.'
+      : 'Each usharika carries its own colour. Vestments stay with the church season.';
+
+  // Sadaka — offerings
+  String get givingGroups => isSw ? 'Aina za sadaka' : 'Kinds of offering';
+  String get groupBahasha => isSw ? 'Sadaka za bahasha' : 'Envelope offerings';
+  String get groupFungu => isSw ? 'Fungu la kumi' : 'Tithe';
+  String get groupShukrani => isSw ? 'Shukrani' : 'Thanksgiving';
+  String get groupSadaka => isSw ? 'Sadaka za ibada' : 'Service offerings';
+  String get exempt => isSw ? 'Exempt' : 'Exempt';
+  String get exemptNote => isSw
+      ? 'Bahasha (ujenzi, utumishi, imarisha usharika, n.k.) ni exempt — haziunganishwi na fungu la kumi wala shukrani.'
+      : 'Envelopes (building, ministry, strengthening, etc.) are exempt — they are not merged with the tithe or thanksgiving.';
+  String get separateNote => isSw
+      ? 'Fungu la kumi na shukrani huhesabiwa peke yake.'
+      : 'The tithe and thanksgiving are counted on their own.';
+  String get payByCard => isSw ? 'Lipa kwa kadi' : 'Pay by card';
+  String get payByMpesa => isSw ? 'Lipa kwa M-Pesa' : 'Pay with M-Pesa';
+  String get cardComingSoon => isSw
+      ? 'Kadi (Stripe) itaunganishwa na ofisi.'
+      : 'Card (Stripe) will be connected by the office.';
+  String get stripeLink => isSw ? 'Kiungo cha Stripe' : 'Stripe link';
+  String get chooseAmount => isSw ? 'Chagua kiasi' : 'Choose an amount';
+  String get myGiving => isSw ? 'Kumbukumbu zangu' : 'My records';
+  String get givingPrivate => isSw
+      ? 'Kumbukumbu hizi zinabaki kwenye simu yako pekee.'
+      : 'These records stay on your phone only.';
+
+  // Usajili — registration
+  String get registerTitle => isSw ? 'Usajili wa waumini' : 'Member registration';
+  String get kaya => isSw ? 'Kaya' : 'Household';
+  String get kayaHint =>
+      isSw ? 'Mfano: Kaya ya Mwanza' : 'For example: the Mwanza household';
+  String get gender => isSw ? 'Jinsia' : 'Gender';
+  String get male => isSw ? 'Mwanamume' : 'Male';
+  String get female => isSw ? 'Mwanamke' : 'Female';
+  String get memberStatus => isSw ? 'Hadhi' : 'Standing';
+  String get statusMwanachama => isSw ? 'Mwanachama' : 'Member';
+  String get statusKijana => isSw ? 'Kijana' : 'Youth';
+  String get statusMtoto => isSw ? 'Mtoto' : 'Child';
+  String get statusMgeni => isSw ? 'Mgeni' : 'Visitor';
+  String get baptized => isSw ? 'Amebatizwa' : 'Baptised';
+  String get confirmed => isSw ? 'Amekipaimara' : 'Confirmed';
+  String get birthYear => isSw ? 'Mwaka wa kuzaliwa' : 'Year of birth';
+  String get optional => isSw ? 'si lazima' : 'optional';
+  String get registeredMembers => isSw ? 'Waumini waliojisajili' : 'Registered members';
+  String get searchMembers => isSw ? 'Tafuta jina au kaya' : 'Search name or household';
+  String get homePinsNote => isSw
+      ? 'Ramani inaonyesha jina la kaya pekee — hakuna namba za simu.'
+      : 'The map shows the household label only — never a phone number.';
+  String get privacyLead => isSw
+      ? 'Taarifa hizi zinakaa kwenye simu hii kwa ajili ya ofisi, si orodha ya umma.'
+      : 'These details stay on this phone for the office, not as a public directory.';
+  String get address => isSw ? 'Anwani' : 'Address';
+
+  // Ramani — map
+  String get geofence => isSw ? 'Mpaka wa jumuiya' : 'Jumuiya boundary';
+  String get geofenceHint => isSw
+      ? 'Duara linaonyesha eneo la jumuiya. Nyumba zilizo ndani zinahesabiwa hapa.'
+      : 'The circle shows the jumuiya area. Homes inside are counted here.';
+  String get radius => isSw ? 'Upana (mita)' : 'Radius (metres)';
+  String get homesInside => isSw ? 'Nyumba ndani' : 'Homes inside';
+  String get homesOutside => isSw ? 'Nje ya mpaka' : 'Outside the boundary';
+  String get showAllJumuiya => isSw ? 'Jumuiya zote' : 'All jumuiyas';
+  String get mapLegend => isSw ? 'Ufafanuzi' : 'Legend';
+
+  // Msimamizi — admin
+  String get adminOverview => isSw ? 'Muhtasari' : 'Overview';
+  String get adminToday => isSw ? 'Leo' : 'Today';
+  String get goLive => isSw ? 'Tuna live sasa' : 'We are live now';
+  String get goLiveHint => isSw
+      ? 'Washa hii ibada inapoanza YouTube. Waumini wataona kitufe cha kuangalia.'
+      : 'Switch this on when the YouTube service starts. Members see a watch button.';
+  String get contentSection => isSw ? 'Maudhui' : 'Content';
+  String get peopleSection => isSw ? 'Watu na jumuiya' : 'People and jumuiyas';
+  String get moneySection => isSw ? 'Sadaka na malipo' : 'Offerings and payments';
+  String get settingsSection => isSw ? 'Mipangilio' : 'Settings';
 
   String get done => isSw ? 'Sawa' : 'OK';
   String get close => isSw ? 'Funga' : 'Close';

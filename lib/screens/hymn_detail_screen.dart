@@ -58,8 +58,6 @@ class HymnDetailScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic),
           ),
           const SizedBox(height: 14),
-          const Center(child: GoldRule()),
-          const SizedBox(height: 14),
           Text(s.offlineCached,
               textAlign: TextAlign.center,
               style: TextStyle(color: p.cloth, fontSize: 13)),
@@ -70,7 +68,7 @@ class HymnDetailScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   height: 1.7,
                   fontWeight: FontWeight.w500,
-                  color: DkmzvBrand.ink,
+                  color: Surfaces.of(context).ink,
                 ),
           ),
           const SizedBox(height: 28),

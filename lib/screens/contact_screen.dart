@@ -51,11 +51,11 @@ class ContactScreen extends StatelessWidget {
           Text(c.about(store.sw)),
           const SizedBox(height: 8),
           Text(c.whatsapp(store.sw),
-              style: const TextStyle(color: DkmzvBrand.muted)),
+              style: TextStyle(color: Surfaces.of(context).muted)),
           SectionLabel(s.roleContacts),
           Text(s.notDirectory,
-              style: const TextStyle(
-                  color: DkmzvBrand.purple, fontWeight: FontWeight.w600)),
+              style: TextStyle(
+                  color: accentOf(context), fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           for (final role in store.data.contacts)
             Card(
@@ -66,7 +66,7 @@ class ContactScreen extends StatelessWidget {
                   children: [
                     Text(role.role(store.sw),
                         style: const TextStyle(
-                            color: DkmzvBrand.green,
+                            color: DkmzvBrand.clothGreen,
                             fontWeight: FontWeight.w700)),
                     Text(role.name(store.sw),
                         style: Theme.of(context).textTheme.titleMedium),
@@ -74,8 +74,8 @@ class ContactScreen extends StatelessWidget {
                     if (role.email.isNotEmpty) Text(role.email),
                     const SizedBox(height: 6),
                     Text(role.note(store.sw),
-                        style: const TextStyle(
-                            color: DkmzvBrand.muted, fontSize: 13)),
+                        style: TextStyle(
+                            color: Surfaces.of(context).muted, fontSize: 13)),
                     const SizedBox(height: 8),
                     Row(
                       children: [

@@ -55,8 +55,9 @@ class IbadaScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(formatDate(item.date, store.localeCode),
-                                    style: const TextStyle(
-                                        color: DkmzvBrand.muted, fontSize: 12)),
+                                    style: TextStyle(
+                                        color: Surfaces.of(context).muted,
+                                        fontSize: 12)),
                                 Text(item.theme(store.sw),
                                     style:
                                         Theme.of(context).textTheme.titleMedium),
@@ -64,7 +65,7 @@ class IbadaScreen extends StatelessWidget {
                                 if (featured)
                                   Text(s.offlineCached,
                                       style: const TextStyle(
-                                          color: DkmzvBrand.green,
+                                          color: DkmzvBrand.clothGreen,
                                           fontSize: 12)),
                               ],
                             ),

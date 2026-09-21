@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../data/store.dart';
 import '../theme/brand.dart';
 import '../widgets/common.dart';
+import '../widgets/parish.dart';
 import 'jumuiya_map_screen.dart';
-import 'sermon_player_screen.dart';
 
 class CongregationsScreen extends StatelessWidget {
   const CongregationsScreen({super.key});
@@ -14,133 +14,117 @@ class CongregationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = context.watch<ChurchStore>();
     final s = sOf(context);
+    final surfaces = Surfaces.of(context);
     final selected = store.selectedCongregation?.id;
 
     return Scaffold(
       appBar: AppBar(title: Text(s.congregations)),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
         children: [
           Text(s.congregationsLead,
-              style: const TextStyle(color: DkmzvBrand.muted, height: 1.4)),
-          const SizedBox(height: 12),
+              style: TextStyle(color: surfaces.muted, height: 1.45)),
+          const SizedBox(height: 14),
           for (final c in store.data.congregations)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 8, 12),
+            Builder(builder: (context) {
+              final color = accentForBrightness(
+                  congregationColor(c), Theme.of(context).brightness);
+              final isSelected = selected == c.id;
+              return Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(c.name(store.sw),
-                              style: Theme.of(context).textTheme.titleMedium),
-                        ),
-                        if (c.isMain)
-                          _pill(s.cathedral, DkmzvBrand.gold)
-                        else
-                          _pill(s.sisterChurch, DkmzvBrand.sage),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(c.role(store.sw),
-                        style: const TextStyle(
-                            color: DkmzvBrand.purple,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12)),
-                    const SizedBox(height: 6),
-                    Text(c.address(store.sw)),
-                    if (c.approximate) ...[
-                      const SizedBox(height: 4),
-                      Text(s.approximatePin,
-                          style: const TextStyle(
-                              color: DkmzvBrand.muted, fontSize: 12)),
-                    ],
-                    if (c.note(store.sw).isNotEmpty) ...[
-                      const SizedBox(height: 6),
-                      Text(c.note(store.sw),
-                          style: const TextStyle(
-                              color: DkmzvBrand.muted, fontSize: 13)),
-                    ],
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      children: [
-                        FilledButton.tonal(
-                          onPressed: selected == c.id
-                              ? null
-                              : () => store.selectCongregation(c.id),
-                          child: Text(selected == c.id
-                              ? s.myCongregation
-                              : s.useThisChurch),
-                        ),
-                        TextButton.icon(
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  JumuiyaMapScreen(congregationId: c.id),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: color.withValues(alpha: 0.1),
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(21)),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              color: color.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child:
+                                Icon(motifIcon(c.motif), color: color, size: 21),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(c.name(store.sw),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
+                                Text(
+                                  c.tagline(store.sw).isEmpty
+                                      ? c.role(store.sw)
+                                      : c.tagline(store.sw),
+                                  style: TextStyle(
+                                      color: color,
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           ),
-                          icon: const Icon(Icons.map_outlined),
-                          label: Text(s.jumuiyaMap),
-                        ),
-                      ],
+                          Pill(c.isMain ? s.cathedral : s.sisterChurch,
+                              color: c.isMain ? DkmzvBrand.gold : color),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 12, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(c.address(store.sw),
+                              style: Theme.of(context).textTheme.bodyMedium),
+                          if (c.approximate) ...[
+                            const SizedBox(height: 6),
+                            FootNote(s.approximatePin,
+                                icon: Icons.location_searching),
+                          ],
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FilledButton.tonal(
+                                  onPressed: isSelected
+                                      ? null
+                                      : () => store.selectCongregation(c.id),
+                                  child: Text(isSelected
+                                      ? s.myCongregation
+                                      : s.useThisChurch),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                tooltip: s.jumuiyaMap,
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        JumuiyaMapScreen(congregationId: c.id),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.map_outlined),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
+              );
+            }),
         ],
-      ),
-    );
-  }
-
-  Widget _pill(String label, Color color) {
-    return Container(
-      margin: const EdgeInsets.only(left: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(label,
-          style: TextStyle(
-              fontSize: 11, fontWeight: FontWeight.w700, color: color)),
-    );
-  }
-}
-
-/// Live sermon strip used on Home — same v1 card language.
-class LiveSermonBanner extends StatelessWidget {
-  const LiveSermonBanner({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final store = context.watch<ChurchStore>();
-    final live = store.liveSermon;
-    if (live == null) return const SizedBox.shrink();
-    final s = sOf(context);
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.podcasts, color: DkmzvBrand.red),
-        title: Text(live.title(store.sw)),
-        subtitle: Text(s.liveLead),
-        trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(
-            color: DkmzvBrand.red,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(s.liveNow,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800)),
-        ),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => SermonPlayerScreen(sermon: live)),
-        ),
       ),
     );
   }
